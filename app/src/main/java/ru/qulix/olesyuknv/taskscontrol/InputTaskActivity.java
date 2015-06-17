@@ -13,10 +13,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class InputTaskActivity extends Activity  implements View.OnClickListener{
-    private String nameTask;
-    private String workTime;
-    private String startWork;
-    private String finishDate;
+    private EditText nameTask;
+    private EditText workTime;
+    private EditText startWork;
+    private EditText finishDate;
     private int status;
     private final String[] statusData = {"not started", "in process", "completed ", "postponed"};
 
@@ -25,10 +25,10 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_task);
 
-        nameTask = ((EditText)findViewById(R.id.name_task)).getText();
-        workTime = ((EditText)findViewById(R.id.work_hours)).getText();
-        startWork = ((EditText)findViewById(R.id.start_date)).getText();
-        finishDate = ((EditText)findViewById(R.id.finish_date)).getText();
+        nameTask = (EditText)findViewById(R.id.name_task);
+        workTime = (EditText)findViewById(R.id.work_hours);
+        startWork = (EditText)findViewById(R.id.start_date);
+        finishDate = (EditText)findViewById(R.id.finish_date);
         Spinner statusWork = (Spinner)findViewById(R.id.status);
 
         statusWork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -58,7 +58,7 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
 
         switch (v.getId()) {
             case R.id.save_button:
-                Task task=new Task(nameTask, workTime, startWork, finishDate, status);
+                Task task=new Task(nameTask.getText().toString(), workTime.getText().toString(), startWork.getText().toString(), finishDate.getText().toString(), status);
                 Intent intent = new Intent();
                 intent.putExtra("task", (Parcelable) task);
                 setResult(RESULT_OK, intent);
