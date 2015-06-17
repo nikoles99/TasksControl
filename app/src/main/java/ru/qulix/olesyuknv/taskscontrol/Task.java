@@ -1,6 +1,9 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-public class Task {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Task implements Parcelable {
     private String name;
     private String workTime;
     private String startDate;
@@ -13,6 +16,14 @@ public class Task {
         this.finishDate = finishDate;
         this.status = status;
         this.startDate = startDate;
+    }
+
+    private Task(Parcel in) {
+        this.name = in.readString();
+        this.workTime = in.readString();
+        this.startDate = in.readString();
+        this.finishDate = in.readString();
+        this.status = in.readInt();
     }
 
     public String getName() {
@@ -33,5 +44,31 @@ public class Task {
 
     public String getWorkTime() {
         return workTime;
+    }
+
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(workTime);
+        dest.writeString(startDate);
+        dest.writeString(finishDate);
+        dest.writeInt(status);
     }
 }
