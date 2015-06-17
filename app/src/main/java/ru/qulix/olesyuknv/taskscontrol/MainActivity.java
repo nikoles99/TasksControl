@@ -22,37 +22,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         ImageButton addButton = (ImageButton)findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
-
-    }
-
-    private void setListData() {
-        Intent intent = getIntent();
-        Task task = intent.getParcelableExtra("task");
-        if(task!=null) {
-
-            tasks.add(task);
-            CustomAdapter customAdapter = new CustomAdapter(this, tasks);
-            ListView listView = (ListView) findViewById(R.id.listView);
-            listView.setAdapter(customAdapter);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setListData();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_button:
-                startActivity(new Intent("android.intent.action.InputTaskActivity"));
+                Intent intent = new Intent(this, InputTaskActivity.class);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.update_button:
-               // update listview;
+
                 break;
         }
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (data == null) {return;}
+
+        Task task = data.getParcelableExtra("task");
+        tasks.add(task);
+        CustomAdapter customAdapter = new CustomAdapter(this, tasks);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(customAdapter);
+
 
     }
 }

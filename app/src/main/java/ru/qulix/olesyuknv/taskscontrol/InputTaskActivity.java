@@ -25,10 +25,10 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_task);
 
-        nameTask = ((EditText)findViewById(R.id.name_task)).getText().toString();
-        workTime = ((EditText)findViewById(R.id.work_hours)).getText().toString();
-        startWork = ((EditText)findViewById(R.id.start_date)).getText().toString();
-        finishDate = ((EditText)findViewById(R.id.finish_date)).getText().toString();
+        nameTask = ((EditText)findViewById(R.id.name_task)).getText();
+        workTime = ((EditText)findViewById(R.id.work_hours)).getText();
+        startWork = ((EditText)findViewById(R.id.start_date)).getText();
+        finishDate = ((EditText)findViewById(R.id.finish_date)).getText();
         Spinner statusWork = (Spinner)findViewById(R.id.status);
 
         statusWork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -55,12 +55,14 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.save_button:
                 Task task=new Task(nameTask, workTime, startWork, finishDate, status);
-                Intent intent = new Intent("android.intent.action.MainActivity");
+                Intent intent = new Intent();
                 intent.putExtra("task", (Parcelable) task);
-                startActivity(intent);
+                setResult(RESULT_OK, intent);
+                finish();
                 break;
             case R.id.cancel_button:
                 finish();
