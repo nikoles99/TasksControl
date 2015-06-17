@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
         ImageButton addButton = (ImageButton)findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//
                 startActivity(new Intent("android.intent.action.InputTaskActivity"));
             }
         });
