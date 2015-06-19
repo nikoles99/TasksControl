@@ -46,6 +46,25 @@ public class Task implements Parcelable {
         return workTime;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWorkTime(String workTime) {
+        this.workTime = workTime;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 
