@@ -26,7 +26,7 @@ public class SplashScreenActivity extends Activity {
                         sleep(100);
                         logoTimer = logoTimer + 100;
                     }
-                    startActivity(new Intent("android.intent.action.MainActivity"));
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {

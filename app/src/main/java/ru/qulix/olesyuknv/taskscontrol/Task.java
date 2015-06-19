@@ -3,14 +3,14 @@ package ru.qulix.olesyuknv.taskscontrol;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Task implements Parcelable {
+public class Task {
     private String name;
     private String workTime;
     private String startDate;
     private String finishDate;
-    private int status;
+    private enum status {NOT_STARTED, IN_PROCESS, COMPLETED, POSTPONED};
 
-    public Task(String name, String workTime, String finishDate, String startDate, int status) {
+    public Task(String name, String workTime, String finishDate, String startDate, enum status) {
         this.name = name;
         this.workTime = workTime;
         this.finishDate = finishDate;
