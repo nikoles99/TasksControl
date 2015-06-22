@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-public class InputTaskActivity extends Activity  implements View.OnClickListener{
+public class InputTaskActivity extends Activity {
     private EditText nameTask;
     private EditText workTime;
     private EditText startWork;
@@ -19,8 +19,9 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
     private final String TASK_POSITION = "taskPosition";
     private final String ADD_TASK_FLAG = "taskAdd";
     private final String CHANGE_TASK_FLAG = "taskChanges";
-    private int status;
-    private final String[] statusData = {"not started", "in process", "completed ", "postponed"};
+    private String status;
+    private final String[] statusData = {"not started", "in process", "completed", "postponed"};
+    Spinner statusWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,40 +31,27 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
         workTime = (EditText)findViewById(R.id.work_hours);
         startWork = (EditText)findViewById(R.id.start_date);
         finishDate = (EditText)findViewById(R.id.finish_date);
-        Spinner statusWork = (Spinner)findViewById(R.id.status);
-
-        statusWork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                status = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        statusWork = (Spinner)findViewById(R.id.status);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusWork.setAdapter(adapter);
         ImageButton cancelButton = (ImageButton)findViewById(R.id.cancel_button);
         ImageButton saveButton = (ImageButton)findViewById(R.id.save_button);
-        saveButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
+        saveButtonOnClick(saveButton);
+        cancelButtonOnClick(cancelButton);
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = getIntent();
-        int positionTask = intent.getIntExtra(TASK_POSITION, 0);
+    private void saveButtonOnClick(ImageButton saveButton) {
+        saveButton.setOnClickListener(new View.OnClickListener() {
 
-        switch (v.getId()) {
-            case R.id.save_button:
+            @Override
+            public void onClick(View v) {
+                status = statusWork.getSelectedItem().toString();
+                Intent intent = getIntent();
+                int positionTask = intent.getIntExtra(TASK_POSITION, 0);
                 Task task = new Task(nameTask.getText().toString(), workTime.getText().toString(), startWork.getText().toString(), finishDate.getText().toString(), status);
 
-                if(positionTask>0) {
+                if (positionTask>0) {
                     intent.putExtra(CHANGE_TASK_FLAG, (Parcelable) task);
                     intent.putExtra(TASK_POSITION, positionTask);
                 }
@@ -75,17 +63,25 @@ public class InputTaskActivity extends Activity  implements View.OnClickListener
 
                 setResult(RESULT_OK, intent);
                 finish();
-            break;
+            }
+        });
+    }
 
-            case R.id.cancel_button:
+    private void cancelButtonOnClick(ImageButton cancelButton) {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
 
-                if(positionTask>0) {
+            @Override
+            public void onClick(View v) {
+                status = (String)statusWork.getSelectedItem();
+                Intent intent = getIntent();
+                int positionTask = intent.getIntExtra(TASK_POSITION, 0);
+
+                if (positionTask>0) {
                     intent.putExtra(TASK_POSITION, positionTask);
                     setResult(RESULT_OK, intent);
                 }
                 finish();
-                break;
-
-        }
+            }
+        });
     }
 }

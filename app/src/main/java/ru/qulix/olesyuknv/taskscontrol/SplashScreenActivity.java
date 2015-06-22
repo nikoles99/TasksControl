@@ -3,11 +3,14 @@ package ru.qulix.olesyuknv.taskscontrol;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
 
 public class SplashScreenActivity extends Activity {
+
+    private final int SPLASH_SCREEN_PAUSE_TIME = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,24 +19,12 @@ public class SplashScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-
-        Thread logoTimer = new Thread() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
             public void run() {
-                try {
-                    int logoTimer = 0;
-
-                    while (logoTimer < 5000) {
-                        sleep(100);
-                        logoTimer = logoTimer + 100;
-                    }
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    finish();
-                }
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                finish();
             }
-        };
-        logoTimer.start();
+        }, SPLASH_SCREEN_PAUSE_TIME);
     }
 }

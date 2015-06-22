@@ -3,14 +3,14 @@ package ru.qulix.olesyuknv.taskscontrol;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Task {
+public class Task implements Parcelable {
     private String name;
     private String workTime;
     private String startDate;
     private String finishDate;
-    private enum status {NOT_STARTED, IN_PROCESS, COMPLETED, POSTPONED};
+    private String status;
 
-    public Task(String name, String workTime, String finishDate, String startDate, enum status) {
+    public Task(String name, String workTime, String finishDate, String startDate, String status) {
         this.name = name;
         this.workTime = workTime;
         this.finishDate = finishDate;
@@ -23,14 +23,14 @@ public class Task {
         this.workTime = in.readString();
         this.startDate = in.readString();
         this.finishDate = in.readString();
-        this.status = in.readInt();
+        this.status = in.readString();
     }
 
     public String getName() {
         return name;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -62,7 +62,7 @@ public class Task {
         this.finishDate = finishDate;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -88,6 +88,6 @@ public class Task {
         dest.writeString(workTime);
         dest.writeString(startDate);
         dest.writeString(finishDate);
-        dest.writeInt(status);
+        dest.writeString(status);
     }
 }

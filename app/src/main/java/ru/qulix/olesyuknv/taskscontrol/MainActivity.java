@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
+
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity {
 
     private  List<Task> tasks = new ArrayList<>();
     private ListView listView;
@@ -29,28 +30,39 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.listView);
-        listView.setOnItemClickListener(this);
+        listViewOnItemClick(listView);
         ImageButton addButton = (ImageButton)findViewById(R.id.add_button);
-        addButton.setOnClickListener(this);
+        addButtonOnClick(addButton);
+
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_button:
-                Intent intent = new Intent(this, InputTaskActivity.class);
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.update_button:
+    private void listViewOnItemClick(ListView listView) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
+                intent.putExtra(TASK_POSITION, position);
+                startActivityForResult(intent, 0);
+            }
+        });
+    }
 
-                break;
-        }
+    private void addButtonOnClick(ImageButton addButton) {
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (data == null) {return;}
+        if (data == null) {
+            return;
+        }
 
         Task taskAdd = data.getParcelableExtra(ADD_TASK_FLAG);
         Task task = data.getParcelableExtra(CHANGE_TASK_FLAG);
@@ -78,10 +90,5 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         listView.setAdapter(customAdapter);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, InputTaskActivity.class);
-        intent.putExtra(TASK_POSITION, position);
-        startActivityForResult(intent, 0);
-    }
+
 }

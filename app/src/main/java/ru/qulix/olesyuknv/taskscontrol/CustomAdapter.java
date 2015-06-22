@@ -11,12 +11,11 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
-    private Context context;
+
     private LayoutInflater lInflater;
     private List<Task> tasks;
 
     public CustomAdapter(Context context, List<Task> tasks) {
-        this.context = context;
         this.tasks = tasks;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -46,17 +45,18 @@ public class CustomAdapter extends BaseAdapter {
 
         Task task = (Task)getItem(position);
         ((TextView) view.findViewById(R.id.name)).setText(task.getName());
+        ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_pausework);
         switch (task.getStatus()){
-            case 0:
+            case "not started":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_nostartwork);
                 break;
-            case 1:
+            case "in process":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_inprocess);
                 break;
-            case 2:
+            case "completed":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_compleatwork);
                 break;
-            case 3:
+            case "postponed":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_pausework);
                 break;
         }
