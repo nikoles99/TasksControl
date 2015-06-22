@@ -45,8 +45,8 @@ public class CustomAdapter extends BaseAdapter {
 
         Task task = (Task)getItem(position);
         ((TextView) view.findViewById(R.id.name)).setText(task.getName());
-        ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_pausework);
-        switch (task.getStatus()){
+
+       /* switch (task.getStatus()){
             case "not started":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_nostartwork);
                 break;
@@ -59,8 +59,7 @@ public class CustomAdapter extends BaseAdapter {
             case "postponed":
                 ((ImageView) view.findViewById(R.id.status_task)).setImageResource(R.drawable.icon_pausework);
                 break;
-        }
-
+        }*/
 
         return view;
     }

@@ -1,16 +1,16 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.util.Date;
 
-public class Task implements Parcelable {
+public class Task {
+
     private String name;
     private String workTime;
-    private String startDate;
-    private String finishDate;
-    private String status;
+    private Date startDate;
+    private Date finishDate;
+    private StatusTask status;
 
-    public Task(String name, String workTime, String finishDate, String startDate, String status) {
+    public Task(String name, String workTime, Date finishDate, Date startDate, StatusTask status) {
         this.name = name;
         this.workTime = workTime;
         this.finishDate = finishDate;
@@ -18,27 +18,19 @@ public class Task implements Parcelable {
         this.startDate = startDate;
     }
 
-    private Task(Parcel in) {
-        this.name = in.readString();
-        this.workTime = in.readString();
-        this.startDate = in.readString();
-        this.finishDate = in.readString();
-        this.status = in.readString();
-    }
-
     public String getName() {
         return name;
     }
 
-    public String getStatus() {
+    public StatusTask getStatus() {
         return status;
     }
 
-    public String getFinishDate() {
+    public Date getFinishDate() {
         return finishDate;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -54,40 +46,15 @@ public class Task implements Parcelable {
         this.workTime = workTime;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public void setFinishDate(String finishDate) {
+    public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusTask status) {
         this.status = status;
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-
-        public Task createFromParcel(Parcel in) {
-            return new Task(in);
-        }
-
-        public Task[] newArray(int size) {
-            return new Task[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(workTime);
-        dest.writeString(startDate);
-        dest.writeString(finishDate);
-        dest.writeString(status);
     }
 }

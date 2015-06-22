@@ -18,13 +18,14 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private  List<Task> tasks = new ArrayList<>();
+
     private ListView listView;
     final String TASK_POSITION = "taskPosition";
     final String ADD_TASK_FLAG = "taskAdd";
     final String CHANGE_TASK_FLAG = "taskChanges";
-
-
+    final int REQUEST_CODE = 1;
+    ServerTasks serverTasks = new ServerTasks();
+    private  List<Task> tasks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,18 @@ public class MainActivity extends Activity {
         listViewOnItemClick(listView);
         ImageButton addButton = (ImageButton)findViewById(R.id.add_button);
         addButtonOnClick(addButton);
+        ImageButton updateButton = (ImageButton)findViewById(R.id.update_button);
+        updateButtonOnClick(updateButton);
 
+    }
+
+    private void updateButtonOnClick(ImageButton updateButton) {
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tasks = serverTasks.loadDataFromServer();
+            }
+        });
     }
 
     private void listViewOnItemClick(ListView listView) {
@@ -42,7 +54,7 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
                 intent.putExtra(TASK_POSITION, position);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -52,7 +64,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                startActivityForResult(intent, 1);
+               // intent.putExtra(" ", serverTasks);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -66,7 +79,7 @@ public class MainActivity extends Activity {
 
         Task taskAdd = data.getParcelableExtra(ADD_TASK_FLAG);
         Task task = data.getParcelableExtra(CHANGE_TASK_FLAG);
-        int positionTask = data.getIntExtra(TASK_POSITION, 0);
+        int positionTask = data.getIntExtra(TASK_POSITION, REQUEST_CODE);
 
         if(taskAdd!=null) {
             tasks.add(taskAdd);

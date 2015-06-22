@@ -26,7 +26,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:ems="10"
                 android:id="@+id/name_task" />
         </TableRow>
@@ -41,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:onClick="workTimeOnClick"
                 android:text="Работа"
                 android:id="@+id/textView5" />
 
@@ -48,7 +48,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="time"
                 android:ems="10"
                 android:id="@+id/work_hours" />
 
@@ -71,7 +70,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:onClick="setDateOnClick"
                 android:ems="10"
                 android:id="@+id/start_date" />
         </TableRow>
@@ -93,8 +92,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="date"
                 android:ems="10"
+                android:onClick="setDateOnClick"
                 android:id="@+id/finish_date" />
 
         </TableRow>
