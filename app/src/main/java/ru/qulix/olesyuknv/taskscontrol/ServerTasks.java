@@ -1,19 +1,29 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ServerTasks implements Server {
 
-    private ArrayList<Task> tasks = new ArrayList<Task>();
+    private List<Task> tasks = new ArrayList<>();
+
+    private static volatile ServerTasks instance;
+
+    public static synchronized ServerTasks getInstance() {
+        if (instance == null) {
+            instance = new ServerTasks();
+        }
+        return instance;
+    }
 
     @Override
-    public void updateDataOnServer(Task task) {
+    public void updateDataOnServer(Task task, int position) {
 
     }
 
     @Override
-    public ArrayList<Task> loadDataFromServer() {
+    public List<Task> loadDataFromServer() {
         return null;
     }
 
@@ -23,7 +33,7 @@ public class ServerTasks implements Server {
     }
 
     @Override
-    public void removeTask(Task task) {
+    public void removeTask(int position) {
 
     }
 }

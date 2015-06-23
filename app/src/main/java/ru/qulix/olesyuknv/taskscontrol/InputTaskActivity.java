@@ -2,27 +2,29 @@ package ru.qulix.olesyuknv.taskscontrol;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
+
 import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
-import java.util.Locale;
+
 
 public class InputTaskActivity extends Activity {
+
+    ServerTasks serverTasks = ServerTasks.getInstance();
     private EditText nameTask;
     private EditText workTime;
     private EditText startWork;
@@ -30,7 +32,7 @@ public class InputTaskActivity extends Activity {
     private final String TASK_POSITION = "taskPosition";
     private final String ADD_TASK_FLAG = "taskAdd";
     private final String CHANGE_TASK_FLAG = "taskChanges";
-    final int REQUEST_CODE = 0;
+    final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class InputTaskActivity extends Activity {
         startWork = (EditText)findViewById(R.id.start_date);
         finishDate = (EditText)findViewById(R.id.finish_date);
         Spinner statusWork = (Spinner)findViewById(R.id.status);
-        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this, android.R.layout.simple_spinner_item, StatusTask.values());
+        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusWork.setAdapter(adapter);
         ImageButton cancelButton = (ImageButton)findViewById(R.id.cancel_button);
@@ -49,7 +51,7 @@ public class InputTaskActivity extends Activity {
         setDateOnClick(startWork);
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
-        cancelButtonOnClick(cancelButton, statusWork);
+        cancelButtonOnClick(cancelButton);
     }
 
     private void setDateOnClick(final EditText date) {
@@ -65,7 +67,6 @@ public class InputTaskActivity extends Activity {
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         date.setText(day + "." + month + "." + year);
                     }
-
                 };
                 DatePickerDialog datePickerDialog = new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
                 datePickerDialog.show();
@@ -80,40 +81,54 @@ public class InputTaskActivity extends Activity {
             @Override
             public void onClick(View v) {
                 StatusTask status = (StatusTask)statusWork.getSelectedItem();
-                Intent intent = getIntent();
                 Date dateStartWork = null;
                 Date dateFinishWork = null;
+
                 try {
                     dateStartWork = getDataFromString(startWork.getText().toString());
                     dateFinishWork = getDataFromString(finishDate.getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
                 Task task = new Task(nameTask.getText().toString(), workTime.getText().toString(), dateStartWork, dateFinishWork, status);
-                //serverTasks.addDataOnServer(task);
+                Intent intent = getIntent();
+                String action = intent.getStringExtra("Action");
+
+                if (action.equals(ADD_TASK_FLAG)) {
+                    serverTasks.addDataOnServer(task);
+                }
+
+                else if(action.equals(CHANGE_TASK_FLAG)) {
+                    int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
+                    serverTasks.updateDataOnServer(task, itemPosition);
+                }
                 setResult(RESULT_OK, intent);
                 finish();
             }
 
         });
+    }
 
+    private void cancelButtonOnClick(ImageButton cancelButton) {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                String action = intent.getStringExtra("Action");
+
+                if (action.equals(CHANGE_TASK_FLAG)) {
+                    int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
+                    serverTasks.removeTask(itemPosition);
+                }
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private Date getDataFromString(String date) throws ParseException {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return format.parse(date);
-    }
-
-    private void cancelButtonOnClick(ImageButton cancelButton, final Spinner statusWork) {
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String status = ((StatusTask)statusWork.getSelectedItem()).name();
-                Intent intent = getIntent();
-                int positionTask = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
-               // serverTasks.removeTask();
-                finish();
-            }
-        });
     }
 }

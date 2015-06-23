@@ -1,10 +1,10 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Server {
-    public void  updateDataOnServer(Task task);
-    public ArrayList<Task> loadDataFromServer();
-    public void  addDataOnServer(Task task);
-    public void  removeTask(Task task);
+    void  updateDataOnServer(Task task, int position);
+    List<Task> loadDataFromServer();
+    void  addDataOnServer(Task task);
+    void  removeTask(int position);
 }

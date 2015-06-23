@@ -12,20 +12,19 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends Activity {
 
-
+    ServerTasks serverTasks = ServerTasks.getInstance();
     private ListView listView;
     final String TASK_POSITION = "taskPosition";
     final String ADD_TASK_FLAG = "taskAdd";
     final String CHANGE_TASK_FLAG = "taskChanges";
     final int REQUEST_CODE = 1;
-    ServerTasks serverTasks = new ServerTasks();
     private  List<Task> tasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +53,7 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
                 intent.putExtra(TASK_POSITION, position);
+                intent.putExtra("Action", CHANGE_TASK_FLAG);
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-               // intent.putExtra(" ", serverTasks);
+                intent.putExtra("Action", ADD_TASK_FLAG);
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -77,28 +77,7 @@ public class MainActivity extends Activity {
             return;
         }
 
-        Task taskAdd = data.getParcelableExtra(ADD_TASK_FLAG);
-        Task task = data.getParcelableExtra(CHANGE_TASK_FLAG);
-        int positionTask = data.getIntExtra(TASK_POSITION, REQUEST_CODE);
-
-        if(taskAdd!=null) {
-            tasks.add(taskAdd);
-        }
-
-        else if(task!=null) {
-            Task taskChanges = tasks.get(positionTask);
-            taskChanges.setName(task.getName());
-            taskChanges.setWorkTime(task.getWorkTime());
-            taskChanges.setStartDate(task.getStartDate());
-            taskChanges.setStatus(task.getStatus());
-            taskChanges.setFinishDate(task.getFinishDate());
-        }
-
-
-        if (positionTask>0 && task == null && taskAdd == null) {
-            tasks.remove(positionTask);
-        }
-
+        tasks = serverTasks.loadDataFromServer();
         CustomAdapter customAdapter = new CustomAdapter(this, tasks);
         listView.setAdapter(customAdapter);
     }
