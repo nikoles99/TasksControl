@@ -43,9 +43,7 @@ public class InputTaskActivity extends Activity {
         startWork = (EditText)findViewById(R.id.start_date);
         finishDate = (EditText)findViewById(R.id.finish_date);
         Spinner statusWork = (Spinner)findViewById(R.id.status);
-        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, StatusTask.values());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusWork.setAdapter(adapter);
+        setSpinnerParameters(statusWork);
         ImageButton cancelButton = (ImageButton)findViewById(R.id.cancel_button);
         ImageButton saveButton = (ImageButton)findViewById(R.id.save_button);
         setDateOnClick(startWork);
@@ -55,14 +53,15 @@ public class InputTaskActivity extends Activity {
     }
 
     private void setDateOnClick(final EditText date) {
-
         date.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 final int year = 2015;
                 final int month = 01;
                 final int day = 01;
                 DatePickerDialog.OnDateSetListener timeDialog = new DatePickerDialog.OnDateSetListener() {
+
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         date.setText(day + "." + month + "." + year);
@@ -112,6 +111,7 @@ public class InputTaskActivity extends Activity {
 
     private void cancelButtonOnClick(ImageButton cancelButton) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
+            
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -130,5 +130,12 @@ public class InputTaskActivity extends Activity {
     private Date getDataFromString(String date) throws ParseException {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return format.parse(date);
+    }
+
+    public Spinner setSpinnerParameters(Spinner statusWork) {
+        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, StatusTask.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusWork.setAdapter(adapter);
+        return statusWork;
     }
 }
