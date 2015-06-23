@@ -111,7 +111,7 @@ public class InputTaskActivity extends Activity {
 
     private void cancelButtonOnClick(ImageButton cancelButton) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -133,7 +133,7 @@ public class InputTaskActivity extends Activity {
     }
 
     public Spinner setSpinnerParameters(Spinner statusWork) {
-        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, StatusTask.values());
+        ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this, android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusWork.setAdapter(adapter);
         return statusWork;

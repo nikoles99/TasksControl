@@ -16,7 +16,7 @@ public class CustomAdapter extends BaseAdapter {
 
     private LayoutInflater lInflater;
     private List<Task> tasks;
-    Map<StatusTask, Integer> map = new HashMap<>();
+    Map<StatusTask, Integer> map = new HashMap<StatusTask, Integer>();
 
     public CustomAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ServerTasks implements Server {
 
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<Task>();
 
     private static volatile ServerTasks instance;
 
