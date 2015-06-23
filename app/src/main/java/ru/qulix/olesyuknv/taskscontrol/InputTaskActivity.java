@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class InputTaskActivity extends Activity {
 
-    ServerTasks serverTasks = ServerTasks.getInstance();
+    SubServer serverTasks = SubServer.getInstance();
     private EditText nameTask;
     private EditText workTime;
     private EditText startWork;
@@ -38,14 +38,14 @@ public class InputTaskActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_task);
-        nameTask = (EditText)findViewById(R.id.name_task);
-        workTime = (EditText)findViewById(R.id.work_hours);
-        startWork = (EditText)findViewById(R.id.start_date);
-        finishDate = (EditText)findViewById(R.id.finish_date);
-        Spinner statusWork = (Spinner)findViewById(R.id.status);
+        nameTask = (EditText) findViewById(R.id.name_task);
+        workTime = (EditText) findViewById(R.id.work_hours);
+        startWork = (EditText) findViewById(R.id.start_date);
+        finishDate = (EditText) findViewById(R.id.finish_date);
+        Spinner statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerParameters(statusWork);
-        ImageButton cancelButton = (ImageButton)findViewById(R.id.cancel_button);
-        ImageButton saveButton = (ImageButton)findViewById(R.id.save_button);
+        ImageButton cancelButton = (ImageButton) findViewById(R.id.cancel_button);
+        ImageButton saveButton = (ImageButton) findViewById(R.id.save_button);
         setDateOnClick(startWork);
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
@@ -79,7 +79,7 @@ public class InputTaskActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                StatusTask status = (StatusTask)statusWork.getSelectedItem();
+                StatusTask status = (StatusTask) statusWork.getSelectedItem();
                 Date dateStartWork = null;
                 Date dateFinishWork = null;
 
@@ -96,9 +96,7 @@ public class InputTaskActivity extends Activity {
 
                 if (action.equals(ADD_TASK_FLAG)) {
                     serverTasks.addDataOnServer(task);
-                }
-
-                else if(action.equals(CHANGE_TASK_FLAG)) {
+                } else if (action.equals(CHANGE_TASK_FLAG)) {
                     int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
                     serverTasks.updateDataOnServer(task, itemPosition);
                 }
@@ -120,8 +118,8 @@ public class InputTaskActivity extends Activity {
                 if (action.equals(CHANGE_TASK_FLAG)) {
                     int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
                     serverTasks.removeTask(itemPosition);
+                    setResult(RESULT_OK, intent);
                 }
-                setResult(RESULT_OK, intent);
                 finish();
             }
         });

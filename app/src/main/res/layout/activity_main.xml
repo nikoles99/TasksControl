@@ -2,36 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-     <!--<android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="30dp"
-        android:layout_width="fill_parent"
-        android:background="#fffffef6">-->
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:textAppearance="?android:attr/textAppearanceSmall"
-             android:textColor="#fffffef6"
-             android:layout_marginLeft="10dp"
-             android:textSize="20dp"
-             android:text="Tasks Control"
-             android:id="@+id/title" />
-         <ImageButton
-             android:layout_marginLeft="60dp"
-             android:layout_width="40dp"
-             android:layout_height="40dp"
-             android:background="@drawable/icon_add"
-             android:id="@+id/add_button" />
-         <ImageButton
-             android:layout_marginLeft="20dp"
-             android:layout_width="40dp"
-             android:layout_height="40dp"
-             android:background="@drawable/icon_update"
-             android:id="@+id/update_button" />
-
-     <!--</android.support.v7.widget.Toolbar>
--->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

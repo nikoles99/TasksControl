@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ServerTasks implements Server {
+public class SubServer implements Server {
 
     private List<Task> tasks = new ArrayList<Task>();
 
-    private static volatile ServerTasks instance;
+    private static volatile SubServer instance;
 
-    public static synchronized ServerTasks getInstance() {
+    public static synchronized SubServer getInstance() {
         if (instance == null) {
-            instance = new ServerTasks();
+            instance = new SubServer();
         }
         return instance;
     }
