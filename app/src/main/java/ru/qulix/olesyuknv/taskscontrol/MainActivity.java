@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
         addButtonOnClick(addButton);
         ImageButton updateButton = (ImageButton)findViewById(R.id.update_button);
         updateButtonOnClick(updateButton);
-
     }
 
     private void updateButtonOnClick(ImageButton updateButton) {
