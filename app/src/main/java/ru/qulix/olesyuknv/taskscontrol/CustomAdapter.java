@@ -12,12 +12,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * CustomAdapter display name and status task
+ *
+ * @author OlesyukNV
+ */
 public class CustomAdapter extends BaseAdapter {
 
     private LayoutInflater lInflater;
     private List<Task> tasks;
+
+    /**
+     * Map of status icons
+     */
     Map<StatusTask, Integer> map = new HashMap<StatusTask, Integer>();
 
+    /**
+     * Constructor and set status icons
+     *
+     * @param context
+     * @param tasks   list of tasks
+     */
     public CustomAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,7 +65,7 @@ public class CustomAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.item_for_custom_adapter, parent, false);
         }
 
-        Task task = (Task)getItem(position);
+        Task task = (Task) getItem(position);
         ((TextView) view.findViewById(R.id.name)).setText(task.getName());
         Integer statusTaskImage = map.get(task.getStatus());
         ((ImageView) view.findViewById(R.id.status_task)).setImageResource(statusTaskImage);

@@ -70,8 +70,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="setDateOnClick"
-                android:ems="10"
                 android:id="@+id/start_date" />
         </TableRow>
 
@@ -92,8 +90,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:onClick="setDateOnClick"
                 android:id="@+id/finish_date" />
 
         </TableRow>

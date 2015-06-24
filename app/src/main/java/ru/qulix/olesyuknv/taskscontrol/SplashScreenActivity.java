@@ -7,10 +7,17 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-
+/**
+ * Application splashScreen.
+ *
+ * @author OlesyukNV
+ */
 public class SplashScreenActivity extends Activity {
 
-    private final int SPLASH_SCREEN_PAUSE_TIME = 5000;
+    /**
+     * delay time.
+     */
+    private final long SPLASH_SCREEN_PAUSE_TIME = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +26,7 @@ public class SplashScreenActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

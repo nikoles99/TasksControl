@@ -3,6 +3,7 @@ package ru.qulix.olesyuknv.taskscontrol;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 
+import android.app.Dialog;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -19,12 +20,21 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Input task form.
+ *
+ * @author OlesyukNV
+ */
 public class InputTaskActivity extends Activity {
 
-    SubServer serverTasks = SubServer.getInstance();
+    /**
+     * Get the imaginary server object.
+     */
+    StubServer serverTasks = StubServer.getInstance();
     private EditText nameTask;
     private EditText workTime;
     private EditText startWork;
@@ -32,7 +42,17 @@ public class InputTaskActivity extends Activity {
     private final String TASK_POSITION = "taskPosition";
     private final String ADD_TASK_FLAG = "taskAdd";
     private final String CHANGE_TASK_FLAG = "taskChanges";
+    private final String ACTION = "Action";
+
+    /**
+     * flag success call activity
+     */
     final int REQUEST_CODE = 1;
+
+    /**
+     * Dialog input date.
+     */
+    DatePickerDialog.OnDateSetListener timeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,30 +70,60 @@ public class InputTaskActivity extends Activity {
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
         cancelButtonOnClick(cancelButton);
+
     }
 
+    private final Calendar c = Calendar.getInstance();
+
+    /**
+     * get current year
+     */
+    private int year = c.get(Calendar.YEAR);
+
+    /**
+     * get current month
+     */
+    private int month = c.get(Calendar.MONTH);
+
+    /**
+     * get current day
+     */
+    private int day = c.get(Calendar.DAY_OF_MONTH);
+
+    /**
+     * set new date
+     *
+     * @param date
+     */
     private void setDateOnClick(final EditText date) {
         date.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                final int year = 2015;
-                final int month = 01;
-                final int day = 01;
-                DatePickerDialog.OnDateSetListener timeDialog = new DatePickerDialog.OnDateSetListener() {
-
+                showDialog(1111);
+                timeDialog = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        date.setText(day + "." + month + "." + year);
+                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                        year = selectedYear;
+                        month = selectedMonth;
+                        day = selectedDay;
+                        date.setText(new StringBuilder().append(day).append(".").append(month + 1).append(".").append(year));
                     }
                 };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
-                datePickerDialog.show();
             }
         });
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        return new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
+    }
 
+    /**
+     * adding new task or changes selected task
+     *
+     * @param saveButton
+     * @param statusWork
+     */
     private void saveButtonOnClick(ImageButton saveButton, final Spinner statusWork) {
         saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -92,7 +142,7 @@ public class InputTaskActivity extends Activity {
 
                 Task task = new Task(nameTask.getText().toString(), workTime.getText().toString(), dateStartWork, dateFinishWork, status);
                 Intent intent = getIntent();
-                String action = intent.getStringExtra("Action");
+                String action = intent.getStringExtra(ACTION);
 
                 if (action.equals(ADD_TASK_FLAG)) {
                     serverTasks.addDataOnServer(task);
@@ -107,6 +157,11 @@ public class InputTaskActivity extends Activity {
         });
     }
 
+    /**
+     * close this form or delete selected task
+     *
+     * @param cancelButton
+     */
     private void cancelButtonOnClick(ImageButton cancelButton) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
 
@@ -125,11 +180,20 @@ public class InputTaskActivity extends Activity {
         });
     }
 
+    /**
+     * @param date current date
+     * @return date
+     * @throws ParseException
+     */
     private Date getDataFromString(String date) throws ParseException {
         DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         return format.parse(date);
     }
 
+    /**
+     * @param statusWork status task
+     * @return selected status task
+     */
     public Spinner setSpinnerParameters(Spinner statusWork) {
         ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this, android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
