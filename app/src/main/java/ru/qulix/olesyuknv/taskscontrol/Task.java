@@ -3,7 +3,7 @@ package ru.qulix.olesyuknv.taskscontrol;
 import java.util.Date;
 
 /**
- * 
+ *
  * The task description
  * @author OlesyukNV
  */
