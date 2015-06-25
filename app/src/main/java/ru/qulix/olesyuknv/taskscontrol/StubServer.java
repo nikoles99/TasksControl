@@ -8,7 +8,7 @@ import java.util.List;
  * Using pattern Singleton
  * @author OlesyukNV
  */
-public class StubServer implements Server {
+public class StubServer implements Server{
 
     /**
      * List for keep tasks.
@@ -37,8 +37,12 @@ public class StubServer implements Server {
      * @param position position this task
      */
     @Override
-    public void updateDataOnServer(Object task, int position) {
-
+    public void updateDataOnServer(Task task, int position) {
+        tasks.get(position).setName(task.getName());
+        tasks.get(position).setWorkTime(task.getWorkTime());
+        tasks.get(position).setStartDate(task.getStartDate());
+        tasks.get(position).setFinishDate(task.getFinishDate());
+        tasks.get(position).setStatus(task.getStatus());
     }
 
     /**
@@ -46,8 +50,8 @@ public class StubServer implements Server {
      * @return list of tasks
      */
     @Override
-    public List<Object> loadDataFromServer() {
-        return null;
+    public List<Task> loadDataFromServer() {
+        return tasks;
     }
 
     /**
@@ -56,7 +60,7 @@ public class StubServer implements Server {
      */
     @Override
     public void addDataOnServer(Object task) {
-
+        tasks.add((Task) task);
     }
 
     /**
@@ -65,6 +69,6 @@ public class StubServer implements Server {
      */
     @Override
     public void removeTask(int position) {
-
+        tasks.remove(position);
     }
 }

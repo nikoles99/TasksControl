@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Input task form.
@@ -70,7 +71,19 @@ public class InputTaskActivity extends Activity {
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
         cancelButtonOnClick(cancelButton);
+        setDataView();
+    }
 
+    private void setDataView() {
+        if(getIntent().getStringExtra(ACTION).equals(CHANGE_TASK_FLAG)) {
+            List<Task> tasks = serverTasks.loadDataFromServer();
+            int itemPosition = getIntent().getIntExtra(TASK_POSITION, REQUEST_CODE);
+            workTime.setText(tasks.get(itemPosition).getName());
+            workTime.setText(tasks.get(itemPosition).getWorkTime());
+            workTime.setText(tasks.get(itemPosition).getStartDate().toString());
+            workTime.setText(tasks.get(itemPosition).getFinishDate().toString());
+            workTime.setText(tasks.get(itemPosition).getStatus().toString());
+        }
     }
 
     private final Calendar c = Calendar.getInstance();
@@ -146,7 +159,8 @@ public class InputTaskActivity extends Activity {
 
                 if (action.equals(ADD_TASK_FLAG)) {
                     serverTasks.addDataOnServer(task);
-                } else if (action.equals(CHANGE_TASK_FLAG)) {
+                }
+                else if (action.equals(CHANGE_TASK_FLAG)) {
                     int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
                     serverTasks.updateDataOnServer(task, itemPosition);
                 }

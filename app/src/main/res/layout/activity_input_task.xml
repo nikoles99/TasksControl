@@ -41,13 +41,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:onClick="workTimeOnClick"
-                android:text="Работа"
+                android:text="Работа(в часах)"
                 android:id="@+id/textView5" />
 
             <EditText
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="time"
                 android:ems="10"
                 android:id="@+id/work_hours" />
 
@@ -70,6 +71,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="date"
                 android:id="@+id/start_date" />
         </TableRow>
 
@@ -90,6 +92,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="date"
                 android:id="@+id/finish_date" />
 
         </TableRow>
@@ -134,6 +137,7 @@
             android:layout_height="60dp"
             android:background="@drawable/icon_cancel"
             android:id="@+id/cancel_button" />
+
     </LinearLayout>
 </LinearLayout>
 

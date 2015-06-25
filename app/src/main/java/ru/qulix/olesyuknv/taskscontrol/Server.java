@@ -13,12 +13,12 @@ public interface Server {
      * @param task     object for changes.
      * @param position position this object.
      */
-    void updateDataOnServer(Object task, int position);
+    void updateDataOnServer(Task task, int position);
 
     /**
      * @return objects from server.
      */
-    List<Object> loadDataFromServer();
+    List<Task> loadDataFromServer();
 
     /**
      * @param task object for adding.
