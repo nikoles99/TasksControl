@@ -140,7 +140,7 @@ public class InputTaskActivity extends Activity {
                     e.printStackTrace();
                 }
 
-                Task task = new Task(nameTask.getText().toString(), workTime.getText().toString(), dateStartWork, dateFinishWork, status);
+                Task task = new Task(nameTask.getText().toString(), Integer.parseInt(workTime.getText().toString()), dateStartWork, dateFinishWork, status);
                 Intent intent = getIntent();
                 String action = intent.getStringExtra(ACTION);
 

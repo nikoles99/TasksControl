@@ -16,7 +16,7 @@ public class Task {
     /**
      * The amount of time required to complete this task, in hours.
      */
-    private String workTime;
+    private int workTime;
 
     /**
      * Start date this task.
@@ -41,7 +41,7 @@ public class Task {
      * @param startDate start date this task
      * @param status the status this task*
      */
-    public Task(String name, String workTime, Date finishDate, Date startDate, StatusTask status) {
+    public Task(String name, int workTime, Date finishDate, Date startDate, StatusTask status) {
         this.name = name;
         this.workTime = workTime;
         this.finishDate = finishDate;
@@ -65,7 +65,7 @@ public class Task {
         return startDate;
     }
 
-    public String getWorkTime() {
+    public int getWorkTime() {
         return workTime;
     }
 
@@ -73,7 +73,7 @@ public class Task {
         this.name = name;
     }
 
-    public void setWorkTime(String workTime) {
+    public void setWorkTime(int workTime) {
         this.workTime = workTime;
     }
 
