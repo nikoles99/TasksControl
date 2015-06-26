@@ -3,7 +3,6 @@ package ru.qulix.olesyuknv.taskscontrol;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 
-import android.app.Dialog;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -15,12 +14,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +37,7 @@ public class InputTaskActivity extends Activity {
     StubServer serverTasks = StubServer.getInstance();
     private EditText nameTask;
     private EditText workTime;
-    private EditText startWork;
+    private EditText startDate;
     private EditText finishDate;
     private final String TASK_POSITION = "taskPosition";
     private final String ADD_TASK_FLAG = "taskAdd";
@@ -61,13 +60,13 @@ public class InputTaskActivity extends Activity {
         setContentView(R.layout.activity_input_task);
         nameTask = (EditText) findViewById(R.id.name_task);
         workTime = (EditText) findViewById(R.id.work_hours);
-        startWork = (EditText) findViewById(R.id.start_date);
+        startDate = (EditText) findViewById(R.id.start_date);
         finishDate = (EditText) findViewById(R.id.finish_date);
         Spinner statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerParameters(statusWork);
         ImageButton cancelButton = (ImageButton) findViewById(R.id.cancel_button);
         ImageButton saveButton = (ImageButton) findViewById(R.id.save_button);
-        setDateOnClick(startWork);
+        setDateOnClick(startDate);
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
         cancelButtonOnClick(cancelButton);
@@ -75,14 +74,13 @@ public class InputTaskActivity extends Activity {
     }
 
     private void setDataView() {
-        if(getIntent().getStringExtra(ACTION).equals(CHANGE_TASK_FLAG)) {
+        if (getIntent().getStringExtra(ACTION).equals(CHANGE_TASK_FLAG)) {
             List<Task> tasks = serverTasks.loadDataFromServer();
             int itemPosition = getIntent().getIntExtra(TASK_POSITION, REQUEST_CODE);
-            workTime.setText(tasks.get(itemPosition).getName());
-            workTime.setText(tasks.get(itemPosition).getWorkTime());
-            workTime.setText(tasks.get(itemPosition).getStartDate().toString());
-            workTime.setText(tasks.get(itemPosition).getFinishDate().toString());
-            workTime.setText(tasks.get(itemPosition).getStatus().toString());
+            nameTask.setText(tasks.get(itemPosition).getName());
+            workTime.setText(String.valueOf(tasks.get(itemPosition).getWorkTime()));
+            startDate.setText(tasks.get(itemPosition).getStartDate().toString());
+            finishDate.setText(tasks.get(itemPosition).getFinishDate().toString());
         }
     }
 
@@ -112,7 +110,6 @@ public class InputTaskActivity extends Activity {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(1111);
                 timeDialog = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
@@ -122,14 +119,11 @@ public class InputTaskActivity extends Activity {
                         date.setText(new StringBuilder().append(day).append(".").append(month + 1).append(".").append(year));
                     }
                 };
+                new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year).show();
             }
         });
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        return new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
-    }
 
     /**
      * adding new task or changes selected task
@@ -142,25 +136,18 @@ public class InputTaskActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                StatusTask status = (StatusTask) statusWork.getSelectedItem();
-                Date dateStartWork = null;
-                Date dateFinishWork = null;
-
-                try {
-                    dateStartWork = getDataFromString(startWork.getText().toString());
-                    dateFinishWork = getDataFromString(finishDate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if (workTime.getText().toString().equals("") || nameTask.getText().toString().equals("") || startDate.getText().toString().equals("") || finishDate.getText().toString().equals("")) {
+                    Toast.makeText(InputTaskActivity.this, "You must input all fields", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
-                Task task = new Task(nameTask.getText().toString(), Integer.parseInt(workTime.getText().toString()), dateStartWork, dateFinishWork, status);
+                Task task = getTask(statusWork);
                 Intent intent = getIntent();
                 String action = intent.getStringExtra(ACTION);
 
                 if (action.equals(ADD_TASK_FLAG)) {
                     serverTasks.addDataOnServer(task);
-                }
-                else if (action.equals(CHANGE_TASK_FLAG)) {
+                } else if (action.equals(CHANGE_TASK_FLAG)) {
                     int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
                     serverTasks.updateDataOnServer(task, itemPosition);
                 }
@@ -169,6 +156,21 @@ public class InputTaskActivity extends Activity {
             }
 
         });
+    }
+
+    private Task getTask(Spinner statusWork) {
+        StatusTask status = (StatusTask) statusWork.getSelectedItem();
+        Date dateStartWork = null;
+        Date dateFinishWork = null;
+
+        try {
+            dateStartWork = getDataFromString(startDate.getText().toString());
+            dateFinishWork = getDataFromString(finishDate.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new Task(nameTask.getText().toString(), Integer.parseInt(workTime.getText().toString()), dateStartWork, dateFinishWork, status);
     }
 
     /**
