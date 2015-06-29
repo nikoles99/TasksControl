@@ -11,22 +11,21 @@ public interface Server {
 
     /**
      * @param task     object for changes.
-     * @param position position this object.
      */
-    void updateDataOnServer(Task task, int position);
+    void updateTask(Task task);
 
     /**
      * @return objects from server.
      */
-    List<Task> loadDataFromServer();
+    List<Task> loadTasks();
 
     /**
      * @param task object for adding.
      */
-    void addDataOnServer(Object task);
+    void addTask(Task task);
 
     /**
-     * @param position of delete object.
+     * @param task object for remove.
      */
-    void removeTask(int position);
+    void removeTask(Task task);
 }

@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author OlesyukNV
  */
-public class CustomAdapter extends BaseAdapter {
+public class ListViwAdapter extends BaseAdapter {
 
     private LayoutInflater lInflater;
     private List<Task> tasks;
@@ -25,7 +25,12 @@ public class CustomAdapter extends BaseAdapter {
     /**
      * Map of status icons
      */
-    Map<StatusTask, Integer> map = new HashMap<StatusTask, Integer>();
+    private final Map<StatusTask, Integer> map = new HashMap<StatusTask, Integer>(){{
+        put(StatusTask.NOT_STARTED, R.drawable.icon_nostartwork);
+        put(StatusTask.COMPLETED, R.drawable.icon_compleatwork);
+        put(StatusTask.POSTPONED, R.drawable.icon_pausework);
+        put(StatusTask.IN_PROCESS, R.drawable.icon_inprocess);
+    }};
 
     /**
      * Constructor and set status icons
@@ -33,13 +38,9 @@ public class CustomAdapter extends BaseAdapter {
      * @param context
      * @param tasks   list of tasks
      */
-    public CustomAdapter(Context context, List<Task> tasks) {
+    public ListViwAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        map.put(StatusTask.NOT_STARTED, R.drawable.icon_nostartwork);
-        map.put(StatusTask.COMPLETED, R.drawable.icon_compleatwork);
-        map.put(StatusTask.POSTPONED, R.drawable.icon_pausework);
-        map.put(StatusTask.IN_PROCESS, R.drawable.icon_inprocess);
     }
 
     @Override

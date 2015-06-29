@@ -82,9 +82,9 @@ public class MainActivity extends Activity {
             return;
         }
 
-        tasks = (ArrayList) serverTasks.loadDataFromServer();
-        CustomAdapter customAdapter = new CustomAdapter(this, tasks);
-        listView.setAdapter(customAdapter);
+        tasks = (ArrayList) serverTasks.loadTasks();
+        ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
+        listView.setAdapter(listViwAdapter);
     }
 
     @Override
@@ -97,6 +97,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String itemActionBar = (String) item.getTitle();
+
         if (itemActionBar.equals(ITEM_ADD)) {
             Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
             intent.putExtra(ACTION, ADD_TASK_FLAG);
@@ -104,7 +105,9 @@ public class MainActivity extends Activity {
         }
 
         if (itemActionBar.equals(ITEM_UPDATE)) {
-            tasks = (ArrayList) serverTasks.loadDataFromServer();
+            tasks = (ArrayList) serverTasks.loadTasks();
+            ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
+            listView.setAdapter(listViwAdapter);
         }
 
         return super.onOptionsItemSelected(item);

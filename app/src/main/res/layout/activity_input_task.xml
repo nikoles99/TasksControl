@@ -1,142 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-    android:layout_height="wrap_content">
+        android:orientation="vertical">
+
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_marginLeft="10dp"
+                android:id="@+id/nameOfTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"
                 android:text="Наименование"
-                android:id="@+id/nameOfTask" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/activity_horizontal_margin" />
 
             <EditText
-                android:layout_marginLeft="10dp"
+                android:id="@+id/name_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:ems="10"
-                android:id="@+id/name_task" />
+                android:hint="@string/name_task"
+                android:maxLength="15" />
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_marginLeft="10dp"
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"
                 android:onClick="workTimeOnClick"
                 android:text="Работа(в часах)"
-                android:id="@+id/textView5" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/activity_horizontal_margin" />
 
             <EditText
-                android:layout_marginLeft="10dp"
+                android:id="@+id/work_hours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="time"
+                android:layout_marginLeft="10dp"
                 android:ems="10"
-                android:id="@+id/work_hours" />
+                android:hint="@string/hours_task"
+                android:inputType="time"
+                android:maxLength="15" />
 
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_marginLeft="10dp"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"
                 android:text="Дата Начала"
-                android:id="@+id/textView2" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/activity_horizontal_margin" />
 
-            <EditText
-                android:layout_marginLeft="10dp"
+            <Button
+                android:id="@+id/start_date"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:id="@+id/start_date" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:onClick="onclick"
+                android:text="Дата начала" />
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_marginLeft="10dp"
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"
                 android:text="Дата Окончания"
-                android:id="@+id/textView3" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/activity_horizontal_margin" />
 
-            <EditText
-                android:layout_marginLeft="10dp"
+            <Button
+                android:id="@+id/finish_date"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="date"
-                android:id="@+id/finish_date" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Дата окончания" />
 
         </TableRow>
 
         <TableRow
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_marginLeft="10dp"
+                android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"
                 android:text="Статус"
-                android:id="@+id/textView4" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/activity_horizontal_margin" />
 
             <Spinner
-                android:layout_marginLeft="10dp"
+                android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/status" />
+                android:layout_marginLeft="10dp" />
+
+
         </TableRow>
     </TableLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/save_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="60dp"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/icon_save"
-            android:id="@+id/save_button" />
+            android:background="@drawable/icon_save" />
 
         <ImageButton
-            android:layout_marginLeft="90dp"
+            android:id="@+id/cancel_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/icon_cancel"
-            android:id="@+id/cancel_button" />
+            android:layout_marginLeft="90dp"
+            android:background="@drawable/icon_cancel" />
+
 
     </LinearLayout>
 </LinearLayout>

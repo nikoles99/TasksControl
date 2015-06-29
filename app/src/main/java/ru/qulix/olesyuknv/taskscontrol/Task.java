@@ -3,11 +3,16 @@ package ru.qulix.olesyuknv.taskscontrol;
 import java.util.Date;
 
 /**
- *
  * The task description
+ *
  * @author OlesyukNV
  */
 public class Task {
+
+    /**
+     * The id this task.
+     */
+    private int id;
     /**
      * The name this task.
      */
@@ -16,7 +21,7 @@ public class Task {
     /**
      * The amount of time required to complete this task, in hours.
      */
-    private int workTime;
+    private Integer workTime;
 
     /**
      * Start date this task.
@@ -35,13 +40,14 @@ public class Task {
 
     /**
      * Constructor
-     * @param name the name this task
-     * @param workTime the amount of time required to complete this task, in hours
+     *
+     * @param name       the name this task
+     * @param workTime   the amount of time required to complete this task, in hours
      * @param finishDate finish date this task
-     * @param startDate start date this task
-     * @param status the status this task*
+     * @param startDate  start date this task
+     * @param status     the status this task*
      */
-    public Task(String name, int workTime, Date finishDate, Date startDate, StatusTask status) {
+    public Task(String name, int workTime, Date startDate, Date finishDate, StatusTask status) {
         this.name = name;
         this.workTime = workTime;
         this.finishDate = finishDate;
@@ -65,7 +71,7 @@ public class Task {
         return startDate;
     }
 
-    public int getWorkTime() {
+    public Integer getWorkTime() {
         return workTime;
     }
 
@@ -73,19 +79,35 @@ public class Task {
         this.name = name;
     }
 
-    public void setWorkTime(int workTime) {
-        this.workTime = workTime;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public int getId() {
+        return id;
     }
 
-    public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Task) {
+            Task task = (Task) object;
+            return task.getName().equals(this.getName()) && task.getStatus().equals(this.getStatus()) &&
+                    task.getWorkTime().equals(this.getWorkTime()) && task.getStartDate().equals(this.getStartDate()) &&
+                    task.getFinishDate().equals(this.getFinishDate());
+        } else {
+            return false;
+        }
     }
 
-    public void setStatus(StatusTask status) {
-        this.status = status;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + status.hashCode();
+        result = prime * result + workTime;
+        result = prime * result + name.hashCode();
+        result = prime * result + finishDate.hashCode();
+        result = prime * result + startDate.hashCode();
+        return result;
     }
 }

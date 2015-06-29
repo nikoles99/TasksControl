@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,11 +35,11 @@ public class InputTaskActivity extends Activity {
     /**
      * Get the imaginary server object.
      */
-    StubServer serverTasks = StubServer.getInstance();
+    Server serverTasks = StubServer.getInstance();
     private EditText nameTask;
     private EditText workTime;
-    private EditText startDate;
-    private EditText finishDate;
+    private Button startDate;
+    private Button finishDate;
     private final String TASK_POSITION = "taskPosition";
     private final String ADD_TASK_FLAG = "taskAdd";
     private final String CHANGE_TASK_FLAG = "taskChanges";
@@ -60,8 +61,8 @@ public class InputTaskActivity extends Activity {
         setContentView(R.layout.activity_input_task);
         nameTask = (EditText) findViewById(R.id.name_task);
         workTime = (EditText) findViewById(R.id.work_hours);
-        startDate = (EditText) findViewById(R.id.start_date);
-        finishDate = (EditText) findViewById(R.id.finish_date);
+        startDate = (Button) findViewById(R.id.start_date);
+        finishDate = (Button) findViewById(R.id.finish_date);
         Spinner statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerParameters(statusWork);
         ImageButton cancelButton = (ImageButton) findViewById(R.id.cancel_button);
@@ -69,44 +70,44 @@ public class InputTaskActivity extends Activity {
         setDateOnClick(startDate);
         setDateOnClick(finishDate);
         saveButtonOnClick(saveButton, statusWork);
-        cancelButtonOnClick(cancelButton);
-        setDataView();
+        cancelButtonOnClick(cancelButton, statusWork);
+        setViews();
     }
 
-    private void setDataView() {
+    private void setViews() {
         if (getIntent().getStringExtra(ACTION).equals(CHANGE_TASK_FLAG)) {
-            List<Task> tasks = serverTasks.loadDataFromServer();
+            List<Task> tasks = serverTasks.loadTasks();
             int itemPosition = getIntent().getIntExtra(TASK_POSITION, REQUEST_CODE);
             nameTask.setText(tasks.get(itemPosition).getName());
             workTime.setText(String.valueOf(tasks.get(itemPosition).getWorkTime()));
-            startDate.setText(tasks.get(itemPosition).getStartDate().toString());
-            finishDate.setText(tasks.get(itemPosition).getFinishDate().toString());
+            startDate.setText(getStringFromData(tasks.get(itemPosition).getStartDate()));
+            finishDate.setText(getStringFromData(tasks.get(itemPosition).getFinishDate()));
         }
     }
 
-    private final Calendar c = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     /**
      * get current year
      */
-    private int year = c.get(Calendar.YEAR);
+    private int year = calendar.get(Calendar.YEAR);
 
     /**
      * get current month
      */
-    private int month = c.get(Calendar.MONTH);
+    private int month = calendar.get(Calendar.MONTH);
 
     /**
      * get current day
      */
-    private int day = c.get(Calendar.DAY_OF_MONTH);
+    private int day = calendar.get(Calendar.DAY_OF_MONTH);
 
     /**
      * set new date
      *
      * @param date
      */
-    private void setDateOnClick(final EditText date) {
+    private void setDateOnClick(final Button date) {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +117,9 @@ public class InputTaskActivity extends Activity {
                         year = selectedYear;
                         month = selectedMonth;
                         day = selectedDay;
-                        date.setText(new StringBuilder().append(day).append(".").append(month + 1).append(".").append(year));
+                        calendar.set(year, month, day);
+                        Date today = calendar.getTime();
+                        date.setText(getStringFromData(today));
                     }
                 };
                 new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year).show();
@@ -136,26 +139,41 @@ public class InputTaskActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                if (workTime.getText().toString().equals("") || nameTask.getText().toString().equals("") || startDate.getText().toString().equals("") || finishDate.getText().toString().equals("")) {
-                    Toast.makeText(InputTaskActivity.this, "You must input all fields", Toast.LENGTH_SHORT).show();
-                    return;
+                try {
+                    if (ifCorrectDataInput()) {
+                        Task task = getTask(statusWork);
+                        Intent intent = getIntent();
+                        String action = intent.getStringExtra(ACTION);
+
+                        if (action.equals(ADD_TASK_FLAG)) {
+                            serverTasks.addTask(task);
+                        } else if (action.equals(CHANGE_TASK_FLAG)) {
+                            serverTasks.updateTask(task);
+                        }
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Toast.makeText(InputTaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
 
-                Task task = getTask(statusWork);
-                Intent intent = getIntent();
-                String action = intent.getStringExtra(ACTION);
-
-                if (action.equals(ADD_TASK_FLAG)) {
-                    serverTasks.addDataOnServer(task);
-                } else if (action.equals(CHANGE_TASK_FLAG)) {
-                    int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
-                    serverTasks.updateDataOnServer(task, itemPosition);
-                }
-                setResult(RESULT_OK, intent);
-                finish();
             }
 
         });
+    }
+
+    private boolean ifCorrectDataInput() throws ParseException {
+        if (workTime.getText().toString().equals("") ||
+                nameTask.getText().toString().equals("") ||
+                startDate.getText().toString().equals("") ||
+                finishDate.getText().toString().equals("") ||
+                getDataFromString(startDate.getText().toString()).after(getDataFromString(finishDate.getText().toString()))) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private Task getTask(Spinner statusWork) {
@@ -178,7 +196,7 @@ public class InputTaskActivity extends Activity {
      *
      * @param cancelButton
      */
-    private void cancelButtonOnClick(ImageButton cancelButton) {
+    private void cancelButtonOnClick(ImageButton cancelButton, final Spinner statusWork) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -188,7 +206,7 @@ public class InputTaskActivity extends Activity {
 
                 if (action.equals(CHANGE_TASK_FLAG)) {
                     int itemPosition = intent.getIntExtra(TASK_POSITION, REQUEST_CODE);
-                    serverTasks.removeTask(itemPosition);
+                    serverTasks.removeTask(getTask(statusWork));
                     setResult(RESULT_OK, intent);
                 }
                 finish();
@@ -202,8 +220,13 @@ public class InputTaskActivity extends Activity {
      * @throws ParseException
      */
     private Date getDataFromString(String date) throws ParseException {
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.parse(date);
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return dateFormat.parse(date);
+    }
+
+    private String getStringFromData(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return dateFormat.format(date);
     }
 
     /**
@@ -216,4 +239,5 @@ public class InputTaskActivity extends Activity {
         statusWork.setAdapter(adapter);
         return statusWork;
     }
+
 }
