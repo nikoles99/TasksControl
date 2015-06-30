@@ -8,4 +8,10 @@
     <string name="title_activity_input_task">Ввод новой задачи</string>
     <string name="name_task">Название задачи</string>
     <string name="hours_task">Количество часов</string>
+    <string name="TASK_POSITION">taskPosition</string>
+    <string name="CHANGE_TASK_FLAG">taskChanges</string>
+    <string name="ACTION">Action</string>
+    <string name="ADD_TASK_FLAG">ADD_TASK_FLAG</string>
+    <string name="REQUEST_CODE">1</string>
+    <string name="ERROR">Error</string>
 </resources>

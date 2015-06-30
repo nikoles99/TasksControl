@@ -10,7 +10,7 @@ import java.util.List;
 public interface Server {
 
     /**
-     * @param task     object for changes.
+     * @param task object for changes.
      */
     void updateTask(Task task);
 

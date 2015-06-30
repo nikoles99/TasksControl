@@ -17,7 +17,7 @@ public class SplashScreenActivity extends Activity {
     /**
      * delay time.
      */
-    private final long SPLASH_SCREEN_PAUSE_TIME = 5000;
+    private final long SPLASH_SCREEN_PAUSE_SECONDS = 5 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,13 @@ public class SplashScreenActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                if (!isFinishing()) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                }
                 finish();
             }
-        }, SPLASH_SCREEN_PAUSE_TIME);
+        }, SPLASH_SCREEN_PAUSE_SECONDS);
+
+
     }
 }

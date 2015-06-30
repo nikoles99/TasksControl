@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Main application form.
@@ -25,29 +27,12 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 
-    /**
-     *  Get the imaginary server object.
-     */
-    StubServer serverTasks = StubServer.getInstance();
-
-
     private ListView listView;
-    final String TASK_POSITION = "taskPosition";
-    final String ADD_TASK_FLAG = "taskAdd";
-    final String CHANGE_TASK_FLAG = "taskChanges";
-    private final String ACTION = "Action";
-    private final String ITEM_ADD = "Item1";
-    private final String ITEM_UPDATE = "Item2";
-
-    /**
-     * flag success call activity
-     */
-    final int REQUEST_CODE = 1;
 
     /**
      * The list of tasks.
      */
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<Task>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +40,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
+        ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
+        listView.setAdapter(listViwAdapter);
     }
 
     /**
@@ -67,9 +54,9 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                intent.putExtra(TASK_POSITION, position);
-                intent.putExtra(ACTION, CHANGE_TASK_FLAG);
-                startActivityForResult(intent, REQUEST_CODE);
+                intent.putExtra(getString(R.string.TASK_POSITION), position);
+                intent.putExtra(getString(R.string.ACTION), R.string.CHANGE_TASK_FLAG);
+                startActivityForResult(intent, R.string.REQUEST_CODE);
             }
         });
     }
@@ -81,10 +68,26 @@ public class MainActivity extends Activity {
         if (data == null) {
             return;
         }
+        switch (requestCode) {
+            case R.string.REQUEST_CODE:
+                loadDataFromServer();
+                ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
+                listView.setAdapter(listViwAdapter);
+                break;
+        }
 
-        tasks = (ArrayList) serverTasks.loadTasks();
-        ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
-        listView.setAdapter(listViwAdapter);
+    }
+
+    private void loadDataFromServer() {
+        LoadDataThread loadDataThread = new LoadDataThread(getApplicationContext());
+        loadDataThread.execute();
+        try {
+            tasks = loadDataThread.get();
+        } catch (InterruptedException e) {
+            Log.e(getString(R.string.ERROR), e.toString());
+        } catch (ExecutionException e) {
+            Log.e(getString(R.string.ERROR), e.toString());
+        }
     }
 
     @Override
@@ -96,18 +99,16 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String itemActionBar = (String) item.getTitle();
-
-        if (itemActionBar.equals(ITEM_ADD)) {
-            Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-            intent.putExtra(ACTION, ADD_TASK_FLAG);
-            startActivityForResult(intent, REQUEST_CODE);
-        }
-
-        if (itemActionBar.equals(ITEM_UPDATE)) {
-            tasks = (ArrayList) serverTasks.loadTasks();
-            ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
-            listView.setAdapter(listViwAdapter);
+        switch (item.getItemId()) {
+            case R.id.add_button:
+                Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
+                intent.putExtra(getString(R.string.ACTION), R.string.ADD_TASK_FLAG);
+                startActivityForResult(intent, R.string.REQUEST_CODE);
+                break;
+            case R.id.update_button:
+                loadDataFromServer();
+                listView.setAdapter(new ListViwAdapter(this, tasks));
+                break;
         }
 
         return super.onOptionsItemSelected(item);

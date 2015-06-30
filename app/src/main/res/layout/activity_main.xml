@@ -13,7 +13,7 @@
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:text="Статус"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -21,7 +21,7 @@
             android:id="@+id/taskname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:text="Наименование"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>

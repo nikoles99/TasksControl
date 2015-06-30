@@ -17,12 +17,8 @@
 
             <TextView
                 android:id="@+id/nameOfTask"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Наименование"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                style="@style/Text"
+                android:text="Наименование" />
 
             <EditText
                 android:id="@+id/name_task"
@@ -31,7 +27,7 @@
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:hint="@string/name_task"
-                android:maxLength="15" />
+                android:maxLength="35" />
         </TableRow>
 
         <TableRow
@@ -41,13 +37,9 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                style="@style/Text"
                 android:onClick="workTimeOnClick"
-                android:text="Работа(в часах)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                android:text="Работа(в часах)" />
 
             <EditText
                 android:id="@+id/work_hours"
@@ -68,12 +60,8 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Дата Начала"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                style="@style/Text"
+                android:text="Дата Начала" />
 
             <Button
                 android:id="@+id/start_date"
@@ -81,9 +69,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:onClick="onclick"
-                android:text="Дата начала" />
+                android:layout_marginRight="20dp"
+                android:hint="Дата начала"
+                android:onClick="onclick" />
         </TableRow>
 
         <TableRow
@@ -93,12 +81,8 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Дата Окончания"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                style="@style/Text"
+                android:text="Дата Окончания" />
 
             <Button
                 android:id="@+id/finish_date"
@@ -106,8 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="Дата окончания" />
+                android:layout_marginRight="20dp"
+                android:hint="Дата окончания" />
 
         </TableRow>
 
@@ -118,12 +102,8 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Статус"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                style="@style/Text"
+                android:text="Статус" />
 
             <Spinner
                 android:id="@+id/status"
@@ -143,19 +123,17 @@
 
         <ImageButton
             android:id="@+id/save_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:background="@drawable/icon_save" />
 
         <ImageButton
             android:id="@+id/cancel_button"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="90dp"
             android:background="@drawable/icon_cancel" />
-
-
     </LinearLayout>
 </LinearLayout>
 

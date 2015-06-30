@@ -75,10 +75,6 @@ public class Task {
         return workTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -86,6 +82,7 @@ public class Task {
     public int getId() {
         return id;
     }
+
 
     @Override
     public boolean equals(Object object) {

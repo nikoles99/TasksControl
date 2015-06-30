@@ -11,7 +11,6 @@ import java.util.Map;
 
 /**
  * The imaginary server.
- * Using pattern Singleton
  *
  * @author OlesyukNV
  */
@@ -21,51 +20,16 @@ public class StubServer implements Server {
      * List for keep tasks.
      */
     private static int idTask = 0;
-    private Map<Integer, Task> map = new HashMap<Integer, Task>() {{
-        try {
-            put(1, new Task("name1", 1, new Date(),new SimpleDateFormat("dd.MM.yyyy").parse("10.20.2014"), StatusTask.NOT_STARTED));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            put(2, new Task("name2", 2, new Date(),new SimpleDateFormat("dd.MM.yyyy").parse("1.12.2011"), StatusTask.POSTPONED));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            put(3, new Task("name3", 3, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("15.01.1995"), StatusTask.COMPLETED));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            put(4, new Task("name4", 4, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("8.02.2001"), StatusTask.IN_PROCESS));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        try {
-            put(5, new Task("name5", 5, new Date(),new SimpleDateFormat("dd.MM.yyyy").parse("16.12.2005"), StatusTask.NOT_STARTED));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }};
-    ;
 
-    /**
-     * link on the SubServer object
-     */
-    private static volatile StubServer instance;
+    private static Map<Integer, Task> map = new HashMap<Integer, Task>();
 
-    /**
-     * Constructor
-     *
-     * @return link on the SubServer object
-     */
-    public static synchronized StubServer getInstance() {
-        if (instance == null) {
-            instance = new StubServer();
-        }
-        return instance;
-    }
+
+   /* map.put(1, new Task("name1", 1, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("10.20.2014"), StatusTask.NOT_STARTED));
+    map.put(2, new Task("name2", 2, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("1.12.2011"), StatusTask.POSTPONED));
+    map.put(3, new Task("name3", 3, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("15.01.1995"), StatusTask.COMPLETED));
+    map.put(4, new Task("name4", 4, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("8.02.2001"), StatusTask.IN_PROCESS));
+    map.put(5, new Task("name5", 5, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("16.12.2005"), StatusTask.NOT_STARTED));*/
+
 
     /**
      * @param task task for changes
@@ -88,7 +52,7 @@ public class StubServer implements Server {
      */
     @Override
     public void addTask(Task task) {
-        task.setId(idTask++);
+        task.setId(++idTask);
         map.put(task.getId(), task);
     }
 
@@ -97,8 +61,9 @@ public class StubServer implements Server {
      */
     @Override
     public void removeTask(Task task) {
-        if (map.containsValue(task)) {
-            map.remove(task.getId());
+        int key = task.getId();
+        if (map.containsKey(key)) {
+            map.remove(key);
             return;
         }
     }
