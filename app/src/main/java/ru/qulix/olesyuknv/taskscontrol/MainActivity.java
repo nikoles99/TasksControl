@@ -14,14 +14,17 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Main application form.
- * View all list tasks and changes them.
+ * Главная форма приложения.
+ * Просмотр списка задач и их изменение.
  *
  * @author OlesyukNV
  */
@@ -33,19 +36,43 @@ public class MainActivity extends Activity {
      * The list of tasks.
      */
     private List<Task> tasks = new ArrayList<Task>();
-
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
-        ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
-        listView.setAdapter(listViwAdapter);
+        initialData();
+        listView.setAdapter(new DisplayEachItemListViw(this, tasks));
+
     }
 
     /**
-     * listView item click handler
+     * начальные данные.
+     */
+    private void initialData() {
+        try {
+            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+                    new Task("name1",1,new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
+                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
+            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+                    new Task("name2",2,new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
+                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
+            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+                    new Task("name3",3,new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
+                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
+            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+                    new Task("name4",4,new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
+                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Обработчик нажатия элемента списка
      *
      * @param listView
      */
@@ -71,19 +98,23 @@ public class MainActivity extends Activity {
         switch (requestCode) {
             case R.string.REQUEST_CODE:
                 loadDataFromServer();
-                ListViwAdapter listViwAdapter = new ListViwAdapter(this, tasks);
-                listView.setAdapter(listViwAdapter);
+                listView.setAdapter(new DisplayEachItemListViw(this, tasks));
                 break;
         }
 
     }
 
+    /**
+     * Загрузка всех задач с с сервера
+     */
     private void loadDataFromServer() {
-        LoadDataThread loadDataThread = new LoadDataThread((((TasksControlApplication) getApplicationContext()).
+        progressBar.setVisibility(View.VISIBLE);
+        LoadTasks loadTasks = new LoadTasks((((TasksControlApplication) getApplicationContext()).
                 getServer()));
-        loadDataThread.execute();
+        loadTasks.execute();
+        progressBar.setVisibility(View.INVISIBLE);
         try {
-            tasks = loadDataThread.get();
+            tasks = loadTasks.get();
         } catch (InterruptedException e) {
             Log.e(getString(R.string.ERROR), e.toString());
         } catch (ExecutionException e) {
@@ -108,7 +139,7 @@ public class MainActivity extends Activity {
                 break;
             case R.id.update_button:
                 loadDataFromServer();
-                listView.setAdapter(new ListViwAdapter(this, tasks));
+                listView.setAdapter(new DisplayEachItemListViw(this, tasks));
                 break;
         }
 

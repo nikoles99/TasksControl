@@ -8,15 +8,12 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * Application splashScreen.
+ * SplashScreen приложения.
  *
  * @author OlesyukNV
  */
 public class SplashScreenActivity extends Activity {
 
-    /**
-     * delay time.
-     */
     private final long SPLASH_SCREEN_DELAY = 5 * 1000;
 
     @Override
@@ -24,6 +21,9 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+/**
+ * Отображение SplashScreen до запуска приложения
+ */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

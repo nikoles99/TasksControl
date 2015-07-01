@@ -69,7 +69,7 @@ public class InputTaskActivity extends Activity {
         setDateOnClick(finishDate);
 
         try {
-            setViews();
+            fillTheFields();
         } catch (ExecutionException e) {
             Log.e(getString(R.string.ERROR), e.toString());
         } catch (InterruptedException e) {
@@ -95,10 +95,10 @@ public class InputTaskActivity extends Activity {
 
                         switch (intent.getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
                             case R.string.ADD_TASK_FLAG:
-                                new AddTaskTread(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
+                                new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
                                 break;
                             case R.string.CHANGE_TASK_FLAG:
-                                new UpdateTaskThread(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
+                                new UpdateTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
                                 break;
                         }
 
@@ -130,7 +130,7 @@ public class InputTaskActivity extends Activity {
                 switch (intent.getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
                     case R.string.CHANGE_TASK_FLAG:
                         try {
-                            new RemoveTaskThread(((TasksControlApplication) getApplicationContext()).getServer()).
+                            new RemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).
                                     execute(getTask(statusWork, idTask));
                         } catch (ParseException e) {
                             Log.e(getString(R.string.ERROR), e.toString());
@@ -143,13 +143,13 @@ public class InputTaskActivity extends Activity {
         });
     }
 
-    private void setViews() throws ExecutionException, InterruptedException {
+    private void fillTheFields() throws ExecutionException, InterruptedException {
         switch (getIntent().getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
             case R.string.CHANGE_TASK_FLAG:
-                LoadDataThread loadDataThread = new LoadDataThread((((TasksControlApplication) getApplicationContext()).
+                LoadTasks loadTasks = new LoadTasks((((TasksControlApplication) getApplicationContext()).
                         getServer()));
-                loadDataThread.execute();
-                List<Task> tasks = loadDataThread.get();
+                loadTasks.execute();
+                List<Task> tasks = loadTasks.get();
                 int itemPosition = getIntent().getIntExtra(getString(R.string.TASK_POSITION), R.string.REQUEST_CODE);
                 nameTask.setText(tasks.get(itemPosition).getName());
                 workTime.setText(String.valueOf(tasks.get(itemPosition).getWorkTime()));

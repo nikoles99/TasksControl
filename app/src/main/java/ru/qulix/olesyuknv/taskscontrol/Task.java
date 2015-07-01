@@ -3,7 +3,7 @@ package ru.qulix.olesyuknv.taskscontrol;
 import java.util.Date;
 
 /**
- * The task description
+ * Описание Задачи
  *
  * @author OlesyukNV
  */
@@ -14,7 +14,7 @@ public class Task {
     private String name;
 
     /**
-     * The amount of time required to complete this task, in hours.
+     * Время необходимое на выполнение задачи, в часах
      */
     private int workTime;
 
@@ -25,13 +25,13 @@ public class Task {
     private StatusTask status;
 
     /**
-     * Constructor
+     * Конструктор
      *
-     * @param name       the name this task
-     * @param workTime   the amount of time required to complete this task, in hours
-     * @param finishDate finish date this task
-     * @param startDate  start date this task
-     * @param status     the status this task*
+     * @param name       Наименование задачи
+     * @param workTime   Время необходимое на выполнение задачи, в часах
+     * @param finishDate Дата завершения выполнения задачи
+     * @param startDate  Дата начала выполнения задачи
+     * @param status     Статус задачи
      */
     public Task(String name, int workTime, Date startDate, Date finishDate, StatusTask status) {
         this.name = name;
