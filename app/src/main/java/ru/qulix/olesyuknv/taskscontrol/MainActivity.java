@@ -79,7 +79,8 @@ public class MainActivity extends Activity {
     }
 
     private void loadDataFromServer() {
-        LoadDataThread loadDataThread = new LoadDataThread(getApplicationContext());
+        LoadDataThread loadDataThread = new LoadDataThread((((TasksControlApplication) getApplicationContext()).
+                getServer()));
         loadDataThread.execute();
         try {
             tasks = loadDataThread.get();

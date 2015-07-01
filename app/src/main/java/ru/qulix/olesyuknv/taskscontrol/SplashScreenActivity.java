@@ -17,14 +17,11 @@ public class SplashScreenActivity extends Activity {
     /**
      * delay time.
      */
-    private final long SPLASH_SCREEN_PAUSE_SECONDS = 5 * 1000;
+    private final long SPLASH_SCREEN_DELAY = 5 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
         new Handler().postDelayed(new Runnable() {
@@ -32,10 +29,11 @@ public class SplashScreenActivity extends Activity {
             public void run() {
                 if (!isFinishing()) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    finish();
                 }
-                finish();
+
             }
-        }, SPLASH_SCREEN_PAUSE_SECONDS);
+        }, SPLASH_SCREEN_DELAY);
 
 
     }

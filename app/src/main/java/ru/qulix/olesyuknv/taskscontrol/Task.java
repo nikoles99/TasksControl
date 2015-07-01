@@ -9,33 +9,19 @@ import java.util.Date;
  */
 public class Task {
 
-    /**
-     * The id this task.
-     */
     private int id;
-    /**
-     * The name this task.
-     */
+
     private String name;
 
     /**
      * The amount of time required to complete this task, in hours.
      */
-    private Integer workTime;
+    private int workTime;
 
-    /**
-     * Start date this task.
-     */
     private Date startDate;
 
-    /**
-     * Finish date this task.
-     */
     private Date finishDate;
 
-    /**
-     * The status this task.
-     */
     private StatusTask status;
 
     /**
@@ -71,7 +57,7 @@ public class Task {
         return startDate;
     }
 
-    public Integer getWorkTime() {
+    public int getWorkTime() {
         return workTime;
     }
 
@@ -88,9 +74,7 @@ public class Task {
     public boolean equals(Object object) {
         if (object instanceof Task) {
             Task task = (Task) object;
-            return task.getName().equals(this.getName()) && task.getStatus().equals(this.getStatus()) &&
-                    task.getWorkTime().equals(this.getWorkTime()) && task.getStartDate().equals(this.getStartDate()) &&
-                    task.getFinishDate().equals(this.getFinishDate());
+            return task.getId() == this.getId();
         } else {
             return false;
         }
@@ -100,11 +84,8 @@ public class Task {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + status.hashCode();
-        result = prime * result + workTime;
         result = prime * result + name.hashCode();
-        result = prime * result + finishDate.hashCode();
-        result = prime * result + startDate.hashCode();
+        result = prime * result + workTime;
         return result;
     }
 }

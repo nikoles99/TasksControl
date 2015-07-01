@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,22 +39,35 @@ public class InputTaskActivity extends Activity {
     private Day day = new Day();
     private int idTask;
 
+    /*   public static final String TASK_POSITION = "taskPosition";
+       public static final String CHANGE_TASK_FLAG = "taskChanges";
+       public static final String ACTION = "Action";
+       public static final String ADD_TASK_FLAG = "ADD_TASK_FLAG";
+       public static final int REQUEST_CODE = 1;
+       public static final String ERROR = "Error";
+   */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_task);
-        nameTask = (EditText) findViewById(R.id.name_task);
-        workTime = (EditText) findViewById(R.id.work_hours);
-        startDate = (Button) findViewById(R.id.start_date);
-        finishDate = (Button) findViewById(R.id.finish_date);
+
+        nameTask = (EditText) findViewById(R.id.nameTask);
+        workTime = (EditText) findViewById(R.id.workHours);
+        startDate = (Button) findViewById(R.id.startDate);
+        finishDate = (Button) findViewById(R.id.finishDate);
+
         Spinner statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerParameters(statusWork);
-        ImageButton cancelButton = (ImageButton) findViewById(R.id.cancel_button);
-        ImageButton saveButton = (ImageButton) findViewById(R.id.save_button);
+
+        ImageView cancelButton = (ImageView) findViewById(R.id.cancelButton);
+        cancelButtonOnClick(cancelButton, statusWork);
+
+        ImageView saveButton = (ImageView) findViewById(R.id.saveButton);
+        saveButtonOnClick(saveButton, statusWork);
+
         setDateOnClick(startDate);
         setDateOnClick(finishDate);
-        saveButtonOnClick(saveButton, statusWork);
-        cancelButtonOnClick(cancelButton, statusWork);
+
         try {
             setViews();
         } catch (ExecutionException e) {
@@ -70,7 +83,7 @@ public class InputTaskActivity extends Activity {
      * @param saveButton
      * @param statusWork
      */
-    private void saveButtonOnClick(ImageButton saveButton, final Spinner statusWork) {
+    private void saveButtonOnClick(ImageView saveButton, final Spinner statusWork) {
         saveButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -82,10 +95,10 @@ public class InputTaskActivity extends Activity {
 
                         switch (intent.getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
                             case R.string.ADD_TASK_FLAG:
-                                new AddTaskTread(getApplicationContext()).execute(task);
+                                new AddTaskTread(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
                                 break;
                             case R.string.CHANGE_TASK_FLAG:
-                                new UpdateTaskThread(getApplicationContext()).execute(task);
+                                new UpdateTaskThread(((TasksControlApplication) getApplicationContext()).getServer()).execute(task);
                                 break;
                         }
 
@@ -108,7 +121,7 @@ public class InputTaskActivity extends Activity {
      *
      * @param cancelButton
      */
-    private void cancelButtonOnClick(ImageButton cancelButton, final Spinner statusWork) {
+    private void cancelButtonOnClick(ImageView cancelButton, final Spinner statusWork) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -117,7 +130,8 @@ public class InputTaskActivity extends Activity {
                 switch (intent.getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
                     case R.string.CHANGE_TASK_FLAG:
                         try {
-                            new RemoveTaskThread(getApplicationContext()).execute(getTask(statusWork, idTask));
+                            new RemoveTaskThread(((TasksControlApplication) getApplicationContext()).getServer()).
+                                    execute(getTask(statusWork, idTask));
                         } catch (ParseException e) {
                             Log.e(getString(R.string.ERROR), e.toString());
                         }
@@ -132,7 +146,8 @@ public class InputTaskActivity extends Activity {
     private void setViews() throws ExecutionException, InterruptedException {
         switch (getIntent().getIntExtra(getString(R.string.ACTION), R.string.REQUEST_CODE)) {
             case R.string.CHANGE_TASK_FLAG:
-                LoadDataThread loadDataThread = new LoadDataThread(getApplicationContext());
+                LoadDataThread loadDataThread = new LoadDataThread((((TasksControlApplication) getApplicationContext()).
+                        getServer()));
                 loadDataThread.execute();
                 List<Task> tasks = loadDataThread.get();
                 int itemPosition = getIntent().getIntExtra(getString(R.string.TASK_POSITION), R.string.REQUEST_CODE);
@@ -146,15 +161,11 @@ public class InputTaskActivity extends Activity {
     }
 
     private boolean ifCorrectDataInput() throws ParseException {
-        if (TextUtils.isEmpty(workTime.getText()) ||
+        return !(TextUtils.isEmpty(workTime.getText()) ||
                 TextUtils.isEmpty(nameTask.getText()) ||
                 TextUtils.isEmpty(startDate.getText()) ||
                 TextUtils.isEmpty(finishDate.getText()) ||
-                day.getDataFromString(startDate.getText().toString()).after(day.getDataFromString(finishDate.getText().toString()))) {
-            return false;
-        } else {
-            return true;
-        }
+                day.getDataFromString(startDate.getText().toString()).after(day.getDataFromString(finishDate.getText().toString())));
     }
 
     private Task getTask(Spinner statusWork, int idTask) throws ParseException {

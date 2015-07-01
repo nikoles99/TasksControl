@@ -11,9 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by OlesyukNV on 30.06.2015.
- */
+
 public class Day {
     private final Calendar calendar;
 

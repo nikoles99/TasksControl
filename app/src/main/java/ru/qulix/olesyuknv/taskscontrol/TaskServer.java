@@ -7,25 +7,25 @@ import java.util.List;
  *
  * @author OlelesyukNV
  */
-public interface Server {
+public interface TaskServer {
 
     /**
      * @param task object for changes.
      */
-    void updateTask(Task task);
+    void update(Task task);
 
     /**
      * @return objects from server.
      */
-    List<Task> loadTasks();
+    List<Task> load();
 
     /**
      * @param task object for adding.
      */
-    void addTask(Task task);
+    void add(Task task);
 
     /**
      * @param task object for remove.
      */
-    void removeTask(Task task);
+    void remove(Task task);
 }

@@ -1,69 +1,49 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The imaginary server.
  *
  * @author OlesyukNV
  */
-public class StubServer implements Server {
+public class StubServer implements TaskServer {
 
-    /**
-     * List for keep tasks.
-     */
     private static int idTask = 0;
 
-    private static Map<Integer, Task> map = new HashMap<Integer, Task>();
+    private static Set<Task> taskSet = new LinkedHashSet<Task>();
 
-
-   /* map.put(1, new Task("name1", 1, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("10.20.2014"), StatusTask.NOT_STARTED));
-    map.put(2, new Task("name2", 2, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("1.12.2011"), StatusTask.POSTPONED));
-    map.put(3, new Task("name3", 3, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("15.01.1995"), StatusTask.COMPLETED));
-    map.put(4, new Task("name4", 4, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("8.02.2001"), StatusTask.IN_PROCESS));
-    map.put(5, new Task("name5", 5, new Date(), new SimpleDateFormat("dd.MM.yyyy").parse("16.12.2005"), StatusTask.NOT_STARTED));*/
-
-
-    /**
-     * @param task task for changes
-     */
     @Override
-    public void updateTask(Task task) {
-        map.put(task.getId(), task);
+    public void update(Task task) {
+        if (taskSet.contains(task)) {
+            taskSet.remove(task);
+            taskSet.add(task);
+        }
+
     }
 
-    /**
-     * @return list of tasks
-     */
     @Override
-    public List<Task> loadTasks() {
-        return new ArrayList<Task>(map.values());
+    public List<Task> load() {
+        return new ArrayList<Task>(taskSet);
     }
 
-    /**
-     * @param task task for adding
-     */
     @Override
-    public void addTask(Task task) {
+    public void add(Task task) {
         task.setId(++idTask);
-        map.put(task.getId(), task);
+        taskSet.add(task);
     }
 
-    /**
-     * @param task delete task
-     */
     @Override
-    public void removeTask(Task task) {
-        int key = task.getId();
-        if (map.containsKey(key)) {
-            map.remove(key);
+    public void remove(Task task) {
+        if (taskSet.contains(task)) {
+            taskSet.remove(task);
             return;
         }
     }

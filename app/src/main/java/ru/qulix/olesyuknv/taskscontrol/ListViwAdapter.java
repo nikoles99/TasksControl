@@ -25,7 +25,7 @@ public class ListViwAdapter extends BaseAdapter {
     /**
      * Map of status icons
      */
-    private final Map<StatusTask, Integer> map = new HashMap<StatusTask, Integer>(){{
+    private final Map<StatusTask, Integer> STATUS_STATUSES = new HashMap<StatusTask, Integer>(){{
         put(StatusTask.NOT_STARTED, R.drawable.icon_nostartwork);
         put(StatusTask.COMPLETED, R.drawable.icon_compleatwork);
         put(StatusTask.POSTPONED, R.drawable.icon_pausework);
@@ -68,8 +68,8 @@ public class ListViwAdapter extends BaseAdapter {
 
         Task task = (Task) getItem(position);
         ((TextView) view.findViewById(R.id.name)).setText(task.getName());
-        Integer statusTaskImage = map.get(task.getStatus());
-        ((ImageView) view.findViewById(R.id.status_task)).setImageResource(statusTaskImage);
+        Integer statusTaskImage = STATUS_STATUSES.get(task.getStatus());
+        ((ImageView) view.findViewById(R.id.statusTask)).setImageResource(statusTaskImage);
 
         return view;
     }
