@@ -1,10 +1,18 @@
-package ru.qulix.olesyuknv.taskscontrol;
-
-import android.os.AsyncTask;
+package ru.qulix.olesyuknv.taskscontrol.Threads;
 
 import java.util.concurrent.TimeUnit;
 
+import android.os.AsyncTask;
+import android.util.Log;
 
+import ru.qulix.olesyuknv.taskscontrol.Task;
+import ru.qulix.olesyuknv.taskscontrol.TaskServer;
+
+/**
+ * Поток удаления задачи
+ *
+ * @author QULIX-OLESYUKNV
+ */
 public class RemoveTask extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
 
@@ -17,7 +25,7 @@ public class RemoveTask extends AsyncTask<Task, Void, Void> {
         try {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.toString());
         }
         for (Task task : tasks) {
             server.remove(task);

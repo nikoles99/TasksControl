@@ -1,20 +1,20 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
-import android.view.WindowManager;
+
+import ru.qulix.olesyuknv.taskscontrol.R;
 
 /**
  * SplashScreen приложения.
  *
- * @author OlesyukNV
+ * @author QULIX-OLESYUKNV
  */
 public class SplashScreenActivity extends Activity {
 
-    private final long SPLASH_SCREEN_DELAY = 5 * 1000;
+    private static final long SPLASH_SCREEN_DELAY = 5 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

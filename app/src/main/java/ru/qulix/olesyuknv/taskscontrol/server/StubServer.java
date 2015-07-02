@@ -1,14 +1,17 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.server;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import ru.qulix.olesyuknv.taskscontrol.Task;
+import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
+
 /**
  * Мнимый сервер.
  *
- * @author OlesyukNV
+ * @author QULIX-OLESYUKNV
  */
 public class StubServer implements TaskServer {
 

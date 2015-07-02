@@ -1,13 +1,16 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.models;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import ru.qulix.olesyuknv.taskscontrol.StatusTask;
 
 /**
  * Описание Задачи
  *
  * @author OlesyukNV
  */
-public class Task {
+public class Task implements Serializable {
 
     private int id;
 
@@ -85,7 +88,9 @@ public class Task {
         final int prime = 31;
         int result = 1;
         result = prime * result + name.hashCode();
-        result = prime * result + workTime;
-        return result;
+        result = prime * result + startDate.hashCode();
+        result = prime * result + finishDate.hashCode();
+        result = prime * result + status.hashCode();
+        return 0;
     }
 }

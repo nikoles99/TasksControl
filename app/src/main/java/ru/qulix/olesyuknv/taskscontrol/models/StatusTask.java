@@ -1,9 +1,9 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.models;
 
 /**
  * Статусы задач.
  *
- * @author OlesyukNV
+ * @author QULIX-OLESYUKNV
  */
 public enum StatusTask {
     NOT_STARTED,

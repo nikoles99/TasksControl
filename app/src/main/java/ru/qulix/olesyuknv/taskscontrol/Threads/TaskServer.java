@@ -1,11 +1,13 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.threads;
 
 import java.util.List;
+
+import ru.qulix.olesyuknv.taskscontrol.Task;
 
 /**
  * Server.
  *
- * @author OlelesyukNV
+ * @author QULIX-OLESYUKNV
  */
 public interface TaskServer {
 
