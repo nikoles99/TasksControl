@@ -2,7 +2,7 @@ package ru.qulix.olesyuknv.taskscontrol.server;
 
 import java.util.List;
 
-import ru.qulix.olesyuknv.taskscontrol.Task;
+import ru.qulix.olesyuknv.taskscontrol.models.Task;
 
 /**
  * Server.

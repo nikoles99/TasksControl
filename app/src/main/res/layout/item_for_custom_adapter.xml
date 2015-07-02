@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:src="@drawable/icon_nostartwork"/>
+            android:src="@drawable/icon_no_start_work"/>
 
         <TextView
             android:id="@+id/name"

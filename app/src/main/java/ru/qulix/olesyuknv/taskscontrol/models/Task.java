@@ -3,12 +3,10 @@ package ru.qulix.olesyuknv.taskscontrol.models;
 import java.io.Serializable;
 import java.util.Date;
 
-import ru.qulix.olesyuknv.taskscontrol.StatusTask;
-
 /**
  * Описание Задачи
  *
- * @author OlesyukNV
+ * @author QULIX-OLESYUKNV
  */
 public class Task implements Serializable {
 

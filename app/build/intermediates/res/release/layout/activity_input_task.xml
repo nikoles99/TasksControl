@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                 android:orientation="vertical">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -16,18 +16,19 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/nameOfTask"
-                style="@style/Text"
-                android:text="Наименование" />
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Наименование"/>
 
             <EditText
-                android:id="@+id/name_task"
+                android:id="@+id/nameTask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:hint="@string/name_task"
-                android:maxLength="35" />
+                android:maxLength="35"/>
         </TableRow>
 
         <TableRow
@@ -36,20 +37,21 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/textView5"
-                style="@style/Text"
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:onClick="workTimeOnClick"
-                android:text="Работа(в часах)" />
+                android:text="Работа(в часах)"/>
 
             <EditText
-                android:id="@+id/work_hours"
+                android:id="@+id/workHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:hint="@string/hours_task"
                 android:inputType="time"
-                android:maxLength="15" />
+                android:maxLength="15"/>
 
         </TableRow>
 
@@ -59,19 +61,20 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/textView2"
-                style="@style/Text"
-                android:text="Дата Начала" />
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата Начала"/>
 
             <Button
-                android:id="@+id/start_date"
+                android:id="@+id/startDate"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
                 android:hint="Дата начала"
-                android:onClick="onclick" />
+                android:onClick="onclick"/>
         </TableRow>
 
         <TableRow
@@ -80,18 +83,19 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/textView3"
-                style="@style/Text"
-                android:text="Дата Окончания" />
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дата Окончания"/>
 
             <Button
-                android:id="@+id/finish_date"
+                android:id="@+id/finishDate"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
-                android:hint="Дата окончания" />
+                android:hint="Дата окончания"/>
 
         </TableRow>
 
@@ -101,15 +105,16 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/textView4"
-                style="@style/Text"
-                android:text="Статус" />
+                style="@style/TextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Статус"/>
 
             <Spinner
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"/>
 
 
         </TableRow>
@@ -121,19 +126,19 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/save_button"
+        <ImageView
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
-            android:background="@drawable/icon_save" />
+            android:background="@drawable/icon_save"/>
 
-        <ImageButton
-            android:id="@+id/cancel_button"
+        <ImageView
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="90dp"
-            android:background="@drawable/icon_cancel" />
+            android:background="@drawable/icon_cancel"/>
     </LinearLayout>
 </LinearLayout>
 

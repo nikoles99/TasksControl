@@ -12,11 +12,12 @@
         android:name="ru.qulix.olesyuknv.taskscontrol.TasksControlApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon_app"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="ru.qulix.olesyuknv.taskscontrol.SplashScreenActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

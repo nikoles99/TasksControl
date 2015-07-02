@@ -22,11 +22,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import ru.qulix.olesyuknv.taskscontrol.DisplayEachItemListViw;
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.StatusTask;
-import ru.qulix.olesyuknv.taskscontrol.Task;
+import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
+import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.adapters.DisplayEachItemListViw;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTask;
 import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
 
@@ -41,11 +41,8 @@ public class MainActivity extends Activity {
 
     private ListView listView;
 
-    /**
-     * The list of tasks.
-     */
-
     private DisplayEachItemListViw displayEachItemListViw;
+
     private ProgressBar progressBar;
 
     @Override
@@ -124,9 +121,9 @@ public class MainActivity extends Activity {
         try {
             return loadTasks.get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(InputTaskActivity.ERROR, e.toString());
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            Log.e(InputTaskActivity.ERROR, e.toString());
         }
         return null;
     }

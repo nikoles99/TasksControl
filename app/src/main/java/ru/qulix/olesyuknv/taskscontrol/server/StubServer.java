@@ -5,8 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import ru.qulix.olesyuknv.taskscontrol.Task;
-import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
+import ru.qulix.olesyuknv.taskscontrol.models.Task;
 
 /**
  * Мнимый сервер.

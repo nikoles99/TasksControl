@@ -15,7 +15,7 @@ Must be a string value, using &apos;\;&apos; to escape characters such as &apos;
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="41"
+            line="43"
             column="17"/>
     </issue>
 
@@ -29,11 +29,11 @@ Must be a string value, using &apos;\;&apos; to escape characters such as &apos;
         explanation="The `onClick` attribute value should be the name of a method in this View&apos;s context to invoke when the view is clicked. This name must correspond to a public method that takes exactly one parameter of type `View`.
 
 Must be a string value, using &apos;\;&apos; to escape characters such as &apos;\n&apos; or &apos;\uxxxx&apos; for a unicode character."
-        errorLine1="                android:onClick=&quot;onclick&quot; />"
+        errorLine1="                android:onClick=&quot;onclick&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="74"
+            line="77"
             column="17"/>
     </issue>
 
@@ -54,6 +54,25 @@ Similarly, in manifest files, nearly all attributes should be in the `android:` 
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
             line="7"
             column="18"/>
+    </issue>
+
+    <issue
+        id="MissingPrefix"
+        severity="Error"
+        message="Unexpected namespace prefix &quot;xmlns&quot; found for tag `LinearLayout`"
+        category="Correctness"
+        priority="6"
+        summary="Missing Android XML namespace"
+        explanation="Most Android views have attributes in the Android namespace. When referencing these attributes you *must* include the namespace prefix, or your attribute will be interpreted by `aapt` as just a custom attribute.
+
+Similarly, in manifest files, nearly all attributes should be in the `android:` namespace."
+        errorLine1="    &lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio,adt">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_main.xml"
+            line="7"
+            column="19"/>
     </issue>
 
     <issue
@@ -92,8 +111,8 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\Day.java"
-            line="84"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\InputTaskActivity.java"
+            line="223"
             column="33"/>
     </issue>
 
@@ -112,9 +131,169 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\Day.java"
-            line="89"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\InputTaskActivity.java"
+            line="228"
             column="33"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                    new Task(&quot;name1&quot;,1,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2011&quot;),"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="58"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.COMPLETED));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="59"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                    new Task(&quot;name2&quot;,2,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;1.08.2014&quot;),"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="61"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.IN_PROCESS));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="62"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                    new Task(&quot;name3&quot;,3,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;18.01.2010&quot;),"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="64"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.NOT_STARTED));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="65"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                    new Task(&quot;name4&quot;,4,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;20.12.2009&quot;),"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="67"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        severity="Warning"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        category="Correctness"
+        priority="6"
+        summary="Implied locale in date format"
+        explanation="Almost all callers should use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()` to get a ready-made instance of SimpleDateFormat suitable for the user&apos;s locale. The main reason you&apos;d create an instance this class directly is because you need to format/parse a specific machine-readable format, in which case you almost certainly want to explicitly ask for US to ensure that you get ASCII digits (rather than, say, Arabic digits).
+
+Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
+        url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
+        errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.POSTPONED));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
+            line="68"
+            column="29"/>
     </issue>
 
     <issue
@@ -125,11 +304,11 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         priority="4"
         summary="Value overridden by Gradle build script"
         explanation="The value of (for example) `minSdkVersion` is only used if it is not specified in the `build.gradle` build scripts. When specified in the Gradle build scripts, the manifest value is ignored and can be misleading, so should be removed to avoid ambiguity."
-        errorLine1="    &lt;uses-sdk android:minSdkVersion=&quot;14&quot; />"
+        errorLine1="    &lt;uses-sdk android:minSdkVersion=&quot;14&quot;/>"
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\AndroidManifest.xml"
-            line="5"
+            line="6"
             column="15"/>
     </issue>
 
@@ -146,7 +325,7 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\item_for_custom_adapter.xml"
-            line="12"
+            line="11"
             column="9"/>
     </issue>
 
@@ -169,26 +348,6 @@ There&apos;s a lint quickfix to perform this conversion in the Eclipse plugin."
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\item_for_custom_adapter.xml"
             line="7"
             column="5"/>
-    </issue>
-
-    <issue
-        id="UseSparseArrays"
-        severity="Warning"
-        message="Use `new SparseArray&lt;Task>(...)` instead for better performance"
-        category="Performance"
-        priority="4"
-        summary="HashMap can be replaced with SparseArray"
-        explanation="For maps where the keys are of type integer, it&apos;s typically more efficient to use the Android `SparseArray` API. This check identifies scenarios where you might want to consider using `SparseArray` instead of `HashMap` for better performance.
-
-This is *particularly* useful when the value types are primitives like ints, where you can use `SparseIntArray` and avoid auto-boxing the values from `int` to `Integer`.
-
-If you need to construct a `HashMap` because you need to call an API outside of your control which requires a `Map`, you can suppress this warning using for example the `@SuppressLint` annotation."
-        errorLine1="    private static Map&lt;Integer, Task> map = new HashMap&lt;Integer, Task>();"
-        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\StubServer.java"
-            line="24"
-            column="45"/>
     </issue>
 
     <issue
@@ -215,12 +374,6 @@ If you need to construct a `HashMap` because you need to call an API outside of 
         priority="3"
         summary="Unused resources"
         explanation="Unused resources make applications larger and slow down builds.">
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\mipmap-hdpi\ic_launcher.png"/>
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\mipmap-mdpi\ic_launcher.png"/>
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\mipmap-xhdpi\ic_launcher.png"/>
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\mipmap-xxhdpi\ic_launcher.png"/>
     </issue>
@@ -252,22 +405,6 @@ If you need to construct a `HashMap` because you need to call an API outside of 
     <issue
         id="UnusedResources"
         severity="Warning"
-        message="The resource `R.string.hello_world` appears to be unused"
-        category="Performance"
-        priority="3"
-        summary="Unused resources"
-        explanation="Unused resources make applications larger and slow down builds."
-        errorLine1="    &lt;string name=&quot;hello_world&quot;>Hello world!&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~">
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\values\strings.xml"
-            line="5"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        severity="Warning"
         message="The resource `R.string.title_activity_splash_screen` appears to be unused"
         category="Performance"
         priority="3"
@@ -277,14 +414,14 @@ If you need to construct a `HashMap` because you need to call an API outside of 
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\values\strings.xml"
-            line="7"
+            line="6"
             column="13"/>
     </issue>
 
     <issue
         id="UselessParent"
         severity="Warning"
-        message="This `LinearLayout` layout or its `RelativeLayout` parent is possibly useless"
+        message="This `LinearLayout` layout or its `RelativeLayout` parent is useless"
         category="Performance"
         priority="2"
         summary="Useless parent layout"
@@ -428,12 +565,12 @@ This check looks for menu XML files that contain more than two `always` actions,
 Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.
 
 Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
-        errorLine1="        &lt;ImageButton"
+        errorLine1="        &lt;ImageView"
         errorLine2="        ^"
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="124"
+            line="129"
             column="9"/>
     </issue>
 
@@ -449,12 +586,12 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
 Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.
 
 Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
-        errorLine1="        &lt;ImageButton"
+        errorLine1="        &lt;ImageView"
         errorLine2="        ^"
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="131"
+            line="136"
             column="9"/>
     </issue>
 
@@ -496,7 +633,7 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\item_for_custom_adapter.xml"
-            line="15"
+            line="14"
             column="9"/>
     </issue>
 
@@ -514,12 +651,12 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:text=&quot;Наименование&quot; />"
+        errorLine1="                android:text=&quot;Наименование&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="21"
+            line="22"
             column="17"/>
     </issue>
 
@@ -537,12 +674,12 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:text=&quot;Работа(в часах)&quot; />"
+        errorLine1="                android:text=&quot;Работа(в часах)&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="42"
+            line="44"
             column="17"/>
     </issue>
 
@@ -560,12 +697,12 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:text=&quot;Дата Начала&quot; />"
+        errorLine1="                android:text=&quot;Дата Начала&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="64"
+            line="67"
             column="17"/>
     </issue>
 
@@ -588,7 +725,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="73"
+            line="76"
             column="17"/>
     </issue>
 
@@ -606,12 +743,12 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:text=&quot;Дата Окончания&quot; />"
+        errorLine1="                android:text=&quot;Дата Окончания&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="85"
+            line="89"
             column="17"/>
     </issue>
 
@@ -629,12 +766,12 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:hint=&quot;Дата окончания&quot; />"
+        errorLine1="                android:hint=&quot;Дата окончания&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="94"
+            line="98"
             column="17"/>
     </issue>
 
@@ -652,12 +789,12 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:text=&quot;Статус&quot; />"
+        errorLine1="                android:text=&quot;Статус&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="106"
+            line="111"
             column="17"/>
     </issue>
 
@@ -675,13 +812,13 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="            android:text=&quot;Статус&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~"
+        errorLine1="                android:text=&quot;Статус&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_main.xml"
-            line="17"
-            column="13"/>
+            line="21"
+            column="17"/>
     </issue>
 
     <issue
@@ -698,13 +835,13 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="            android:text=&quot;Наименование&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        errorLine1="                android:text=&quot;Наименование&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_main.xml"
-            line="25"
-            column="13"/>
+            line="28"
+            column="17"/>
     </issue>
 
 </issues>

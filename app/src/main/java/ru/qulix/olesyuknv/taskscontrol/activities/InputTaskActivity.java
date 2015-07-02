@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
@@ -26,8 +27,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.StatusTask;
-import ru.qulix.olesyuknv.taskscontrol.Task;
+import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
+import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTask;
 import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTask;
@@ -209,7 +210,7 @@ public class InputTaskActivity extends Activity {
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(ERROR, e.toString());
         }
         return new Date();
     }

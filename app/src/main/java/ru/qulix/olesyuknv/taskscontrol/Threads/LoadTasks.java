@@ -1,4 +1,4 @@
-package ru.qulix.olesyuknv.taskscontrol.Threads;
+package ru.qulix.olesyuknv.taskscontrol.threads;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -7,8 +7,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import ru.qulix.olesyuknv.taskscontrol.Task;
-import ru.qulix.olesyuknv.taskscontrol.TaskServer;
+import ru.qulix.olesyuknv.taskscontrol.models.Task;
+import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
 /**
  * Поток загрузки всех задач

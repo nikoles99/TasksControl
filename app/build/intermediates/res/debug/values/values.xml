@@ -4,14 +4,9 @@
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="edit_text_margin">10dp</dimen>
     <!-- From: file:/D:/AndroidProjects/TasksControl/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="ACTION">Action</string>
-    <string name="ADD_TASK_FLAG">ADD_TASK_FLAG</string>
-    <string name="CHANGE_TASK_FLAG">taskChanges</string>
-    <string name="ERROR">Error</string>
-    <string name="REQUEST_CODE">1</string>
-    <string name="TASK_POSITION">taskPosition</string>
     <string name="action_settings">Settings</string>
     <string name="add_button">Item1</string>
     <string name="app_name">TasksControl</string>

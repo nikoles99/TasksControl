@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="ru.qulix.olesyuknv.taskscontrol.SplashScreenActivity"
+            android:name="ru.qulix.olesyuknv.taskscontrol.activities.SplashScreenActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ru.qulix.olesyuknv.taskscontrol.MainActivity"
+            android:name="ru.qulix.olesyuknv.taskscontrol.activities.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name="ru.qulix.olesyuknv.taskscontrol.InputTaskActivity"
+            android:name="ru.qulix.olesyuknv.taskscontrol.activities.InputTaskActivity"
             android:label="@string/title_activity_input_task" />
     </application>
 
