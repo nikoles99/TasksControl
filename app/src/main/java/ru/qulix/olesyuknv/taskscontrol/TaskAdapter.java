@@ -19,7 +19,7 @@ import ru.qulix.olesyuknv.taskscontrol.models.Task;
  * Адаптер заполения ListView
  * @author QULIX-OLESYUKNV
  */
-public class DisplayEachItemListViw extends BaseAdapter {
+public class TaskAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private List<Task> tasks;
@@ -42,7 +42,7 @@ public class DisplayEachItemListViw extends BaseAdapter {
      * @param context
      * @param tasks   список задач
      */
-    public DisplayEachItemListViw(Context context, List<Task> tasks) {
+    public TaskAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
