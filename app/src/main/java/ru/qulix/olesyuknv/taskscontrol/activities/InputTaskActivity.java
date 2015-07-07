@@ -37,7 +37,7 @@ import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTask;
 
 
 /**
- * Input task form.
+ * Форма создания и изменения задачи.
  *
  * @author QULIX-OLESYUKNV
  */
@@ -50,12 +50,11 @@ public class InputTaskActivity extends Activity {
     private Spinner statusWork;
     private int idTask;
 
-    public static final String TASK_POSITION = "position";
-    public static final int CHANGE_TASK_FLAG = 3;
+    public static final String TASK_POSITION = "Position";
     public static final String ACTION = "Action";
+    public static final int CHANGE_TASK_FLAG = 3;
     public static final int ADD_TASK_FLAG = 2;
     public static final int REQUEST_CODE = 1;
-    public static final String ERROR = "Error";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,7 @@ public class InputTaskActivity extends Activity {
     }
 
     /**
-     * adding new task or changes selected task
+     * создание задачи, изменение выбранной задачи
      *
      * @param saveButton
      */
@@ -102,6 +101,7 @@ public class InputTaskActivity extends Activity {
                             new AddTask(server).execute(task);
                             break;
                         case CHANGE_TASK_FLAG:
+                            Log.e("Error", String.valueOf(task.hashCode()));
                             new UpdateTask(server).execute(task);
                             break;
                     }
@@ -116,7 +116,7 @@ public class InputTaskActivity extends Activity {
     }
 
     /**
-     * close this form or delete selected task
+     * закрытие формы, удаление выбранной задачи
      *
      * @param cancelButton
      */
@@ -136,6 +136,9 @@ public class InputTaskActivity extends Activity {
         });
     }
 
+    /**
+     * Отображение свойств выбранной задачи
+     */
     private void fillTheFields() {
         switch (getIntent().getIntExtra(ACTION, REQUEST_CODE)) {
             case CHANGE_TASK_FLAG:
@@ -149,6 +152,10 @@ public class InputTaskActivity extends Activity {
         }
     }
 
+    /**
+     *
+     * @return Заполена форма ввода задачи или нет
+     */
     private boolean isFieldsEmpty() {
         return !(TextUtils.isEmpty(workTime.getText()) ||
                 TextUtils.isEmpty(nameTask.getText()) ||
@@ -157,6 +164,11 @@ public class InputTaskActivity extends Activity {
                 getDataFromString(startDate.getText().toString()).after(getDataFromString(finishDate.getText().toString())));
     }
 
+    /**
+     * Получение задачи по ID
+     * @param idTask
+     * @return созданную задачу
+     */
     private Task getTask(int idTask) {
         StatusTask status = (StatusTask) statusWork.getSelectedItem();
         Date dateStartWork = getDataFromString(startDate.getText().toString());
@@ -167,6 +179,10 @@ public class InputTaskActivity extends Activity {
         return task;
     }
 
+    /**
+     * Диалог ввода времени
+     * @param date время начала, время завершения
+     */
     private void setDateOnClick(final Button date) {
         final Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -181,6 +197,12 @@ public class InputTaskActivity extends Activity {
         });
     }
 
+    /**
+     * Ввод выбранного времени
+     * @param date
+     * @param calendar
+     * @return
+     */
     private DatePickerDialog.OnDateSetListener setDataPickerDialog(final Button date, final Calendar calendar) {
         DatePickerDialog.OnDateSetListener timeDialog = (new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -194,8 +216,8 @@ public class InputTaskActivity extends Activity {
     }
 
     /**
-     * @param statusWork status task
-     * @return selected status task
+     * @param statusWork Статус задачи
+     * @return заполненный выпадающий список статусов
      */
     public Spinner setSpinnerParameters(Spinner statusWork) {
         ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this,
@@ -210,10 +232,10 @@ public class InputTaskActivity extends Activity {
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {
-            Log.e(ERROR, e.toString());
+            throw new RuntimeException();
         }
-        return new Date();
     }
+
 
     public String getStringFromData(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");

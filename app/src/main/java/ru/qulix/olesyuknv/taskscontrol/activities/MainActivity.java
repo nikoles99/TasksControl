@@ -3,8 +3,6 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 
@@ -12,7 +10,6 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,14 +19,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import ru.qulix.olesyuknv.taskscontrol.DisplayEachItemListViw;
+import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTask;
 import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
-
 
 /**
  * Главная форма приложения.
@@ -39,11 +35,11 @@ import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
  */
 public class MainActivity extends Activity {
 
-    private ListView listView;
+    public ListView listView;
 
-    private DisplayEachItemListViw displayEachItemListViw;
+    public TaskAdapter taskAdapter;
 
-    private ProgressBar progressBar;
+    public ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * начальные данные.
+     * Начальные данные.
      */
     private void initialData() {
         try {
@@ -73,7 +69,7 @@ public class MainActivity extends Activity {
                     new Task("name4", 4, new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));
         } catch (ParseException e) {
-            Log.e(InputTaskActivity.ERROR, e.toString());
+            throw new RuntimeException();
         }
     }
 
@@ -87,7 +83,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                intent.putExtra(InputTaskActivity.TASK_POSITION, (Serializable) displayEachItemListViw.getItem(position));
+                intent.putExtra(InputTaskActivity.TASK_POSITION, (Serializable) taskAdapter.getItem(position));
                 intent.putExtra(InputTaskActivity.ACTION, InputTaskActivity.CHANGE_TASK_FLAG);
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
             }
@@ -98,13 +94,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (data == null) {
-            return;
-        }
         switch (requestCode) {
             case InputTaskActivity.REQUEST_CODE:
-                displayEachItemListViw = new DisplayEachItemListViw(this, loadDataFromServer());
-                listView.setAdapter(displayEachItemListViw);
+                loadDataFromServer();
                 break;
         }
 
@@ -113,19 +105,9 @@ public class MainActivity extends Activity {
     /**
      * Загрузка всех задач с с сервера
      */
-    private List<Task> loadDataFromServer() {
-        LoadTasks loadTasks = new LoadTasks((((TasksControlApplication) getApplicationContext()).
-                getServer()));
+    private void loadDataFromServer() {
+        LoadTasks loadTasks = new LoadTasks((((TasksControlApplication) getApplicationContext()).getServer()), this);
         loadTasks.execute();
-
-        try {
-            return loadTasks.get();
-        } catch (InterruptedException e) {
-            Log.e(InputTaskActivity.ERROR, e.toString());
-        } catch (ExecutionException e) {
-            Log.e(InputTaskActivity.ERROR, e.toString());
-        }
-        return null;
     }
 
     @Override
@@ -144,8 +126,7 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
-                displayEachItemListViw = new DisplayEachItemListViw(this, loadDataFromServer());
-                listView.setAdapter(displayEachItemListViw);
+                loadDataFromServer();
                 break;
         }
 

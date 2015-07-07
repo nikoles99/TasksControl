@@ -6,7 +6,8 @@ import ru.qulix.olesyuknv.taskscontrol.server.StubServer;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
 /**
- * Получение сервера.
+ * РџРѕР»СѓС‡РµРЅРёРµ СЃРµСЂРІРµСЂР°.
+ *
  * @author QULIX-OLESYUKNV
  */
 public class TasksControlApplication extends Application {

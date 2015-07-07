@@ -16,7 +16,8 @@ import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 
 /**
- * Адаптер заполения ListView
+ * РђРґР°РїС‚РµСЂ Р·Р°РїРѕР»РµРЅРёСЏ ListView
+ *
  * @author QULIX-OLESYUKNV
  */
 public class TaskAdapter extends BaseAdapter {
@@ -25,7 +26,7 @@ public class TaskAdapter extends BaseAdapter {
     private List<Task> tasks;
 
     /**
-     * Статусы задач.
+     * РЎС‚Р°С‚СѓСЃС‹ Р·Р°РґР°С‡.
      */
     private static final Map<StatusTask, Integer> STATUSES_TASKS = new HashMap<StatusTask, Integer>() {
         {
@@ -37,10 +38,10 @@ public class TaskAdapter extends BaseAdapter {
     };
 
     /**
-     * Конструктор
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
      *
      * @param context
-     * @param tasks   список задач
+     * @param tasks   СЃРїРёСЃРѕРє Р·Р°РґР°С‡
      */
     public TaskAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;

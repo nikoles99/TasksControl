@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="200dp"
         android:visibility="invisible"/>
 </RelativeLayout>
 <!-- From: file:/D:/AndroidProjects/TasksControl/app/src/main/res/layout/activity_main.xml -->

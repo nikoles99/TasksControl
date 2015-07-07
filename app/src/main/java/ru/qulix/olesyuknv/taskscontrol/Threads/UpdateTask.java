@@ -2,7 +2,6 @@ package ru.qulix.olesyuknv.taskscontrol.threads;
 
 import java.util.concurrent.TimeUnit;
 
-import android.util.Log;
 import android.os.AsyncTask;
 
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
@@ -25,7 +24,7 @@ public class UpdateTask extends AsyncTask<Task, Void, Void> {
         try {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
-            Log.e("ERROR", e.toString());
+            throw new RuntimeException();
         }
         for (Task task : tasks) {
             server.update(task);

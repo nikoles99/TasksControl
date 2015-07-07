@@ -70,25 +70,23 @@ public class Task implements Serializable {
         return id;
     }
 
-
     @Override
-    public boolean equals(Object object) {
-        if (object instanceof Task) {
-            Task task = (Task) object;
-            return task.getId() == this.getId();
-        } else {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
+        Task task = (Task) o;
+
+        return id == task.id;
+
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        result = prime * result + startDate.hashCode();
-        result = prime * result + finishDate.hashCode();
-        result = prime * result + status.hashCode();
-        return 0;
+        return id;
     }
 }

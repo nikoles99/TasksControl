@@ -34,7 +34,7 @@ ADDED from AndroidManifest.xml:7:5
 		ADDED from AndroidManifest.xml:12:9
 	android:name
 		ADDED from AndroidManifest.xml:8:9
-activity#ru.qulix.olesyuknv.taskscontrol.SplashScreenActivity
+activity#ru.qulix.olesyuknv.taskscontrol.activities.SplashScreenActivity
 ADDED from AndroidManifest.xml:13:9
 	android:label
 		ADDED from AndroidManifest.xml:15:13
@@ -52,13 +52,13 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:19:17
 	android:name
 		ADDED from AndroidManifest.xml:19:27
-activity#ru.qulix.olesyuknv.taskscontrol.MainActivity
+activity#ru.qulix.olesyuknv.taskscontrol.activities.MainActivity
 ADDED from AndroidManifest.xml:22:9
 	android:label
 		ADDED from AndroidManifest.xml:24:13
 	android:name
 		ADDED from AndroidManifest.xml:23:13
-activity#ru.qulix.olesyuknv.taskscontrol.InputTaskActivity
+activity#ru.qulix.olesyuknv.taskscontrol.activities.InputTaskActivity
 ADDED from AndroidManifest.xml:25:9
 	android:label
 		ADDED from AndroidManifest.xml:27:13

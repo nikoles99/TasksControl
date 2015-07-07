@@ -2,7 +2,7 @@
 <checkstyle version="5.7">
 <file name="D:\AndroidProjects\TasksControl\app\src\androidTest\java\ru\qulix\olesyuknv\taskscontrol\ApplicationTest.java">
 </file>
-<file name="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\DisplayEachItemListViw.java">
+<file name="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\TaskAdapter.java">
 </file>
 <file name="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\TasksControlApplication.java">
 </file>

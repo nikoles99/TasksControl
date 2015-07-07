@@ -20,24 +20,6 @@ Must be a string value, using &apos;\;&apos; to escape characters such as &apos;
     </issue>
 
     <issue
-        id="OnClick"
-        severity="Error"
-        message="Corresponding method handler &apos;`public void onclick(android.view.View)`&apos; not found (did you mean `void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.1#onClick(android.view.View), void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.2#onClick(android.view.View), void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.3#onClick(android.view.View)` ?)"
-        category="Correctness"
-        priority="10"
-        summary="`onClick` method does not exist"
-        explanation="The `onClick` attribute value should be the name of a method in this View&apos;s context to invoke when the view is clicked. This name must correspond to a public method that takes exactly one parameter of type `View`.
-
-Must be a string value, using &apos;\;&apos; to escape characters such as &apos;\n&apos; or &apos;\uxxxx&apos; for a unicode character."
-        errorLine1="                android:onClick=&quot;onclick&quot;/>"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="77"
-            column="17"/>
-    </issue>
-
-    <issue
         id="MissingPrefix"
         severity="Error"
         message="Unexpected namespace prefix &quot;xmlns&quot; found for tag `TableLayout`"
@@ -108,11 +90,11 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
+        errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\InputTaskActivity.java"
-            line="223"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\InputTaskActivity.java"
+            line="231"
             column="33"/>
     </issue>
 
@@ -128,11 +110,11 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
+        errorLine1="        DateFormat dateFormat = new SimpleDateFormat(&quot;dd.MM.yyyy&quot;);"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\InputTaskActivity.java"
-            line="228"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\InputTaskActivity.java"
+            line="241"
             column="33"/>
     </issue>
 
@@ -148,12 +130,12 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="                    new Task(&quot;name1&quot;,1,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2011&quot;),"
-        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="                    new Task(&quot;name1&quot;, 1, new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2011&quot;),"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="58"
-            column="40"/>
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="60"
+            column="42"/>
     </issue>
 
     <issue
@@ -171,8 +153,8 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.COMPLETED));"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="59"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="61"
             column="29"/>
     </issue>
 
@@ -188,12 +170,12 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="                    new Task(&quot;name2&quot;,2,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;1.08.2014&quot;),"
-        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="                    new Task(&quot;name2&quot;, 2, new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;1.08.2014&quot;),"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="61"
-            column="40"/>
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="63"
+            column="42"/>
     </issue>
 
     <issue
@@ -211,8 +193,8 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.IN_PROCESS));"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="62"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="64"
             column="29"/>
     </issue>
 
@@ -228,12 +210,12 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="                    new Task(&quot;name3&quot;,3,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;18.01.2010&quot;),"
-        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="                    new Task(&quot;name3&quot;, 3, new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;18.01.2010&quot;),"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="64"
-            column="40"/>
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="66"
+            column="42"/>
     </issue>
 
     <issue
@@ -251,8 +233,8 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.NOT_STARTED));"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="65"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="67"
             column="29"/>
     </issue>
 
@@ -268,12 +250,12 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
 Therefore, you should either use the form of the SimpleDateFormat constructor where you pass in an explicit locale, such as Locale.US, or use one of the get instance methods, or suppress this error if really know what you are doing."
         url="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
         urls="http://developer.android.com/reference/java/text/SimpleDateFormat.html"
-        errorLine1="                    new Task(&quot;name4&quot;,4,new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;20.12.2009&quot;),"
-        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="                    new Task(&quot;name4&quot;, 4, new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;20.12.2009&quot;),"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="67"
-            column="40"/>
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="69"
+            column="42"/>
     </issue>
 
     <issue
@@ -291,8 +273,8 @@ Therefore, you should either use the form of the SimpleDateFormat constructor wh
         errorLine1="                            new SimpleDateFormat(&quot;dd.MM.yyyy&quot;).parse(&quot;10.02.2015&quot;), StatusTask.POSTPONED));"
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\MainActivity.java"
-            line="68"
+            file="D:\AndroidProjects\TasksControl\app\src\main\java\ru\qulix\olesyuknv\taskscontrol\activities\MainActivity.java"
+            line="70"
             column="29"/>
     </issue>
 
@@ -348,22 +330,6 @@ There&apos;s a lint quickfix to perform this conversion in the Eclipse plugin."
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\item_for_custom_adapter.xml"
             line="7"
             column="5"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        severity="Warning"
-        message="The resource `R.dimen.activity_vertical_margin` appears to be unused"
-        category="Performance"
-        priority="3"
-        summary="Unused resources"
-        explanation="Unused resources make applications larger and slow down builds."
-        errorLine1="    &lt;dimen name=&quot;activity_vertical_margin&quot;>16dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="D:\AndroidProjects\TasksControl\app\src\main\res\values\dimens.xml"
-            line="4"
-            column="12"/>
     </issue>
 
     <issue
@@ -570,7 +536,7 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="129"
+            line="128"
             column="9"/>
     </issue>
 
@@ -591,7 +557,7 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
         quickfix="studio,adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="136"
+            line="135"
             column="9"/>
     </issue>
 
@@ -720,7 +686,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 In Android Studio and Eclipse there are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="                android:hint=&quot;Дата начала&quot;"
+        errorLine1="                android:hint=&quot;Дата начала&quot;/>"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
@@ -748,7 +714,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="89"
+            line="88"
             column="17"/>
     </issue>
 
@@ -771,7 +737,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="98"
+            line="97"
             column="17"/>
     </issue>
 
@@ -794,7 +760,7 @@ In Android Studio and Eclipse there are quickfixes to automatically extract this
         quickfix="adt">
         <location
             file="D:\AndroidProjects\TasksControl\app\src\main\res\layout\activity_input_task.xml"
-            line="111"
+            line="110"
             column="17"/>
     </issue>
 

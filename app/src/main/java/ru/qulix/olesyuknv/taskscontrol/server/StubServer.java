@@ -25,14 +25,6 @@ public class StubServer implements TaskServer {
     private Set<Task> tasksSet = new LinkedHashSet<Task>();
 
     @Override
-    public void update(Task task) {
-        if (tasksSet.contains(task)) {
-            tasksSet.remove(task);
-            tasksSet.add(task);
-        }
-    }
-
-    @Override
     public List<Task> load() {
         return new ArrayList<Task>(tasksSet);
     }
@@ -41,6 +33,14 @@ public class StubServer implements TaskServer {
     public void add(Task task) {
         task.setId(++idTask);
         tasksSet.add(task);
+    }
+
+    @Override
+    public void update(Task task) {
+        if (tasksSet.contains(task)) {
+            tasksSet.remove(task);
+            tasksSet.add(task);
+        }
     }
 
     @Override

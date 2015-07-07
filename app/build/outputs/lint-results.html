@@ -18,13 +18,13 @@ document.getElementById(id+'Link').style.display = 'none';
 <body>
 <h1>Lint Report</h1>
 <div class="titleSeparator"></div>
-Check performed at Thu Jul 02 06:35:49 BRT 2015.<br/>
-4 errors and 40 warnings found:<br/><br/>
+Check performed at Tue Jul 07 08:31:53 BRT 2015.<br/>
+3 errors and 39 warnings found:<br/><br/>
 <table class="overview">
 <tr><td></td><td class="categoryColumn"><a href="#Correctness">Correctness</a>
 </td></tr>
 <tr>
-<td class="countColumn">2</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
+<td class="countColumn">1</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-error.png" alt="Error" />
 <a href="#OnClick">OnClick: <code>onClick</code> method does not exist</a>
 </td></tr>
 <tr>
@@ -54,7 +54,7 @@ Check performed at Thu Jul 02 06:35:49 BRT 2015.<br/>
 <a href="#UseCompoundDrawables">UseCompoundDrawables: Node can be replaced by a <code>TextView</code> with compound drawables</a>
 </td></tr>
 <tr>
-<td class="countColumn">5</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
+<td class="countColumn">4</td><td class="issueColumn"><img border="0" align="top" src="lint-results_files/lint-warning.png" alt="Warning" />
 <a href="#UnusedResources">UnusedResources: Unused resources</a>
 </td></tr>
 <tr>
@@ -111,14 +111,6 @@ Check performed at Thu Jul 02 06:35:49 BRT 2015.<br/>
 <span class="lineno">  43</span>                 <span class="errorspan">android:onClick="workTimeOnClick"</span>
 <span class="lineno">  44</span>                 android:text="&#1056;&#1072;&#1073;&#1086;&#1090;&#1072;(&#1074; &#1095;&#1072;&#1089;&#1072;&#1093;)"/>
 <span class="lineno">  45</span> 
-</pre>
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:77</span>: <span class="message">Corresponding method handler '<code>public void onclick(android.view.View)</code>' not found (did you mean <code>void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.1#onClick(android.view.View), void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.2#onClick(android.view.View), void ru.qulix.olesyuknv.taskscontrol.InputTaskActivity.3#onClick(android.view.View)</code> ?)</span><br /><pre class="errorlines">
-<span class="lineno">  74</span>                 android:layout_marginLeft="10dp"
-<span class="lineno">  75</span>                 android:layout_marginRight="20dp"
-<span class="lineno">  76</span>                 android:hint="&#1044;&#1072;&#1090;&#1072; &#1085;&#1072;&#1095;&#1072;&#1083;&#1072;"
-<span class="lineno">  77</span>                 <span class="errorspan">android:onClick="onclick"/></span>
-<span class="lineno">  78</span>         &lt;/TableRow>
-<span class="lineno">  79</span> 
 </pre>
 </div>
 <div class="metadata">Priority: 10 / 10<br/>
@@ -200,87 +192,87 @@ To fix this issue, set the <code>targetSdkVersion</code> to the highest availabl
 <div class="id"><a href="#" title="Return to top">SimpleDateFormat: Implied locale in date format</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/InputTaskActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/InputTaskActivity.java</a>:223</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno"> 220</span>     }
-<span class="lineno"> 221</span> 
-<span class="lineno"> 222</span>     public Date getDataFromString(String date) throws ParseException {
-<span class="lineno"> 223</span>         DateFormat dateFormat = <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy");</span>
-<span class="lineno"> 224</span>         return dateFormat.parse(date);
-<span class="lineno"> 225</span>     }
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/InputTaskActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/InputTaskActivity.java</a>:231</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno"> 228</span>     }
+<span class="lineno"> 229</span> 
+<span class="lineno"> 230</span>     public Date getDataFromString(String date) {
+<span class="lineno"> 231</span>         DateFormat dateFormat = <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy");</span>
+<span class="lineno"> 232</span>         try {
+<span class="lineno"> 233</span>             return dateFormat.parse(date);
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/InputTaskActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/InputTaskActivity.java</a>:228</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno"> 225</span>     }
-<span class="lineno"> 226</span> 
-<span class="lineno"> 227</span>     public String getStringFromData(Date date) {
-<span class="lineno"> 228</span>         DateFormat dateFormat = <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy");</span>
-<span class="lineno"> 229</span>         return dateFormat.format(date);
-<span class="lineno"> 230</span>     }
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/InputTaskActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/InputTaskActivity.java</a>:241</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno"> 238</span> 
+<span class="lineno"> 239</span> 
+<span class="lineno"> 240</span>     public String getStringFromData(Date date) {
+<span class="lineno"> 241</span>         DateFormat dateFormat = <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy");</span>
+<span class="lineno"> 242</span>         return dateFormat.format(date);
+<span class="lineno"> 243</span>     }
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:58</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  55</span>     private void initialData() {
-<span class="lineno">  56</span>         try {
-<span class="lineno">  57</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  58</span>                     new Task("name1",1,<span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),</span>
-<span class="lineno">  59</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
-<span class="lineno">  60</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:60</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  57</span>     private void initialData() {
+<span class="lineno">  58</span>         try {
+<span class="lineno">  59</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  60</span>                     new Task("name1", 1, <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),</span>
+<span class="lineno">  61</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
+<span class="lineno">  62</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:59</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  56</span>         try {
-<span class="lineno">  57</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  58</span>                     new Task("name1",1,new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
-<span class="lineno">  59</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));</span>
-<span class="lineno">  60</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  61</span>                     new Task("name2",2,new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:61</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  58</span>         try {
+<span class="lineno">  59</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  60</span>                     new Task("name1", 1, new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
+<span class="lineno">  61</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));</span>
+<span class="lineno">  62</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  63</span>                     new Task("name2", 2, new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:61</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  58</span>                     new Task("name1",1,new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
-<span class="lineno">  59</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
-<span class="lineno">  60</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  61</span>                     new Task("name2",2,<span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),</span>
-<span class="lineno">  62</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
-<span class="lineno">  63</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:63</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  60</span>                     new Task("name1", 1, new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
+<span class="lineno">  61</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
+<span class="lineno">  62</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  63</span>                     new Task("name2", 2, <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),</span>
+<span class="lineno">  64</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
+<span class="lineno">  65</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
 </pre>
 <button id="SimpleDateFormatDivLink" onclick="reveal('SimpleDateFormatDiv');" />+ 5 More Occurrences...</button>
 <div id="SimpleDateFormatDiv" style="display: none">
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:62</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  59</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
-<span class="lineno">  60</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  61</span>                     new Task("name2",2,new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
-<span class="lineno">  62</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));</span>
-<span class="lineno">  63</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  64</span>                     new Task("name3",3,new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:64</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  61</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
+<span class="lineno">  62</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  63</span>                     new Task("name2", 2, new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
+<span class="lineno">  64</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));</span>
+<span class="lineno">  65</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  66</span>                     new Task("name3", 3, new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:64</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  61</span>                     new Task("name2",2,new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
-<span class="lineno">  62</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
-<span class="lineno">  63</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  64</span>                     new Task("name3",3,<span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),</span>
-<span class="lineno">  65</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
-<span class="lineno">  66</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:66</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  63</span>                     new Task("name2", 2, new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
+<span class="lineno">  64</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
+<span class="lineno">  65</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  66</span>                     new Task("name3", 3, <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),</span>
+<span class="lineno">  67</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
+<span class="lineno">  68</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:65</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  62</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
-<span class="lineno">  63</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  64</span>                     new Task("name3",3,new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
-<span class="lineno">  65</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));</span>
-<span class="lineno">  66</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  67</span>                     new Task("name4",4,new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:67</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  64</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
+<span class="lineno">  65</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  66</span>                     new Task("name3", 3, new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
+<span class="lineno">  67</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));</span>
+<span class="lineno">  68</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  69</span>                     new Task("name4", 4, new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:67</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  64</span>                     new Task("name3",3,new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
-<span class="lineno">  65</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
-<span class="lineno">  66</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  67</span>                     new Task("name4",4,<span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),</span>
-<span class="lineno">  68</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));
-<span class="lineno">  69</span>         } catch (ParseException e) {
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:69</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  66</span>                     new Task("name3", 3, new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
+<span class="lineno">  67</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
+<span class="lineno">  68</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  69</span>                     new Task("name4", 4, <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),</span>
+<span class="lineno">  70</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));
+<span class="lineno">  71</span>         } catch (ParseException e) {
 </pre>
-<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/MainActivity.java</a>:68</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
-<span class="lineno">  65</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
-<span class="lineno">  66</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-<span class="lineno">  67</span>                     new Task("name4",4,new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
-<span class="lineno">  68</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));</span>
-<span class="lineno">  69</span>         } catch (ParseException e) {
-<span class="lineno">  70</span>             e.printStackTrace();
+<span class="location"><a href="../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java">../../src/main/java/ru/qulix/olesyuknv/taskscontrol/activities/MainActivity.java</a>:70</span>: <span class="message">To get local formatting use <code>getDateInstance()</code>, <code>getDateTimeInstance()</code>, or <code>getTimeInstance()</code>, or use <code>new SimpleDateFormat(String template, Locale locale)</code> with for example <code>Locale.US</code> for ASCII dates.</span><br /><pre class="errorlines">
+<span class="lineno">  67</span>                             new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
+<span class="lineno">  68</span>             new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
+<span class="lineno">  69</span>                     new Task("name4", 4, new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
+<span class="lineno">  70</span>                             <span class="errorspan">new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));</span>
+<span class="lineno">  71</span>         } catch (ParseException e) {
+<span class="lineno">  72</span>             throw new RuntimeException();
 </pre>
 </div>
 </div>
@@ -382,14 +374,6 @@ There's a lint quickfix to perform this conversion in the Eclipse plugin.
 <div class="id"><a href="#" title="Return to top">UnusedResources: Unused resources</a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/res/values/dimens.xml">../../src/main/res/values/dimens.xml</a>:4</span>: <span class="message">The resource <code>R.dimen.activity_vertical_margin</code> appears to be unused</span><br /><pre class="errorlines">
-<span class="lineno">   1</span> &lt;resources>
-<span class="lineno">   2</span>     &lt;!-- Default screen margins, per the Android Design guidelines. -->
-<span class="lineno">   3</span>     &lt;dimen name="activity_horizontal_margin">16dp&lt;/dimen>
-<span class="lineno">   4</span>     &lt;dimen <span class="errorspan">name="activity_vertical_margin">16dp&lt;/dimen></span>
-<span class="lineno">   5</span> &lt;/resources>
-<span class="lineno">   6</span> 
-</pre>
 <span class="location"><a href="../../src/main/res/mipmap-xxhdpi/ic_launcher.png">../../src/main/res/mipmap-xxhdpi/ic_launcher.png</a></span>: <img class="embedimage" align="right" src="../../src/main/res/mipmap-xxhdpi/ic_launcher.png" /><span class="message">The resource <code>R.mipmap.ic_launcher</code> appears to be unused</span><br clear="right"/>
 <span class="location"><a href="../../src/main/res/menu/menu_input_task.xml">../../src/main/res/menu/menu_input_task.xml</a></span>: <span class="message">The resource <code>R.menu.menu_input_task</code> appears to be unused</span><br />
 <span class="location"><a href="../../src/main/res/menu/menu_splash_screen.xml">../../src/main/res/menu/menu_splash_screen.xml</a></span>: <span class="message">The resource <code>R.menu.menu_splash_screen</code> appears to be unused</span><br />
@@ -546,21 +530,21 @@ This check looks for menu XML files that contain more than two <code>always</cod
 <div class="id"><a href="#" title="Return to top">ContentDescription: Image without <code>contentDescription</code></a><div class="issueSeparator"></div>
 </div>
 <div class="warningslist">
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:129</span>: <span class="message">[Accessibility] Missing <code>contentDescription</code> attribute on image</span><br /><pre class="errorlines">
-<span class="lineno"> 126</span>         android:layout_marginTop="10dp"
-<span class="lineno"> 127</span>         android:orientation="horizontal">
-<span class="lineno"> 128</span> 
-<span class="lineno"> 129</span>         <span class="errorspan">&lt;ImageView</span>
-<span class="lineno"> 130</span>             android:id="@+id/saveButton"
-<span class="lineno"> 131</span>             android:layout_width="wrap_content"
+<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:128</span>: <span class="message">[Accessibility] Missing <code>contentDescription</code> attribute on image</span><br /><pre class="errorlines">
+<span class="lineno"> 125</span>         android:layout_marginTop="10dp"
+<span class="lineno"> 126</span>         android:orientation="horizontal">
+<span class="lineno"> 127</span> 
+<span class="lineno"> 128</span>         <span class="errorspan">&lt;ImageView</span>
+<span class="lineno"> 129</span>             android:id="@+id/saveButton"
+<span class="lineno"> 130</span>             android:layout_width="wrap_content"
 </pre>
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:136</span>: <span class="message">[Accessibility] Missing <code>contentDescription</code> attribute on image</span><br /><pre class="errorlines">
-<span class="lineno"> 133</span>             android:layout_marginLeft="60dp"
-<span class="lineno"> 134</span>             android:background="@drawable/icon_save"/>
-<span class="lineno"> 135</span> 
-<span class="lineno"> 136</span>         <span class="errorspan">&lt;ImageView</span>
-<span class="lineno"> 137</span>             android:id="@+id/cancelButton"
-<span class="lineno"> 138</span>             android:layout_width="wrap_content"
+<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:135</span>: <span class="message">[Accessibility] Missing <code>contentDescription</code> attribute on image</span><br /><pre class="errorlines">
+<span class="lineno"> 132</span>             android:layout_marginLeft="60dp"
+<span class="lineno"> 133</span>             android:background="@drawable/icon_save"/>
+<span class="lineno"> 134</span> 
+<span class="lineno"> 135</span>         <span class="errorspan">&lt;ImageView</span>
+<span class="lineno"> 136</span>             android:id="@+id/cancelButton"
+<span class="lineno"> 137</span>             android:layout_width="wrap_content"
 </pre>
 <span class="location"><a href="../../src/main/res/layout/activity_splash_screen.xml">../../src/main/res/layout/activity_splash_screen.xml</a>:7</span>: <span class="message">[Accessibility] Missing <code>contentDescription</code> attribute on image</span><br /><pre class="errorlines">
 <span class="lineno">   4</span>     android:layout_height="match_parent"
@@ -629,37 +613,37 @@ Note that for text fields, you should not set both the <code>hint</code> and the
 </pre>
 <span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:76</span>: <span class="message">[I18N] Hardcoded string "&#1044;&#1072;&#1090;&#1072; &#1085;&#1072;&#1095;&#1072;&#1083;&#1072;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
 <span class="lineno">  73</span>                 android:layout_height="wrap_content"
-<span class="lineno">  74</span>                 android:layout_marginLeft="10dp"
+<span class="lineno">  74</span>                 android:layout_marginLeft="@dimen/edit_text_margin"
 <span class="lineno">  75</span>                 android:layout_marginRight="20dp"
-<span class="lineno">  76</span>                 <span class="errorspan">android:hint="&#1044;&#1072;&#1090;&#1072; &#1085;&#1072;&#1095;&#1072;&#1083;&#1072;"</span>
-<span class="lineno">  77</span>                 android:onClick="onclick"/>
-<span class="lineno">  78</span>         &lt;/TableRow>
+<span class="lineno">  76</span>                 <span class="errorspan">android:hint="&#1044;&#1072;&#1090;&#1072; &#1085;&#1072;&#1095;&#1072;&#1083;&#1072;"/></span>
+<span class="lineno">  77</span>         &lt;/TableRow>
+<span class="lineno">  78</span> 
 </pre>
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:89</span>: <span class="message">[I18N] Hardcoded string "&#1044;&#1072;&#1090;&#1072; &#1054;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
-<span class="lineno">  86</span>                 style="@style/TextViewStyle"
-<span class="lineno">  87</span>                 android:layout_width="wrap_content"
-<span class="lineno">  88</span>                 android:layout_height="wrap_content"
-<span class="lineno">  89</span>                 <span class="errorspan">android:text="&#1044;&#1072;&#1090;&#1072; &#1054;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;"/></span>
-<span class="lineno">  90</span> 
-<span class="lineno">  91</span>             &lt;Button
+<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:88</span>: <span class="message">[I18N] Hardcoded string "&#1044;&#1072;&#1090;&#1072; &#1054;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
+<span class="lineno">  85</span>                 style="@style/TextViewStyle"
+<span class="lineno">  86</span>                 android:layout_width="wrap_content"
+<span class="lineno">  87</span>                 android:layout_height="wrap_content"
+<span class="lineno">  88</span>                 <span class="errorspan">android:text="&#1044;&#1072;&#1090;&#1072; &#1054;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;"/></span>
+<span class="lineno">  89</span> 
+<span class="lineno">  90</span>             &lt;Button
 </pre>
 <button id="HardcodedTextDivLink" onclick="reveal('HardcodedTextDiv');" />+ 4 More Occurrences...</button>
 <div id="HardcodedTextDiv" style="display: none">
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:98</span>: <span class="message">[I18N] Hardcoded string "&#1044;&#1072;&#1090;&#1072; &#1086;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
-<span class="lineno">  95</span>                 android:layout_height="wrap_content"
-<span class="lineno">  96</span>                 android:layout_marginLeft="10dp"
-<span class="lineno">  97</span>                 android:layout_marginRight="20dp"
-<span class="lineno">  98</span>                 <span class="errorspan">android:hint="&#1044;&#1072;&#1090;&#1072; &#1086;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;"/></span>
-<span class="lineno">  99</span> 
-<span class="lineno"> 100</span>         &lt;/TableRow>
+<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:97</span>: <span class="message">[I18N] Hardcoded string "&#1044;&#1072;&#1090;&#1072; &#1086;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
+<span class="lineno">  94</span>                 android:layout_height="wrap_content"
+<span class="lineno">  95</span>                 android:layout_marginLeft="@dimen/edit_text_margin"
+<span class="lineno">  96</span>                 android:layout_marginRight="20dp"
+<span class="lineno">  97</span>                 <span class="errorspan">android:hint="&#1044;&#1072;&#1090;&#1072; &#1086;&#1082;&#1086;&#1085;&#1095;&#1072;&#1085;&#1080;&#1103;"/></span>
+<span class="lineno">  98</span> 
+<span class="lineno">  99</span>         &lt;/TableRow>
 </pre>
-<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:111</span>: <span class="message">[I18N] Hardcoded string "&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
-<span class="lineno"> 108</span>                 style="@style/TextViewStyle"
-<span class="lineno"> 109</span>                 android:layout_width="wrap_content"
-<span class="lineno"> 110</span>                 android:layout_height="wrap_content"
-<span class="lineno"> 111</span>                 <span class="errorspan">android:text="&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;"/></span>
-<span class="lineno"> 112</span> 
-<span class="lineno"> 113</span>             &lt;Spinner
+<span class="location"><a href="../../src/main/res/layout/activity_input_task.xml">../../src/main/res/layout/activity_input_task.xml</a>:110</span>: <span class="message">[I18N] Hardcoded string "&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
+<span class="lineno"> 107</span>                 style="@style/TextViewStyle"
+<span class="lineno"> 108</span>                 android:layout_width="wrap_content"
+<span class="lineno"> 109</span>                 android:layout_height="wrap_content"
+<span class="lineno"> 110</span>                 <span class="errorspan">android:text="&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;"/></span>
+<span class="lineno"> 111</span> 
+<span class="lineno"> 112</span>             &lt;Spinner
 </pre>
 <span class="location"><a href="../../src/main/res/layout/activity_main.xml">../../src/main/res/layout/activity_main.xml</a>:21</span>: <span class="message">[I18N] Hardcoded string "&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;", should use <code>@string</code> resource</span><br /><pre class="errorlines">
 <span class="lineno">  18</span>                 android:layout_width="wrap_content"

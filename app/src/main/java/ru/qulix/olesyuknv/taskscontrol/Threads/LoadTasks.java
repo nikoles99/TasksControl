@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ProgressBar;
 
+import android.view.View;
+import android.widget.Toast;
+
+import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.activities.MainActivity;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
@@ -17,34 +20,37 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
  */
 public class LoadTasks extends AsyncTask<Void, Void, List<Task>> {
     private TaskServer server;
+    private MainActivity mainActivity;
 
-    private ProgressBar progressBar;
-
-    public LoadTasks(TaskServer server) {
+    public LoadTasks(TaskServer server, MainActivity mainActivity) {
         this.server = server;
-        // this.progressBar = progressBar;
+        this.mainActivity = mainActivity;
     }
 
-  /*  @Override
+    @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
-    }*/
+        mainActivity.progressBar.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected List<Task> doInBackground(Void... voids) {
         try {
             TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            Log.e("ERROR", e.toString());
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException();
         }
         return server.load();
     }
 
 
-  /*  @Override
+    @Override
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
-        progressBar.setVisibility(View.GONE);
-    }*/
+        mainActivity.taskAdapter = new TaskAdapter(mainActivity, tasks);
+        mainActivity.listView.setAdapter(mainActivity.taskAdapter);
+        mainActivity.progressBar.setVisibility(View.GONE);
+        Toast.makeText(mainActivity, "Tasks Downloaded", Toast.LENGTH_SHORT).show();
+    }
 }

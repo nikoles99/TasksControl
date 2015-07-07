@@ -34,7 +34,5 @@ public class SplashScreenActivity extends Activity {
 
             }
         }, SPLASH_SCREEN_DELAY);
-
-
     }
 }
