@@ -27,7 +27,7 @@ public interface TaskServer {
     void add(Task task);
 
     /**
-     *  @param task задача для удаления
+     * @param task задача для удаления
      */
     void remove(Task task);
 }

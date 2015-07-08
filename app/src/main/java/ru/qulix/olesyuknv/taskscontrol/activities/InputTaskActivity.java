@@ -24,10 +24,10 @@ import ru.qulix.olesyuknv.taskscontrol.ConvertDate;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.CallAddTask;
-import ru.qulix.olesyuknv.taskscontrol.threads.CallRemoveTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallMethodAddTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallMethodRemoveTask;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
-import ru.qulix.olesyuknv.taskscontrol.threads.CallUpdateTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallMethodUpdateTask;
 
 
 /**
@@ -87,12 +87,12 @@ public class InputTaskActivity extends Activity {
         if (isFieldsEmpty()) {
             Task task = recreateTaskById(getIdSelectedTask());
             TaskServer server = ((TasksControlApplication) getApplicationContext()).getServer();
-            switch (getActionFlag()) {
+            switch (getModeOpenForm()) {
                 case ADD_TASK_FLAG:
-                    new CallAddTask(server, InputTaskActivity.this).execute(task);
+                    new CallMethodAddTask(server, InputTaskActivity.this).execute(task);
                     break;
                 case CHANGE_TASK_FLAG:
-                    new CallUpdateTask(server, InputTaskActivity.this).execute(task);
+                    new CallMethodUpdateTask(server, InputTaskActivity.this).execute(task);
                     break;
             }
             setResult(RESULT_OK, getIntent());
@@ -112,15 +112,15 @@ public class InputTaskActivity extends Activity {
         });
     }
 
-    private int getActionFlag() {
+    private int getModeOpenForm() {
         return getIntent().getIntExtra(ACTION, REQUEST_CODE);
     }
 
     private void removeTask() {
-
-        switch (getActionFlag()) {
+        switch (getModeOpenForm()) {
             case CHANGE_TASK_FLAG:
-                new CallRemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(recreateTaskById(getIdSelectedTask()));
+                new CallMethodRemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).
+                        execute(recreateTaskById(getIdSelectedTask()));
                 setResult(RESULT_OK, getIntent());
                 break;
         }

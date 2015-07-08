@@ -73,34 +73,28 @@ public class StubServer implements TaskServer {
     }
 
     private void initialData() {
-        Task task1 = new Task("name1", 1, new ConvertDate().getDataFromString("10.02.2011"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.COMPLETED);
-        generateTaskId(task1);
-        tasksSet.add(task1);
 
-        Task task2 = new Task("name2", 2, new ConvertDate().getDataFromString("1.08.2014"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.IN_PROCESS);
-        generateTaskId(task2);
-        tasksSet.add(task2);
+        for (int i = 0; i<50; i++) {
+            Task task1 = new Task("name"+i, 1, new ConvertDate().getDataFromString("10.02.2011"),
+                    new ConvertDate().getDataFromString("10.02.2015"), StatusTask.COMPLETED);
+            generateTaskId(task1);
+            tasksSet.add(task1);
 
-        Task task3 = new Task("name3", 3, new ConvertDate().getDataFromString("18.01.2010"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.NOT_STARTED);
-        generateTaskId(task3);
-        tasksSet.add(task3);
+            Task task2 = new Task("name"+i+1, 2, new ConvertDate().getDataFromString("1.08.2014"),
+                    new ConvertDate().getDataFromString("10.02.2015"), StatusTask.IN_PROCESS);
+            generateTaskId(task2);
+            tasksSet.add(task2);
 
-        Task task4 = new Task("name4", 4, new ConvertDate().getDataFromString("20.12.2009"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.POSTPONED);
-        generateTaskId(task4);
-        tasksSet.add(task4);
+            Task task3 = new Task("name"+i+2, 3, new ConvertDate().getDataFromString("18.01.2010"),
+                    new ConvertDate().getDataFromString("10.02.2015"), StatusTask.NOT_STARTED);
+            generateTaskId(task3);
+            tasksSet.add(task3);
 
-        Task task5 = new Task("name1", 1, new ConvertDate().getDataFromString("10.02.2011"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.COMPLETED);
-        generateTaskId(task5);
-        tasksSet.add(task5);
+            Task task4 = new Task("name"+i+3, 4, new ConvertDate().getDataFromString("20.12.2009"),
+                    new ConvertDate().getDataFromString("10.02.2015"), StatusTask.POSTPONED);
+            generateTaskId(task4);
+            tasksSet.add(task4);
+        }
 
-        Task task6 = new Task("name1", 1, new ConvertDate().getDataFromString("10.02.2011"),
-                new ConvertDate().getDataFromString("10.02.2015"), StatusTask.COMPLETED);
-        generateTaskId(task6);
-        tasksSet.add(task6);
     }
 }

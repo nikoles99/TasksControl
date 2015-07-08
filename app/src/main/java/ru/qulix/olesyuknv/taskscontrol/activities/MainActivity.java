@@ -22,7 +22,7 @@ import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.CallLoadTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.LoadTask;
 
 /**
  * Главная форма приложения.
@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadDataFromServer() {
-        new CallLoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
+        new LoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
     }
 
     @Override
