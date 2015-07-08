@@ -22,9 +22,6 @@ import ru.qulix.olesyuknv.taskscontrol.models.Task;
  */
 public class TaskAdapter extends BaseAdapter {
 
-    private LayoutInflater layoutInflater;
-    private List<Task> tasks;
-
     /**
      * Статусы задач.
      */
@@ -37,15 +34,18 @@ public class TaskAdapter extends BaseAdapter {
         }
     };
 
-    /**
-     * Конструктор
-     *
-     * @param context
-     * @param tasks   список задач
-     */
+    private LayoutInflater layoutInflater;
+    private List<Task> tasks;
+
     public TaskAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void updateTasksList(List<Task> list) {
+        tasks.clear();
+        tasks.addAll(list);
+        this.notifyDataSetChanged();
     }
 
     @Override

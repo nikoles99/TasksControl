@@ -1,9 +1,5 @@
 package ru.qulix.olesyuknv.taskscontrol.activities;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
@@ -27,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
+import ru.qulix.olesyuknv.taskscontrol.models.ConvertDate;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
@@ -43,18 +39,18 @@ import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTask;
  */
 public class InputTaskActivity extends Activity {
 
+    public static final String TASK_POSITION = "Position";
+    public static final String ACTION = "Action";
+    public static final int CHANGE_TASK_FLAG = 3;
+    public static final int ADD_TASK_FLAG = 2;
+    public static final int REQUEST_CODE = 1;
+
     private EditText nameTask;
     private EditText workTime;
     private Button startDate;
     private Button finishDate;
     private Spinner statusWork;
     private int idTask;
-
-    public static final String TASK_POSITION = "Position";
-    public static final String ACTION = "Action";
-    public static final int CHANGE_TASK_FLAG = 3;
-    public static final int ADD_TASK_FLAG = 2;
-    public static final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,108 +77,93 @@ public class InputTaskActivity extends Activity {
 
     }
 
-    /**
-     * создание задачи, изменение выбранной задачи
-     *
-     * @param saveButton
-     */
     private void saveButtonOnClick(ImageView saveButton) {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (isFieldsEmpty()) {
-                    Task task = getTask(idTask);
-                    Intent intent = getIntent();
-                    TaskServer server = ((TasksControlApplication) getApplicationContext()).getServer();
-
-                    switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
-                        case ADD_TASK_FLAG:
-                            new AddTask(server).execute(task);
-                            break;
-                        case CHANGE_TASK_FLAG:
-                            Log.e("Error", String.valueOf(task.hashCode()));
-                            new UpdateTask(server).execute(task);
-                            break;
-                    }
-
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(InputTaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
-                }
+                addingOrChangingTask();
             }
         });
     }
 
-    /**
-     * закрытие формы, удаление выбранной задачи
-     *
-     * @param cancelButton
-     */
+    private void addingOrChangingTask() {
+        if (isFieldsEmpty()) {
+            Task task = getTask(idTask);
+            Intent intent = getIntent();
+            TaskServer server = ((TasksControlApplication) getApplicationContext()).getServer();
+
+            switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
+                case ADD_TASK_FLAG:
+                    new AddTask(server, InputTaskActivity.this).execute(task);
+                    break;
+                case CHANGE_TASK_FLAG:
+                    new UpdateTask(server, InputTaskActivity.this).execute(task);
+                    break;
+            }
+            setResult(RESULT_OK, intent);
+        } else {
+            Toast.makeText(InputTaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void cancelButtonOnClick(ImageView cancelButton) {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
-                    case CHANGE_TASK_FLAG:
-                        new RemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(getTask(idTask));
-                        setResult(RESULT_OK, intent);
-                        break;
-                }
+                removeTask();
                 finish();
             }
         });
     }
 
-    /**
-     * Отображение свойств выбранной задачи
-     */
+    private void removeTask() {
+        Intent intent = getIntent();
+        switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
+            case CHANGE_TASK_FLAG:
+                new RemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(getTask(idTask));
+                setResult(RESULT_OK, intent);
+                break;
+        }
+    }
+
+
     private void fillTheFields() {
         switch (getIntent().getIntExtra(ACTION, REQUEST_CODE)) {
             case CHANGE_TASK_FLAG:
+                ConvertDate convertDate = new ConvertDate();
                 Task task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
                 nameTask.setText(task.getName());
                 workTime.setText(String.valueOf(task.getWorkTime()));
-                startDate.setText(getStringFromData(task.getStartDate()));
-                finishDate.setText(getStringFromData(task.getFinishDate()));
+                startDate.setText(convertDate.getStringFromData(task.getStartDate()));
+                finishDate.setText(convertDate.getStringFromData(task.getFinishDate()));
                 idTask = task.getId();
                 break;
         }
     }
 
-    /**
-     *
-     * @return Заполена форма ввода задачи или нет
-     */
+
     private boolean isFieldsEmpty() {
         return !(TextUtils.isEmpty(workTime.getText()) ||
                 TextUtils.isEmpty(nameTask.getText()) ||
                 TextUtils.isEmpty(startDate.getText()) ||
                 TextUtils.isEmpty(finishDate.getText()) ||
-                getDataFromString(startDate.getText().toString()).after(getDataFromString(finishDate.getText().toString())));
+                new ConvertDate().getDataFromString(startDate.getText().toString()).after(new ConvertDate().getDataFromString(finishDate.getText().toString())));
     }
 
-    /**
-     * Получение задачи по ID
-     * @param idTask
-     * @return созданную задачу
-     */
+
     private Task getTask(int idTask) {
+        ConvertDate convertDate = new ConvertDate();
         StatusTask status = (StatusTask) statusWork.getSelectedItem();
-        Date dateStartWork = getDataFromString(startDate.getText().toString());
-        Date dateFinishWork = getDataFromString(finishDate.getText().toString());
+        Date dateStartWork = convertDate.getDataFromString(startDate.getText().toString());
+        Date dateFinishWork = convertDate.getDataFromString(finishDate.getText().toString());
         Task task = new Task(nameTask.getText().toString(), Integer.parseInt(workTime.getText().
                 toString()), dateStartWork, dateFinishWork, status);
         task.setId(idTask);
         return task;
     }
 
-    /**
-     * Диалог ввода времени
-     * @param date время начала, время завершения
-     */
+
     private void setDateOnClick(final Button date) {
         final Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -192,55 +173,32 @@ public class InputTaskActivity extends Activity {
             @Override
             public void onClick(View view) {
                 final DatePickerDialog.OnDateSetListener timeDialog = setDataPickerDialog(date, calendar);
-                new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year).show();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
+                datePickerDialog.updateDate(year, month, day);
+                datePickerDialog.show();
             }
         });
     }
 
-    /**
-     * Ввод выбранного времени
-     * @param date
-     * @param calendar
-     * @return
-     */
+
     private DatePickerDialog.OnDateSetListener setDataPickerDialog(final Button date, final Calendar calendar) {
         DatePickerDialog.OnDateSetListener timeDialog = (new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
                 calendar.set(selectedYear, selectedMonth, selectedDay);
                 Date today = calendar.getTime();
-                date.setText(getStringFromData(today));
+                date.setText(new ConvertDate().getStringFromData(today));
             }
         });
         return timeDialog;
     }
 
-    /**
-     * @param statusWork Статус задачи
-     * @return заполненный выпадающий список статусов
-     */
-    public Spinner setSpinnerParameters(Spinner statusWork) {
+
+    private Spinner setSpinnerParameters(Spinner statusWork) {
         ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this,
                 android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusWork.setAdapter(adapter);
         return statusWork;
     }
-
-    public Date getDataFromString(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            return dateFormat.parse(date);
-        } catch (ParseException e) {
-            throw new RuntimeException();
-        }
-    }
-
-
-    public String getStringFromData(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(date);
-    }
-
-
 }

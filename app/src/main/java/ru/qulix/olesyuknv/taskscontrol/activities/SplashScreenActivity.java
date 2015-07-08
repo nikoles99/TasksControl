@@ -21,9 +21,6 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-/**
- * Отображение SplashScreen до запуска приложения
- */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

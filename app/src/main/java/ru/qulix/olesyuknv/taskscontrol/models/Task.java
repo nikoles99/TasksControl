@@ -25,15 +25,6 @@ public class Task implements Serializable {
 
     private StatusTask status;
 
-    /**
-     * Конструктор
-     *
-     * @param name       Наименование задачи
-     * @param workTime   Время необходимое на выполнение задачи, в часах
-     * @param finishDate Дата завершения выполнения задачи
-     * @param startDate  Дата начала выполнения задачи
-     * @param status     Статус задачи
-     */
     public Task(String name, int workTime, Date startDate, Date finishDate, StatusTask status) {
         this.name = name;
         this.workTime = workTime;

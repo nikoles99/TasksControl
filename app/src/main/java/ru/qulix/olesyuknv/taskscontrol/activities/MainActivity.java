@@ -1,8 +1,7 @@
 package ru.qulix.olesyuknv.taskscontrol.activities;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import android.app.Activity;
 
@@ -21,10 +20,8 @@ import android.widget.ProgressBar;
 
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.AddTask;
 import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
 
 /**
@@ -35,11 +32,11 @@ import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
  */
 public class MainActivity extends Activity {
 
-    public ListView listView;
+    private ListView listView;
 
-    public TaskAdapter taskAdapter;
+    private TaskAdapter taskAdapter;
 
-    public ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,36 +45,10 @@ public class MainActivity extends Activity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
-        initialData();
+        taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
+        listView.setAdapter(taskAdapter);
     }
 
-    /**
-     * Начальные данные.
-     */
-    private void initialData() {
-        try {
-            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-                    new Task("name1", 1, new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2011"),
-                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.COMPLETED));
-            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-                    new Task("name2", 2, new SimpleDateFormat("dd.MM.yyyy").parse("1.08.2014"),
-                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.IN_PROCESS));
-            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-                    new Task("name3", 3, new SimpleDateFormat("dd.MM.yyyy").parse("18.01.2010"),
-                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.NOT_STARTED));
-            new AddTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(
-                    new Task("name4", 4, new SimpleDateFormat("dd.MM.yyyy").parse("20.12.2009"),
-                            new SimpleDateFormat("dd.MM.yyyy").parse("10.02.2015"), StatusTask.POSTPONED));
-        } catch (ParseException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    /**
-     * Обработчик нажатия элемента списка
-     *
-     * @param listView
-     */
     private void listViewOnItemClick(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,7 +64,9 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if (resultCode == InputTaskActivity.REQUEST_CODE) {
+            return;
+        }
         switch (requestCode) {
             case InputTaskActivity.REQUEST_CODE:
                 loadDataFromServer();
@@ -102,12 +75,8 @@ public class MainActivity extends Activity {
 
     }
 
-    /**
-     * Загрузка всех задач с с сервера
-     */
     private void loadDataFromServer() {
-        LoadTasks loadTasks = new LoadTasks((((TasksControlApplication) getApplicationContext()).getServer()), this);
-        loadTasks.execute();
+        new LoadTasks((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
     }
 
     @Override

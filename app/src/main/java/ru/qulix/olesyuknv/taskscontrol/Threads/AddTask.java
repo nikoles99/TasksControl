@@ -1,9 +1,8 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.util.concurrent.TimeUnit;
-
 import android.os.AsyncTask;
 
+import ru.qulix.olesyuknv.taskscontrol.activities.InputTaskActivity;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
@@ -14,21 +13,24 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
  */
 public class AddTask extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
+    private InputTaskActivity inputTaskActivity;
 
-    public AddTask(TaskServer server) {
+    public AddTask(TaskServer server, InputTaskActivity inputTaskActivity) {
         this.server = server;
+        this.inputTaskActivity = inputTaskActivity;
     }
 
     @Override
     protected Void doInBackground(Task... tasks) {
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException();
-        }
         for (Task task : tasks) {
             server.add(task);
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        inputTaskActivity.finish();
     }
 }
