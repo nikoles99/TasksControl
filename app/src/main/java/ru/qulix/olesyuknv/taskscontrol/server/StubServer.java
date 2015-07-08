@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import ru.qulix.olesyuknv.taskscontrol.models.ConvertDate;
+import ru.qulix.olesyuknv.taskscontrol.ConvertDate;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 
@@ -41,7 +41,7 @@ public class StubServer implements TaskServer {
         try {
             TimeUnit.SECONDS.sleep(SERVER_SECONDS_DELAY);
         } catch (InterruptedException e) {
-            throw new RuntimeException();
+            Thread.currentThread().interrupt();
         }
     }
 

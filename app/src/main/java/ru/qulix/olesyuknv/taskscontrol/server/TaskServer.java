@@ -5,29 +5,29 @@ import java.util.List;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 
 /**
- * Сервер позволяющий хранить, добавлять, удалять и изменять задачи.
+ * РЎРµСЂРІРµСЂ РїРѕР·РІРѕР»СЏСЋС‰РёР№ С…СЂР°РЅРёС‚СЊ, РґРѕР±Р°РІР»СЏС‚СЊ, СѓРґР°Р»СЏС‚СЊ Рё РёР·РјРµРЅСЏС‚СЊ Р·Р°РґР°С‡Рё.
  *
  * @author QULIX-OLESYUKNV
  */
 public interface TaskServer {
 
     /**
-     * @param task задача для изменения
+     * @param task Р·Р°РґР°С‡Р° РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
      */
     void update(Task task);
 
     /**
-     * @return tasks список задач
+     * @return tasks СЃРїРёСЃРѕРє Р·Р°РґР°С‡
      */
     List<Task> load();
 
     /**
-     * @param task задача для добавления
+     * @param task Р·Р°РґР°С‡Р° РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ
      */
     void add(Task task);
 
     /**
-     * @param task задача для удаления
+     *  @param task Р·Р°РґР°С‡Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ
      */
     void remove(Task task);
 }

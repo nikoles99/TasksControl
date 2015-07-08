@@ -6,8 +6,6 @@ import java.util.Date;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 
-import android.content.Intent;
-
 import android.os.Bundle;
 
 import android.text.TextUtils;
@@ -22,14 +20,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.models.ConvertDate;
+import ru.qulix.olesyuknv.taskscontrol.ConvertDate;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.AddTask;
-import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallAddTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallRemoveTask;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
-import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallUpdateTask;
 
 
 /**
@@ -50,12 +48,11 @@ public class InputTaskActivity extends Activity {
     private Button startDate;
     private Button finishDate;
     private Spinner statusWork;
-    private int idTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_input_task);
+        setContentView(R.layout.activity_input_task);
 
         nameTask = (EditText) findViewById(R.id.nameTask);
         workTime = (EditText) findViewById(R.id.workHours);
@@ -63,7 +60,7 @@ public class InputTaskActivity extends Activity {
         finishDate = (Button) findViewById(R.id.finishDate);
 
         statusWork = (Spinner) findViewById(R.id.status);
-        setSpinnerParameters(statusWork);
+        setSpinnerAdapter(statusWork);
 
         ImageView cancelButton = (ImageView) findViewById(R.id.cancelButton);
         cancelButtonOnClick(cancelButton);
@@ -71,9 +68,9 @@ public class InputTaskActivity extends Activity {
         ImageView saveButton = (ImageView) findViewById(R.id.saveButton);
         saveButtonOnClick(saveButton);
 
-        setDateOnClick(startDate);
-        setDateOnClick(finishDate);
-        fillTheFields();
+        showDateDialog(startDate);
+        showDateDialog(finishDate);
+        initialViews();
 
     }
 
@@ -88,19 +85,17 @@ public class InputTaskActivity extends Activity {
 
     private void addingOrChangingTask() {
         if (isFieldsEmpty()) {
-            Task task = getTask(idTask);
-            Intent intent = getIntent();
+            Task task = recreateTaskById(getIdSelectedTask());
             TaskServer server = ((TasksControlApplication) getApplicationContext()).getServer();
-
-            switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
+            switch (getActionFlag()) {
                 case ADD_TASK_FLAG:
-                    new AddTask(server, InputTaskActivity.this).execute(task);
+                    new CallAddTask(server, InputTaskActivity.this).execute(task);
                     break;
                 case CHANGE_TASK_FLAG:
-                    new UpdateTask(server, InputTaskActivity.this).execute(task);
+                    new CallUpdateTask(server, InputTaskActivity.this).execute(task);
                     break;
             }
-            setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, getIntent());
         } else {
             Toast.makeText(InputTaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
         }
@@ -117,46 +112,52 @@ public class InputTaskActivity extends Activity {
         });
     }
 
+    private int getActionFlag() {
+        return getIntent().getIntExtra(ACTION, REQUEST_CODE);
+    }
+
     private void removeTask() {
-        Intent intent = getIntent();
-        switch (intent.getIntExtra(ACTION, REQUEST_CODE)) {
+
+        switch (getActionFlag()) {
             case CHANGE_TASK_FLAG:
-                new RemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(getTask(idTask));
-                setResult(RESULT_OK, intent);
+                new CallRemoveTask(((TasksControlApplication) getApplicationContext()).getServer()).execute(recreateTaskById(getIdSelectedTask()));
+                setResult(RESULT_OK, getIntent());
                 break;
         }
     }
 
 
-    private void fillTheFields() {
+    private void initialViews() {
         switch (getIntent().getIntExtra(ACTION, REQUEST_CODE)) {
             case CHANGE_TASK_FLAG:
-                ConvertDate convertDate = new ConvertDate();
                 Task task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
                 nameTask.setText(task.getName());
                 workTime.setText(String.valueOf(task.getWorkTime()));
-                startDate.setText(convertDate.getStringFromData(task.getStartDate()));
-                finishDate.setText(convertDate.getStringFromData(task.getFinishDate()));
-                idTask = task.getId();
+                startDate.setText(new ConvertDate().getStringFromData(task.getStartDate()));
+                finishDate.setText(new ConvertDate().getStringFromData(task.getFinishDate()));
                 break;
         }
     }
 
+    private int getIdSelectedTask() {
+        Task task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
+        return task.getId();
+    }
 
     private boolean isFieldsEmpty() {
         return !(TextUtils.isEmpty(workTime.getText()) ||
                 TextUtils.isEmpty(nameTask.getText()) ||
                 TextUtils.isEmpty(startDate.getText()) ||
                 TextUtils.isEmpty(finishDate.getText()) ||
-                new ConvertDate().getDataFromString(startDate.getText().toString()).after(new ConvertDate().getDataFromString(finishDate.getText().toString())));
+                new ConvertDate().getDataFromString(startDate.getText().toString()).
+                        after(new ConvertDate().getDataFromString(finishDate.getText().toString())));
     }
 
 
-    private Task getTask(int idTask) {
-        ConvertDate convertDate = new ConvertDate();
+    private Task recreateTaskById(int idTask) {
         StatusTask status = (StatusTask) statusWork.getSelectedItem();
-        Date dateStartWork = convertDate.getDataFromString(startDate.getText().toString());
-        Date dateFinishWork = convertDate.getDataFromString(finishDate.getText().toString());
+        Date dateStartWork = new ConvertDate().getDataFromString(startDate.getText().toString());
+        Date dateFinishWork = new ConvertDate().getDataFromString(finishDate.getText().toString());
         Task task = new Task(nameTask.getText().toString(), Integer.parseInt(workTime.getText().
                 toString()), dateStartWork, dateFinishWork, status);
         task.setId(idTask);
@@ -164,15 +165,15 @@ public class InputTaskActivity extends Activity {
     }
 
 
-    private void setDateOnClick(final Button date) {
-        final Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+    private void showDateDialog(final Button date) {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatePickerDialog.OnDateSetListener timeDialog = setDataPickerDialog(date, calendar);
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog.OnDateSetListener timeDialog = inputDate(date, calendar);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(InputTaskActivity.this, timeDialog, day, month, year);
                 datePickerDialog.updateDate(year, month, day);
                 datePickerDialog.show();
@@ -181,7 +182,7 @@ public class InputTaskActivity extends Activity {
     }
 
 
-    private DatePickerDialog.OnDateSetListener setDataPickerDialog(final Button date, final Calendar calendar) {
+    private DatePickerDialog.OnDateSetListener inputDate(final Button date, final Calendar calendar) {
         DatePickerDialog.OnDateSetListener timeDialog = (new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
@@ -194,7 +195,7 @@ public class InputTaskActivity extends Activity {
     }
 
 
-    private Spinner setSpinnerParameters(Spinner statusWork) {
+    private Spinner setSpinnerAdapter(Spinner statusWork) {
         ArrayAdapter<StatusTask> adapter = new ArrayAdapter<StatusTask>(this,
                 android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

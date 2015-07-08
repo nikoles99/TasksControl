@@ -22,7 +22,7 @@ import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.LoadTasks;
+import ru.qulix.olesyuknv.taskscontrol.threads.CallLoadTask;
 
 /**
  * Главная форма приложения.
@@ -64,19 +64,18 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == InputTaskActivity.REQUEST_CODE) {
-            return;
-        }
-        switch (requestCode) {
-            case InputTaskActivity.REQUEST_CODE:
-                loadDataFromServer();
-                break;
-        }
 
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case InputTaskActivity.REQUEST_CODE:
+                    loadDataFromServer();
+                    break;
+            }
+        }
     }
 
     private void loadDataFromServer() {
-        new LoadTasks((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
+        new CallLoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
     }
 
     @Override
