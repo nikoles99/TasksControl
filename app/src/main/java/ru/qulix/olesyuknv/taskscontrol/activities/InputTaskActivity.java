@@ -55,7 +55,7 @@ public class InputTaskActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_task);
+       // setContentView(R.layout.activity_input_task);
 
         nameTask = (EditText) findViewById(R.id.nameTask);
         workTime = (EditText) findViewById(R.id.workHours);
