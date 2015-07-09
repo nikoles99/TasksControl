@@ -23,7 +23,7 @@ import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.LoadTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundUploader;
 
 /**
  * Главная форма приложения.
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(LoadTask.NEXT_PAGE);
+                loadDataFromServer(BackgroundUploader.NEXT_PAGE);
             }
         });
     }
@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(LoadTask.PREVIOUS_PAGE);
+                loadDataFromServer(BackgroundUploader.PREVIOUS_PAGE);
             }
         });
     }
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadDataFromServer(int loadFlag) {
-        new LoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter, loadFlag,
+        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter, loadFlag,
                 getApplication()).execute();
         previousPage.setVisibility(View.VISIBLE);
         nextPage.setVisibility(View.VISIBLE);

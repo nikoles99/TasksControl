@@ -11,18 +11,26 @@ import java.util.Date;
  * @author QULIX-OLESYUKNV
  */
 public class ConvertDate {
+    /**
+     * Маска ввода
+     */
+    private static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-    public Date getDataFromString(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    /**
+     * Преобразование Строки в Дату
+     */
+    public static Date getData(String date) {
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {
-            throw new RuntimeException("Некоректный формат даты " + getClass().getName(), e);
+            throw new RuntimeException("Invalid date format ", e);
         }
     }
 
-    public String getStringFromData(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    /**
+     * Преобразование Даты в Строку
+     */
+    public static String getString(Date date) {
         return dateFormat.format(date);
     }
 }

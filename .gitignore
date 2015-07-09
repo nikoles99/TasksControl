@@ -3,4 +3,8 @@
 /local.properties
 .DS_Store
 /build
+app/build
+app/app.iml
+TasksControl.iml
+app/patch.txt
 /captures
