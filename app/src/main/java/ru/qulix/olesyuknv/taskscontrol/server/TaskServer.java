@@ -17,9 +17,19 @@ public interface TaskServer {
     void update(Task task);
 
     /**
-     * @return tasks список задач
+     * @return tasks список задач при первом одновлении
      */
     List<Task> load();
+
+    /**
+     * @return tasks следующий список задач
+     */
+    List<Task> loadNextPack();
+
+    /**
+     * @return tasks предыдущий список задач
+     */
+    List<Task> loadPreviousPack();
 
     /**
      * @param task задача для добавления

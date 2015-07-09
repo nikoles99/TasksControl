@@ -31,34 +31,37 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="421dp"
             android:orientation="horizontal">
 
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button2"
-                style="?android:attr/buttonStyleSmall"
+            <ImageView
+                android:id="@+id/previousPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Button"/>
+                android:layout_marginLeft="115dp"
+                android:background="@drawable/icon_previous_page"
+                android:visibility="invisible"/>
 
-            <Button
-                android:id="@+id/button"
-                style="?android:attr/buttonStyleSmall"
+            <ImageView
+                android:id="@+id/nextPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Button"/>
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/icon_next_page"
+                android:visibility="invisible"/>
         </LinearLayout>
 
     </LinearLayout>

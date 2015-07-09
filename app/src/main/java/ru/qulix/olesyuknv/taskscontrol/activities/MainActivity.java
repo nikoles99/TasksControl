@@ -15,6 +15,7 @@ import android.view.View;
 
 import android.widget.AdapterView;
 
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -32,11 +33,17 @@ import ru.qulix.olesyuknv.taskscontrol.threads.LoadTask;
  */
 public class MainActivity extends Activity {
 
+    private static final int UPDATE = 0;
+
     private ListView listView;
 
     private TaskAdapter taskAdapter;
 
     private ProgressBar progressBar;
+
+    private ImageView nextPage;
+
+    private ImageView previousPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,29 @@ public class MainActivity extends Activity {
         listViewOnItemClick(listView);
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
+
+        nextPage = (ImageView)findViewById(R.id.nextPage);
+        nextPageOnClick(nextPage);
+        previousPage = (ImageView)findViewById(R.id.previousPage);
+        previousPageOnClick(previousPage);
+    }
+
+    private void nextPageOnClick(ImageView nextPage) {
+        nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadDataFromServer(LoadTask.NEXT_PAGE);
+            }
+        });
+    }
+
+    private void previousPageOnClick(ImageView previousPage) {
+        previousPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadDataFromServer(LoadTask.PREVIOUS_PAGE);
+            }
+        });
     }
 
     private void listViewOnItemClick(ListView listView) {
@@ -68,14 +98,17 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case InputTaskActivity.REQUEST_CODE:
-                    loadDataFromServer();
+                    loadDataFromServer(UPDATE);
                     break;
             }
         }
     }
 
-    private void loadDataFromServer() {
-        new LoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter).execute();
+    private void loadDataFromServer(int loadFlag) {
+        new LoadTask((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter, loadFlag,
+                getApplication()).execute();
+        previousPage.setVisibility(View.VISIBLE);
+        nextPage.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -94,7 +127,7 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
-                loadDataFromServer();
+                loadDataFromServer(UPDATE);
                 break;
         }
 
