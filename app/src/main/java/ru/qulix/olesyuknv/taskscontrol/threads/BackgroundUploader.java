@@ -29,7 +29,8 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     public static final int NEXT_PAGE = 1;
     public static final int PREVIOUS_PAGE = 2;
 
-    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, int loadFlag, Application application) {
+    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, int loadFlag,
+                              Application application) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;

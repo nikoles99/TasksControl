@@ -105,8 +105,8 @@ public class MainActivity extends Activity {
     }
 
     private void loadDataFromServer(int loadFlag) {
-        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter, loadFlag,
-                getApplication()).execute();
+        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter,
+                loadFlag, getApplication()).execute();
         previousPage.setVisibility(View.VISIBLE);
         nextPage.setVisibility(View.VISIBLE);
     }

@@ -141,7 +141,8 @@ public class InputTaskActivity extends Activity {
 
     private int getIdSelectedTask() {
         Task task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
-        if(task != null){
+
+        if (task != null) {
             return task.getId();
         }
         return 0;
