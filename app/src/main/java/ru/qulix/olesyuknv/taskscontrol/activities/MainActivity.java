@@ -33,48 +33,44 @@ import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundUploader;
  */
 public class MainActivity extends Activity {
 
-    private static final int UPDATE = 0;
-
-    private ListView listView;
-
     private TaskAdapter taskAdapter;
 
     private ProgressBar progressBar;
-
-    private ImageView nextPage;
-
-    private ImageView previousPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        listView = (ListView) findViewById(R.id.listView);
+
+        ListView listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
+
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
 
-        nextPage = (ImageView)findViewById(R.id.nextPage);
-        nextPageOnClick(nextPage);
-        previousPage = (ImageView)findViewById(R.id.previousPage);
-        previousPageOnClick(previousPage);
+        ImageView nextPage = (ImageView)findViewById(R.id.nextPage);
+        setNextPageListener(nextPage);
+
+        ImageView previousPage = (ImageView)findViewById(R.id.previousPage);
+        setPreviousPageListener(previousPage);
     }
 
-    private void nextPageOnClick(ImageView nextPage) {
+    private void setNextPageListener(ImageView nextPage) {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(BackgroundUploader.NEXT_PAGE);
+                loadDataFromServer();
             }
         });
     }
 
-    private void previousPageOnClick(ImageView previousPage) {
+    private void setPreviousPageListener(ImageView previousPage) {
         previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(BackgroundUploader.PREVIOUS_PAGE);
+                loadDataFromServer();
             }
         });
     }
@@ -98,17 +94,15 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case InputTaskActivity.REQUEST_CODE:
-                    loadDataFromServer(UPDATE);
+                    loadDataFromServer();
                     break;
             }
         }
     }
 
-    private void loadDataFromServer(int loadFlag) {
-        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar, taskAdapter,
-                loadFlag, getApplication()).execute();
-        previousPage.setVisibility(View.VISIBLE);
-        nextPage.setVisibility(View.VISIBLE);
+    private void loadDataFromServer() {
+        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
+                taskAdapter).execute();
     }
 
     @Override
@@ -127,7 +121,7 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
-                loadDataFromServer(UPDATE);
+                loadDataFromServer();
                 break;
         }
 

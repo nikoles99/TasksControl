@@ -23,19 +23,16 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     private TaskServer server;
     private ProgressBar progressBar;
     private TaskAdapter taskAdapter;
-    private Application application;
     private int loadFlag;
 
     public static final int NEXT_PAGE = 1;
     public static final int PREVIOUS_PAGE = 2;
 
-    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, int loadFlag,
-                              Application application) {
+    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;
         this.loadFlag = loadFlag;
-        this.application = application;
     }
 
     @Override
@@ -60,11 +57,10 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     @Override
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
+        taskAdapter.updateTasksList(tasks);
 
-        if (tasks != null) {
-            taskAdapter.updateTasksList(tasks);
-        } else {
-            Toast.makeText(application, "no data", Toast.LENGTH_SHORT).show();
+        if (tasks.size() == 0) {
+            Toast.makeText(progressBar.getContext(), "no data", Toast.LENGTH_SHORT).show();
         }
         progressBar.setVisibility(View.GONE);
 

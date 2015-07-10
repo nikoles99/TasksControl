@@ -22,16 +22,6 @@ public interface TaskServer {
     List<Task> load();
 
     /**
-     * @return tasks следующий список задач
-     */
-    List<Task> loadNextPack();
-
-    /**
-     * @return tasks предыдущий список задач
-     */
-    List<Task> loadPreviousPack();
-
-    /**
      * @param task задача для добавления
      */
     void add(Task task);

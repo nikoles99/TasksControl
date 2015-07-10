@@ -10,8 +10,14 @@ import java.util.Date;
  */
 public class Task implements Serializable {
 
+    /**
+     * Идентификатор задачи на сервере
+     */
     private int id;
 
+    /**
+     * Наименование задачи
+     */
     private String name;
 
     /**
@@ -19,10 +25,19 @@ public class Task implements Serializable {
      */
     private int workTime;
 
+    /**
+     * Начало работы над задачей
+     */
     private Date startDate;
 
+    /**
+     * Окончание работы над задачей
+     */
     private Date finishDate;
 
+    /**
+     * Статус выполнения задачи
+     */
     private StatusTask status;
 
     public Task(String name, int workTime, Date startDate, Date finishDate, StatusTask status) {

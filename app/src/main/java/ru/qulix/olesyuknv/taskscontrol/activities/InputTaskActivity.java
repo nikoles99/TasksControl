@@ -128,7 +128,7 @@ public class InputTaskActivity extends Activity {
 
 
     private void initialViews() {
-        switch (getIntent().getIntExtra(ACTION, REQUEST_CODE)) {
+        switch (getModeOpenForm()) {
             case CHANGE_TASK_FLAG:
                 Task task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
                 nameTask.setText(task.getName());
