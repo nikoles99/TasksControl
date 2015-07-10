@@ -1,5 +1,6 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Application;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.activities.MainActivity;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
@@ -25,10 +27,16 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     private TaskAdapter taskAdapter;
     private int loadFlag;
 
-    public static final int NEXT_PAGE = 1;
-    public static final int PREVIOUS_PAGE = 2;
+    private static final int INCREMENT = 10;
 
-    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter) {
+    public static int startPosition = 0;
+
+    public static int finishPosition = INCREMENT;
+    private static boolean iseDataFinish = true;
+    private static boolean iseDataStart = true;
+
+    public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter,
+                              int loadFlag) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;
@@ -44,15 +52,31 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     @Override
     protected List<Task> doInBackground(Void... voids) {
 
-        if (loadFlag == NEXT_PAGE) {
-            return server.loadNextPack();
-        } else if (loadFlag == PREVIOUS_PAGE) {
-            return server.loadPreviousPack();
-        } else {
-            return server.load();
-        }
-    }
+            switch (loadFlag) {
+                case 1:
+                    if(iseDataFinish) {
+                        startPosition += INCREMENT;
+                        finishPosition += INCREMENT;
+                        iseDataFinish = false;
+                        iseDataStart = true;
+                    }
+                    break;
+                case 2:
+                    if(iseDataStart) {
+                        startPosition -= INCREMENT;
+                        finishPosition -= INCREMENT;
+                        iseDataStart = false;
+                        iseDataFinish = true;
+                    }
+                    break;
+                default:
+                    startPosition = 0;
+                    finishPosition = INCREMENT;
+                    break;
+            }
 
+        return server.load(startPosition, finishPosition);
+    }
 
     @Override
     protected void onPostExecute(List<Task> tasks) {
@@ -61,6 +85,12 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
 
         if (tasks.size() == 0) {
             Toast.makeText(progressBar.getContext(), "no data", Toast.LENGTH_SHORT).show();
+            iseDataFinish = false;
+            iseDataStart = false;
+        }
+        else {
+            iseDataFinish = true;
+            iseDataStart = true;
         }
         progressBar.setVisibility(View.GONE);
 

@@ -54,8 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"
-                android:background="@drawable/icon_previous_page"
-                android:visibility="invisible"/>
+                android:background="@drawable/icon_previous_page"/>
 
             <ImageView
                 android:id="@+id/nextPage"
@@ -63,8 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"
                 android:layout_marginLeft="60dp"
-                android:background="@drawable/icon_next_page"
-                android:visibility="invisible"/>
+                android:background="@drawable/icon_next_page"/>
         </LinearLayout>
     </LinearLayout>
 

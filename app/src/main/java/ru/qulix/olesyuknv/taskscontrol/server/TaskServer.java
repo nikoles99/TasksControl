@@ -17,9 +17,9 @@ public interface TaskServer {
     void update(Task task);
 
     /**
-     * @return tasks список задач при первом одновлении
+     * @return tasks список задач из N элементов
      */
-    List<Task> load();
+    List<Task> load(int startPosition, int finishPosition);
 
     /**
      * @param task задача для добавления

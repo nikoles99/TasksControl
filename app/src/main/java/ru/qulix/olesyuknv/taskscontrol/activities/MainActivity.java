@@ -37,6 +37,10 @@ public class MainActivity extends Activity {
 
     private ProgressBar progressBar;
 
+    public static final int DEFAULT = 0;
+    public static final int NEXT = 1;
+    public static final int PREVIOUS = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +52,13 @@ public class MainActivity extends Activity {
         listViewOnItemClick(listView);
 
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
+
         listView.setAdapter(taskAdapter);
 
-        ImageView nextPage = (ImageView)findViewById(R.id.nextPage);
+        ImageView nextPage = (ImageView) findViewById(R.id.nextPage);
         setNextPageListener(nextPage);
 
-        ImageView previousPage = (ImageView)findViewById(R.id.previousPage);
+        ImageView previousPage = (ImageView) findViewById(R.id.previousPage);
         setPreviousPageListener(previousPage);
     }
 
@@ -61,7 +66,7 @@ public class MainActivity extends Activity {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer();
+                loadDataFromServer(NEXT);
             }
         });
     }
@@ -70,7 +75,7 @@ public class MainActivity extends Activity {
         previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer();
+                loadDataFromServer(PREVIOUS);
             }
         });
     }
@@ -81,7 +86,6 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
                 intent.putExtra(InputTaskActivity.TASK_POSITION, (Serializable) taskAdapter.getItem(position));
-                intent.putExtra(InputTaskActivity.ACTION, InputTaskActivity.CHANGE_TASK_FLAG);
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
             }
         });
@@ -94,15 +98,15 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case InputTaskActivity.REQUEST_CODE:
-                    loadDataFromServer();
+                    loadDataFromServer(DEFAULT);
                     break;
             }
         }
     }
 
-    private void loadDataFromServer() {
+    private void loadDataFromServer(int loadFlag) {
         new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter).execute();
+                taskAdapter, loadFlag).execute();
     }
 
     @Override
@@ -117,11 +121,10 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.add_button:
                 Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                intent.putExtra(InputTaskActivity.ACTION, InputTaskActivity.ADD_TASK_FLAG);
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
-                loadDataFromServer();
+                loadDataFromServer(DEFAULT);
                 break;
         }
 

@@ -1,8 +1,8 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 
-import ru.qulix.olesyuknv.taskscontrol.activities.InputTaskActivity;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
@@ -13,9 +13,9 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
  */
 public class BackgroundUpdatingTask extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
-    private InputTaskActivity inputTaskActivity;
+    private Activity inputTaskActivity;
 
-    public BackgroundUpdatingTask(TaskServer server, InputTaskActivity inputTaskActivity) {
+    public BackgroundUpdatingTask(TaskServer server, Activity inputTaskActivity) {
         this.server = server;
         this.inputTaskActivity = inputTaskActivity;
     }

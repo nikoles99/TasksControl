@@ -14,7 +14,7 @@ import ru.qulix.olesyuknv.taskscontrol.R;
  */
 public class SplashScreenActivity extends Activity {
 
-    private static final long SPLASH_SCREEN_DELAY = 5 * 1000;
+    private static final long SPLASH_SCREEN_DELAY = 2 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
