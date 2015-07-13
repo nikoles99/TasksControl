@@ -20,14 +20,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.DateType;
+import ru.qulix.olesyuknv.taskscontrol.utils.DateType;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundAddingTask;
-import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundDeletingTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundTaskAdd;
+import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundTaskDelete;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
-import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundUpdatingTask;
+import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundTaskUpdater;
 
 
 /**
@@ -99,7 +99,7 @@ public class InputTaskActivity extends Activity {
             public void onClick(View view) {
                 if (isFieldsEmpty()) {
                     Task task = recreateTaskById(getIdSelectedTask());
-                    new BackgroundUpdatingTask(getServer(), InputTaskActivity.this).execute(task);
+                    new BackgroundTaskUpdater(getServer(), InputTaskActivity.this).execute(task);
                     setResult(RESULT_OK, getIntent());
                     return;
                 }
@@ -115,7 +115,7 @@ public class InputTaskActivity extends Activity {
             public void onClick(View v) {
                 if (isFieldsEmpty()) {
                     Task task = recreateTaskById(getIdSelectedTask());
-                    new BackgroundAddingTask(getServer(), InputTaskActivity.this).execute(task);
+                    new BackgroundTaskAdd(getServer(), InputTaskActivity.this).execute(task);
                     setResult(RESULT_OK, getIntent());
                     return;
                 }
@@ -131,7 +131,7 @@ public class InputTaskActivity extends Activity {
             public void onClick(View v) {
                 if (isFieldsEmpty()) {
                     Task task = recreateTaskById(getIdSelectedTask());
-                    new BackgroundDeletingTask(getServer(), InputTaskActivity.this).execute(task);
+                    new BackgroundTaskDelete(getServer(), InputTaskActivity.this).execute(task);
                     setResult(RESULT_OK, getIntent());
                     return;
                 }
@@ -187,15 +187,13 @@ public class InputTaskActivity extends Activity {
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog.OnDateSetListener timeDialog = setDatePickerListener(date, calendar);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(InputTaskActivity.this, timeDialog, year, month, day);
-                datePickerDialog.show();
+                new DatePickerDialog(InputTaskActivity.this, setDatePickerListener(date, calendar), year, month, day).show();
             }
         });
     }
 
     private DatePickerDialog.OnDateSetListener setDatePickerListener(final Button date, final Calendar calendar) {
-        DatePickerDialog.OnDateSetListener timeDialog = (new DatePickerDialog.OnDateSetListener() {
+        return (new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
                 calendar.set(selectedYear, selectedMonth, selectedDay);
@@ -203,7 +201,6 @@ public class InputTaskActivity extends Activity {
                 date.setText(dateType.getString(today));
             }
         });
-        return timeDialog;
     }
 
     private Spinner setSpinnerAdapter(Spinner statusWork) {

@@ -19,11 +19,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundUploader;
+import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
 
 /**
  * Главная форма приложения.
@@ -34,19 +35,16 @@ import ru.qulix.olesyuknv.taskscontrol.threads.BackgroundUploader;
 public class MainActivity extends Activity {
 
     private TaskAdapter taskAdapter;
-
+    private ImageView previousPage;
+    private ImageView nextPage;
     private ProgressBar progressBar;
-
-    private static final int INCREMENT = 10;
-
-    private int startPosition = 0;
-
-    private int finishPosition = INCREMENT;
+    private PageNavigation pageNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pageNavigation = new PageNavigation();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -57,34 +55,52 @@ public class MainActivity extends Activity {
 
         listView.setAdapter(taskAdapter);
 
-        ImageView nextPage = (ImageView) findViewById(R.id.nextPage);
-        setNextPageListener(nextPage);
+        nextPage = (ImageView) findViewById(R.id.nextPage);
+        setNextPageButtonListener(nextPage);
 
-        ImageView previousPage = (ImageView) findViewById(R.id.previousPage);
-        setPreviousPageListener(previousPage);
+        previousPage = (ImageView) findViewById(R.id.previousPage);
+        setPreviousPageButtonListener(previousPage);
+        loadDataFromServer();
     }
 
-    private void setNextPageListener(ImageView nextPage) {
+    private void setNextPageButtonListener(final ImageView nextPage) {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPosition += INCREMENT;
-                finishPosition += INCREMENT;
-                loadDataFromServer();
+
+                previousPage.setVisibility(View.VISIBLE);
+
+                pageNavigation.nextPage();
+                if (pageNavigation.checkRightPositions()) {
+                    loadDataFromServer();
+
+                } else {
+                    nextPage.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
 
-    private void setPreviousPageListener(ImageView previousPage) {
+
+    private void setPreviousPageButtonListener(final ImageView previousPage) {
         previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPosition -= INCREMENT;
-                finishPosition -= INCREMENT;
-                loadDataFromServer();
+                nextPage.setVisibility(View.VISIBLE);
+                pageNavigation.previousPage();
+                pageNavigation.setIsEndReached(false);
+
+                if (pageNavigation.checkRightPositions()) {
+
+                    loadDataFromServer();
+
+                } else {
+                    previousPage.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
+
 
     private void listViewOnItemClick(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,7 +112,6 @@ public class MainActivity extends Activity {
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -111,8 +126,8 @@ public class MainActivity extends Activity {
     }
 
     private void loadDataFromServer() {
-        new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter, MainActivity.this).execute();
+        new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
+                taskAdapter).execute();
     }
 
     @Override
@@ -120,7 +135,6 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,19 +151,4 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public int getStartPosition() {
-        return startPosition;
-    }
-
-    public int getFinishPosition() {
-        return finishPosition;
-    }
-
-    public void setFinishPosition(int finishPosition) {
-        this.finishPosition = finishPosition;
-    }
-
-    public void setStartPosition(int startPosition) {
-        this.startPosition = startPosition;
-    }
 }

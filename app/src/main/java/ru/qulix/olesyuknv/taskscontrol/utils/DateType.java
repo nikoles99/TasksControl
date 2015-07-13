@@ -1,4 +1,4 @@
-package ru.qulix.olesyuknv.taskscontrol;
+package ru.qulix.olesyuknv.taskscontrol.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,14 +14,14 @@ public class DateType {
     /**
      * Маска ввода
      */
-    private static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     /**
      * Преобразование Строки в Дату
      */
     public static Date getData(String date) {
         try {
-            return dateFormat.parse(date);
+            return DATE_FORMAT.parse(date);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid date format ", e);
         }
@@ -31,6 +31,6 @@ public class DateType {
      * Преобразование Даты в Строку
      */
     public static String getString(Date date) {
-        return dateFormat.format(date);
+        return DATE_FORMAT.format(date);
     }
 }
