@@ -23,7 +23,7 @@ public class DateType {
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException ("Invalid date format ", e);
+            throw new IllegalArgumentException("Invalid date format ", e);
         }
     }
 

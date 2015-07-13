@@ -1,9 +1,7 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Application;
 import android.os.AsyncTask;
 
 import android.view.View;
@@ -25,74 +23,56 @@ public class BackgroundUploader extends AsyncTask<Void, Void, List<Task>> {
     private TaskServer server;
     private ProgressBar progressBar;
     private TaskAdapter taskAdapter;
-    private int loadFlag;
-
-    private static final int INCREMENT = 10;
-
-    public static int startPosition = 0;
-
-    public static int finishPosition = INCREMENT;
-    private static boolean iseDataFinish = true;
-    private static boolean iseDataStart = true;
+    private MainActivity mainActivity;
+    private int startPosition;
+    private int finishPosition;
 
     public BackgroundUploader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter,
-                              int loadFlag) {
+                              MainActivity mainActivity) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;
-        this.loadFlag = loadFlag;
+        this.mainActivity = mainActivity;
+        startPosition = mainActivity.getStartPosition();
+        finishPosition = mainActivity.getFinishPosition();
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if (startPosition < 0) {
+            startPosition += 10;
+            finishPosition += 10;
+            setListPositions(startPosition, finishPosition);
+        }
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected List<Task> doInBackground(Void... voids) {
-
-            switch (loadFlag) {
-                case 1:
-                    if(iseDataFinish) {
-                        startPosition += INCREMENT;
-                        finishPosition += INCREMENT;
-                        iseDataFinish = false;
-                        iseDataStart = true;
-                    }
-                    break;
-                case 2:
-                    if(iseDataStart) {
-                        startPosition -= INCREMENT;
-                        finishPosition -= INCREMENT;
-                        iseDataStart = false;
-                        iseDataFinish = true;
-                    }
-                    break;
-                default:
-                    startPosition = 0;
-                    finishPosition = INCREMENT;
-                    break;
-            }
-
         return server.load(startPosition, finishPosition);
     }
 
     @Override
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
-        taskAdapter.updateTasksList(tasks);
 
         if (tasks.size() == 0) {
-            Toast.makeText(progressBar.getContext(), "no data", Toast.LENGTH_SHORT).show();
-            iseDataFinish = false;
-            iseDataStart = false;
+            startPosition -= 10;
+            finishPosition -= 10;
+            setListPositions(startPosition, finishPosition);
+            progressBar.setVisibility(View.GONE);
+            return;
         }
-        else {
-            iseDataFinish = true;
-            iseDataStart = true;
-        }
+        taskAdapter.updateTasksList(tasks);
         progressBar.setVisibility(View.GONE);
 
     }
+
+    private void setListPositions(int startPosition, int finishPosition) {
+        Toast.makeText(progressBar.getContext(), "no data", Toast.LENGTH_SHORT).show();
+        mainActivity.setStartPosition(startPosition);
+        mainActivity.setFinishPosition(finishPosition);
+    }
+
 }

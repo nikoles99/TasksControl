@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import android.util.Log;
+
 import ru.qulix.olesyuknv.taskscontrol.DateType;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
@@ -21,7 +23,7 @@ public class StubServer implements TaskServer {
 
     private static final long SERVER_DELAY_MS = 1000;
 
-    private final Lock lock = new ReentrantLock();
+    private static final Lock LOCKER = new ReentrantLock();
 
     /**
      * Идентификатор задачи на сервере
@@ -38,7 +40,9 @@ public class StubServer implements TaskServer {
     }
 
     private void generateTaskId(Task task) {
+        LOCKER.lock();
         task.setId(++idTask);
+        LOCKER.unlock();
     }
 
     private void imitationServerWork() {
@@ -46,12 +50,13 @@ public class StubServer implements TaskServer {
             TimeUnit.MICROSECONDS.sleep(SERVER_DELAY_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.out.println(e.getMessage());
+            Log.e("InterruptedException", e.getMessage());
         }
     }
 
     @Override
     public List<Task> load(int startPosition, int finishPosition) {
+        LOCKER.lock();
         imitationServerWork();
         List<Task> list = new ArrayList<Task>(tasksSet);
 
@@ -60,28 +65,35 @@ public class StubServer implements TaskServer {
         } else if (startPosition >= 0 && startPosition <= list.size() && finishPosition >= list.size()) {
             return list.subList(startPosition, list.size());
         }
+        LOCKER.unlock();
         return new ArrayList<Task>();
     }
 
     @Override
     public void add(Task task) {
+        LOCKER.lock();
         imitationServerWork();
         generateTaskId(task);
         tasksSet.add(task);
+        LOCKER.unlock();
     }
 
     @Override
     public void update(Task task) {
+        LOCKER.lock();
         imitationServerWork();
         if (tasksSet.remove(task)) {
             tasksSet.add(task);
         }
+        LOCKER.unlock();
     }
 
     @Override
     public void remove(Task task) {
+        LOCKER.lock();
         imitationServerWork();
         tasksSet.remove(task);
+        LOCKER.unlock();
 
     }
 

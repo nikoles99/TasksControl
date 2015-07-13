@@ -37,9 +37,11 @@ public class MainActivity extends Activity {
 
     private ProgressBar progressBar;
 
-    public static final int DEFAULT = 0;
-    public static final int NEXT = 1;
-    public static final int PREVIOUS = 2;
+    private static final int INCREMENT = 10;
+
+    private int startPosition = 0;
+
+    private int finishPosition = INCREMENT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,9 @@ public class MainActivity extends Activity {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(NEXT);
+                startPosition += INCREMENT;
+                finishPosition += INCREMENT;
+                loadDataFromServer();
             }
         });
     }
@@ -75,7 +79,9 @@ public class MainActivity extends Activity {
         previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadDataFromServer(PREVIOUS);
+                startPosition -= INCREMENT;
+                finishPosition -= INCREMENT;
+                loadDataFromServer();
             }
         });
     }
@@ -98,15 +104,15 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case InputTaskActivity.REQUEST_CODE:
-                    loadDataFromServer(DEFAULT);
+                    loadDataFromServer();
                     break;
             }
         }
     }
 
-    private void loadDataFromServer(int loadFlag) {
+    private void loadDataFromServer() {
         new BackgroundUploader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter, loadFlag).execute();
+                taskAdapter, MainActivity.this).execute();
     }
 
     @Override
@@ -124,10 +130,26 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
-                loadDataFromServer(DEFAULT);
+                loadDataFromServer();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public int getStartPosition() {
+        return startPosition;
+    }
+
+    public int getFinishPosition() {
+        return finishPosition;
+    }
+
+    public void setFinishPosition(int finishPosition) {
+        this.finishPosition = finishPosition;
+    }
+
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
     }
 }
