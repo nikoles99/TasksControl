@@ -48,6 +48,30 @@ public class Task implements Serializable {
         this.startDate = startDate;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWorkTime(int workTime) {
+        this.workTime = workTime;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(StatusTask status) {
+        this.status = status;
+    }
+
     public String getName() {
         return name;
     }
@@ -66,10 +90,6 @@ public class Task implements Serializable {
 
     public int getWorkTime() {
         return workTime;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {

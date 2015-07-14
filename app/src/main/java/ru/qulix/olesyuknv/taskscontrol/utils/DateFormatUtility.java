@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author QULIX-OLESYUKNV
  */
-public class DateType {
+public class DateFormatUtility {
     /**
      * Маска ввода
      */
@@ -23,7 +23,8 @@ public class DateType {
         try {
             return DATE_FORMAT.parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Invalid date format ", e);
+            System.out.printf("Invalid date format %c expected 'dd.MM.yyyy'", date);
+            throw new IllegalArgumentException("DateFormatUtility", e);
         }
     }
 

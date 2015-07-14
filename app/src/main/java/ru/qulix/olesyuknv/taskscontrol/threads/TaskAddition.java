@@ -11,11 +11,11 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
  *
  * @author QULIX-OLESYUKNV
  */
-public class BackgroundTaskAdd extends AsyncTask<Task, Void, Void> {
+public class TaskAddition extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
     private Activity inputTaskActivity;
 
-    public BackgroundTaskAdd(TaskServer server, Activity inputTaskActivity) {
+    public TaskAddition(TaskServer server, Activity inputTaskActivity) {
         this.server = server;
         this.inputTaskActivity = inputTaskActivity;
     }

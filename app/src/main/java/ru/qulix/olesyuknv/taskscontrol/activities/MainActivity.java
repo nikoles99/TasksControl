@@ -67,16 +67,10 @@ public class MainActivity extends Activity {
         nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 previousPage.setVisibility(View.VISIBLE);
-
                 pageNavigation.nextPage();
-                if (pageNavigation.checkRightPositions()) {
-                    loadDataFromServer();
+                loadDataFromServer();
 
-                } else {
-                    nextPage.setVisibility(View.INVISIBLE);
-                }
             }
         });
     }
@@ -88,13 +82,9 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 nextPage.setVisibility(View.VISIBLE);
                 pageNavigation.previousPage();
-                pageNavigation.setIsEndReached(false);
+                loadDataFromServer();
 
-                if (pageNavigation.checkRightPositions()) {
-
-                    loadDataFromServer();
-
-                } else {
+                if (pageNavigation.noData()) {
                     previousPage.setVisibility(View.INVISIBLE);
                 }
             }
@@ -127,7 +117,7 @@ public class MainActivity extends Activity {
 
     private void loadDataFromServer() {
         new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter).execute();
+                taskAdapter, nextPage).execute().getStatus();
     }
 
     @Override
@@ -147,7 +137,6 @@ public class MainActivity extends Activity {
                 loadDataFromServer();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

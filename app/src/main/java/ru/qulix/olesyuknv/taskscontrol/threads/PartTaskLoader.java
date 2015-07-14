@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.AsyncTask;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
@@ -23,11 +24,13 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     private ProgressBar progressBar;
     private TaskAdapter taskAdapter;
     private PageNavigation pageNavigation;
+    private ImageView nextPage;
 
-    public PartTaskLoader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter) {
+    public PartTaskLoader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, ImageView nextPage) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;
+        this.nextPage = nextPage;
         pageNavigation = new PageNavigation();
     }
 
@@ -46,15 +49,11 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
 
-        if (tasks.isEmpty()) {
-            pageNavigation.setIsEndReached(true);
-            progressBar.setVisibility(View.GONE);
-            return;
+        if (tasks.size() < pageNavigation.getINCREMENT()) {
+            nextPage.setVisibility(View.INVISIBLE);
         }
         progressBar.setVisibility(View.GONE);
         taskAdapter.updateTasksList(tasks);
 
     }
-
-
 }
