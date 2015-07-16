@@ -1,13 +1,13 @@
 package ru.qulix.olesyuknv.taskscontrol.server;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import android.util.Log;
 
 import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
@@ -57,7 +57,7 @@ public class StubServer implements TaskServer {
         imitationServerWork();
         try {
             lock.readLock().lock();
-            
+
             if (start < 0 || start > tasksSet.size()) {
                 return new ArrayList<Task>();
             }

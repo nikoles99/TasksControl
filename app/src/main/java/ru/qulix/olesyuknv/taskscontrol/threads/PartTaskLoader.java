@@ -5,7 +5,6 @@ import java.util.List;
 import android.os.AsyncTask;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
