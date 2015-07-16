@@ -24,14 +24,12 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     private ProgressBar progressBar;
     private TaskAdapter taskAdapter;
     private PageNavigation pageNavigation;
-    private ImageView nextPage;
 
-    public PartTaskLoader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, ImageView nextPage) {
+    public PartTaskLoader(TaskServer server, ProgressBar progressBar, TaskAdapter taskAdapter, PageNavigation pageNavigation) {
         this.server = server;
         this.progressBar = progressBar;
         this.taskAdapter = taskAdapter;
-        this.nextPage = nextPage;
-        pageNavigation = new PageNavigation();
+        this.pageNavigation = pageNavigation;
     }
 
     @Override
@@ -49,8 +47,8 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
 
-        if (tasks.size() < pageNavigation.getINCREMENT()) {
-            nextPage.setVisibility(View.INVISIBLE);
+        if (tasks.isEmpty()) {
+            pageNavigation.getNextPage().setVisibility(View.INVISIBLE);
         }
         progressBar.setVisibility(View.GONE);
         taskAdapter.updateTasksList(tasks);

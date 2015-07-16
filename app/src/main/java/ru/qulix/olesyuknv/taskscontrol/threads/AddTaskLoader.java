@@ -7,15 +7,15 @@ import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
 /**
- * Поток удаления задачи
+ * Поток добавления задачи
  *
  * @author QULIX-OLESYUKNV
  */
-public class TaskRemoval extends AsyncTask<Task, Void, Void> {
+public class AddTaskLoader extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
     private Activity inputTaskActivity;
 
-    public TaskRemoval(TaskServer server, Activity inputTaskActivity) {
+    public AddTaskLoader(TaskServer server, Activity inputTaskActivity) {
         this.server = server;
         this.inputTaskActivity = inputTaskActivity;
     }
@@ -23,7 +23,7 @@ public class TaskRemoval extends AsyncTask<Task, Void, Void> {
     @Override
     protected Void doInBackground(Task... tasks) {
         for (Task task : tasks) {
-            server.remove(task);
+            server.add(task);
         }
         return null;
     }

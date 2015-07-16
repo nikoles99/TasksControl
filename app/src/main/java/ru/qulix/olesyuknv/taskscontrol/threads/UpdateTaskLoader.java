@@ -11,11 +11,11 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
  *
  * @author QULIX-OLESYUKNV
  */
-public class TaskRenewal extends AsyncTask<Task, Void, Void> {
+public class UpdateTaskLoader extends AsyncTask<Task, Void, Void> {
     private TaskServer server;
     private Activity inputTaskActivity;
 
-    public TaskRenewal(TaskServer server, Activity inputTaskActivity) {
+    public UpdateTaskLoader(TaskServer server, Activity inputTaskActivity) {
         this.server = server;
         this.inputTaskActivity = inputTaskActivity;
     }

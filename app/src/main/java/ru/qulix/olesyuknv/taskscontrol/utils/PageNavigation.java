@@ -1,56 +1,97 @@
 package ru.qulix.olesyuknv.taskscontrol.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import ru.qulix.olesyuknv.taskscontrol.R;
+import ru.qulix.olesyuknv.taskscontrol.activities.MainActivity;
+
 /**
  * Постраничная навигация
  *
  * @author QULIX-OLESYUKNV
  */
-public class PageNavigation {
+public class PageNavigation extends LinearLayout {
 
     /**
      * количество записей на одной странице
      */
     private static final int INCREMENT = 10;
 
+    private ImageView nextPage;
+
+    private ImageView previousPage;
+
+    private MainActivity activity;
+
     /**
      * позиция первого элемента списка
      */
-    private static int startPosition = 0;
+    private int startPosition = 0;
 
     /**
      * позиция последнего элемента списка
      */
-    private static int finishPosition = INCREMENT;
+    private int finishPosition = INCREMENT;
 
-    /**
-     * переход на следующую страницу
-     */
-    public void nextPage() {
+    public PageNavigation(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        ((Activity) getContext()).getLayoutInflater().inflate(R.layout.page_navigation, this, true);
+        setUpViews();
+        this.activity = (MainActivity) context;
+    }
+
+    private void setUpViews() {
+        nextPage = (ImageView) findViewById(R.id.nextPage);
+        setNextPageButtonListener(nextPage);
+
+        previousPage = (ImageView) findViewById(R.id.previousPage);
+        setPreviousPageButtonListener(previousPage);
+    }
+
+
+    private void setNextPageButtonListener(final ImageView nextPage) {
+        nextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                previousPage.setVisibility(View.VISIBLE);
+                nextPage();
+                activity.loadDataFromServer();
+            }
+        });
+    }
+
+    private void setPreviousPageButtonListener(final ImageView previousPage) {
+        previousPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextPage.setVisibility(View.VISIBLE);
+                previousPage();
+                activity.loadDataFromServer();
+
+                if (isDataExist()) {
+                    previousPage.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
+
+    private void nextPage() {
         startPosition += INCREMENT;
         finishPosition += INCREMENT;
     }
 
-    /**
-     *
-     * @return  true или false в зависимости от налия записей
-     */
-    public boolean noData() {
-        if (startPosition <= 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * переход на предыдущую страницу
-     */
-    public void previousPage() {
+    private void previousPage() {
         startPosition -= INCREMENT;
         finishPosition -= INCREMENT;
     }
 
-    public int getINCREMENT() {
-        return INCREMENT;
+    private boolean isDataExist() {
+        return startPosition <= 0;
     }
 
     public int getFinishPosition() {
@@ -60,4 +101,10 @@ public class PageNavigation {
     public int getStartPosition() {
         return startPosition;
     }
+
+    public ImageView getNextPage() {
+        return nextPage;
+    }
+
+
 }

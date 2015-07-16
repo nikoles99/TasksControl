@@ -15,7 +15,6 @@ import android.view.View;
 
 import android.widget.AdapterView;
 
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -35,8 +34,6 @@ import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
 public class MainActivity extends Activity {
 
     private TaskAdapter taskAdapter;
-    private ImageView previousPage;
-    private ImageView nextPage;
     private ProgressBar progressBar;
     private PageNavigation pageNavigation;
 
@@ -44,53 +41,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pageNavigation = new PageNavigation();
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
+        pageNavigation = (PageNavigation) findViewById(R.id.pageNavigation);
         ListView listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
 
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
-
         listView.setAdapter(taskAdapter);
-
-        nextPage = (ImageView) findViewById(R.id.nextPage);
-        setNextPageButtonListener(nextPage);
-
-        previousPage = (ImageView) findViewById(R.id.previousPage);
-        setPreviousPageButtonListener(previousPage);
         loadDataFromServer();
     }
-
-    private void setNextPageButtonListener(final ImageView nextPage) {
-        nextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                previousPage.setVisibility(View.VISIBLE);
-                pageNavigation.nextPage();
-                loadDataFromServer();
-
-            }
-        });
-    }
-
-
-    private void setPreviousPageButtonListener(final ImageView previousPage) {
-        previousPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nextPage.setVisibility(View.VISIBLE);
-                pageNavigation.previousPage();
-                loadDataFromServer();
-
-                if (pageNavigation.noData()) {
-                    previousPage.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-    }
-
 
     private void listViewOnItemClick(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -115,9 +74,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadDataFromServer() {
+    public void loadDataFromServer() {
         new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter, nextPage).execute().getStatus();
+                taskAdapter, pageNavigation).execute();
     }
 
     @Override

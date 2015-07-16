@@ -25,10 +25,10 @@ import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
 import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
 import ru.qulix.olesyuknv.taskscontrol.models.Task;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.TaskAddition;
-import ru.qulix.olesyuknv.taskscontrol.threads.TaskRemoval;
+import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
-import ru.qulix.olesyuknv.taskscontrol.threads.TaskRenewal;
+import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
 
 
 /**
@@ -38,7 +38,7 @@ import ru.qulix.olesyuknv.taskscontrol.threads.TaskRenewal;
  */
 public class InputTaskActivity extends Activity {
 
-    public static final String TASK_POSITION = InputTaskActivity.TASK_POSITION;
+    public static final String TASK_POSITION = InputTaskActivity.class + ".TASK_POSITION";
     public static final int REQUEST_CODE = 1;
 
     private EditText nameTask;
@@ -74,29 +74,35 @@ public class InputTaskActivity extends Activity {
         ImageView changeButton = (ImageView) findViewById(R.id.changeTaskButton);
         setChangeButtonListener(changeButton);
 
-        settingButtons(deleteButton, saveButton, changeButton);
+        formInitialization(deleteButton, saveButton, changeButton);
     }
 
-    private boolean isChangingForm() {
+    private void formInitialization(ImageView deleteButton, ImageView saveButton, ImageView changeButton) {
         task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
         if (task != null) {
-            return true;
+            setButtonsVisibility(deleteButton, saveButton, changeButton);
+            fillingFormFields(task);
         }
-        return false;
     }
 
-    private void fillViews(Task task) {
+    private void fillingFormFields(Task task) {
         nameTask.setText(task.getName());
         workTime.setText(String.valueOf(task.getWorkTime()));
-        startDate.setText(new DateFormatUtility().getString(task.getStartDate()));
-        finishDate.setText(new DateFormatUtility().getString(task.getFinishDate()));
+        startDate.setText(DateFormatUtility.format(task.getStartDate()));
+        finishDate.setText(DateFormatUtility.format(task.getFinishDate()));
     }
 
-    private Task changeTask() {
+    private void setButtonsVisibility(ImageView deleteButton, ImageView saveButton, ImageView changeButton) {
+        deleteButton.setVisibility(View.VISIBLE);
+        saveButton.setVisibility(View.INVISIBLE);
+        changeButton.setVisibility(View.VISIBLE);
+    }
+
+    private Task getTask() {
         task.setName(nameTask.getText().toString());
         task.setWorkTime(Integer.parseInt(workTime.getText().toString()));
-        task.setStartDate(new DateFormatUtility().getData(startDate.getText().toString()));
-        task.setFinishDate(new DateFormatUtility().getData(finishDate.getText().toString()));
+        task.setStartDate(DateFormatUtility.format(startDate.getText().toString()));
+        task.setFinishDate(DateFormatUtility.format(finishDate.getText().toString()));
         task.setStatus((StatusTask) statusWork.getSelectedItem());
         return task;
     }
@@ -106,19 +112,19 @@ public class InputTaskActivity extends Activity {
                 TextUtils.isEmpty(nameTask.getText()) ||
                 TextUtils.isEmpty(startDate.getText()) ||
                 TextUtils.isEmpty(finishDate.getText()) ||
-                new DateFormatUtility().getData(startDate.getText().toString()).
-                        after(new DateFormatUtility().getData(finishDate.getText().toString())));
+                DateFormatUtility.format(startDate.getText().toString()).
+                        after(DateFormatUtility.format(finishDate.getText().toString())));
     }
 
     private TaskServer getServer() {
         return ((TasksControlApplication) getApplicationContext()).getServer();
     }
 
-    public void setChangeButtonListener(ImageView changeButtonListener) {
+    private void setChangeButtonListener(ImageView changeButtonListener) {
         changeButtonListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                execute(new TaskRenewal(getServer(), InputTaskActivity.this));
+                execute(new UpdateTaskLoader(getServer(), InputTaskActivity.this));
             }
         });
     }
@@ -127,7 +133,7 @@ public class InputTaskActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(new TaskAddition(getServer(), InputTaskActivity.this));
+                execute(new AddTaskLoader(getServer(), InputTaskActivity.this));
             }
         });
     }
@@ -136,14 +142,14 @@ public class InputTaskActivity extends Activity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(new TaskRemoval(getServer(), InputTaskActivity.this));
+                execute(new RemoveTaskLoader(getServer(), InputTaskActivity.this));
             }
         });
     }
 
     private void execute(AsyncTask<Task, Void, Void> thread) {
         if (isFieldsEmpty()) {
-            Task task = changeTask();
+            Task task = getTask();
             thread.execute(task);
             setResult(RESULT_OK, getIntent());
             return;
@@ -170,18 +176,9 @@ public class InputTaskActivity extends Activity {
             public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
                 calendar.set(selectedYear, selectedMonth, selectedDay);
                 Date today = calendar.getTime();
-                date.setText(new DateFormatUtility().getString(today));
+                date.setText(DateFormatUtility.format(today));
             }
         });
-    }
-
-    private void settingButtons(ImageView deleteButton, ImageView saveButton, ImageView changeButton) {
-        if (isChangingForm()) {
-            fillViews(task);
-            deleteButton.setVisibility(View.VISIBLE);
-            saveButton.setVisibility(View.INVISIBLE);
-            changeButton.setVisibility(View.VISIBLE);
-        }
     }
 
     private Spinner setSpinnerAdapter(Spinner statusWork) {
