@@ -46,6 +46,9 @@ public class InputTaskActivity extends Activity {
     private Button startDate;
     private Button finishDate;
     private Spinner statusWork;
+    private ImageView deleteButton;
+    private ImageView saveButton;
+    private ImageView changeButton;
     private Task task;
 
     @Override
@@ -65,37 +68,47 @@ public class InputTaskActivity extends Activity {
         statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerAdapter(statusWork);
 
-        ImageView deleteButton = (ImageView) findViewById(R.id.deleteButton);
+        deleteButton = (ImageView) findViewById(R.id.deleteButton);
         setDeleteButtonListener(deleteButton);
 
-        ImageView saveButton = (ImageView) findViewById(R.id.addTaskButton);
+        saveButton = (ImageView) findViewById(R.id.addTaskButton);
         setSaveButtonListener(saveButton);
 
-        ImageView changeButton = (ImageView) findViewById(R.id.changeTaskButton);
+        changeButton = (ImageView) findViewById(R.id.changeTaskButton);
         setChangeButtonListener(changeButton);
 
-        formInitialization(deleteButton, saveButton, changeButton);
+        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
+
+        formInitialization();
     }
 
-    private void formInitialization(ImageView deleteButton, ImageView saveButton, ImageView changeButton) {
-        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
+    private void formInitialization() {
+
         if (task != null) {
-            setButtonsVisibility(deleteButton, saveButton, changeButton);
-            fillingFormFields(task);
+            String name = task.getName();
+            String time = String.valueOf(task.getWorkTime());
+            String beginDate = DateFormatUtility.format(task.getStartDate());
+            String endDate = DateFormatUtility.format(task.getFinishDate());
+
+            setButtonsVisibility(View.VISIBLE, View.INVISIBLE, View.VISIBLE);
+            fillingFormFields(name, time, beginDate, endDate);
+        } else {
+            setButtonsVisibility(View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
+            fillingFormFields("", "", "", "");
         }
     }
 
-    private void fillingFormFields(Task task) {
-        nameTask.setText(task.getName());
-        workTime.setText(String.valueOf(task.getWorkTime()));
-        startDate.setText(DateFormatUtility.format(task.getStartDate()));
-        finishDate.setText(DateFormatUtility.format(task.getFinishDate()));
+    private void fillingFormFields(String name, String time, String beginDate, String endDate) {
+        nameTask.setText(name);
+        workTime.setText(time);
+        startDate.setText(beginDate);
+        finishDate.setText(endDate);
     }
 
-    private void setButtonsVisibility(ImageView deleteButton, ImageView saveButton, ImageView changeButton) {
-        deleteButton.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
-        changeButton.setVisibility(View.VISIBLE);
+    private void setButtonsVisibility(int deleteButtonVisibility, int saveButtonVisibility, int changeButtonVisibility) {
+        deleteButton.setVisibility(deleteButtonVisibility);
+        saveButton.setVisibility(saveButtonVisibility);
+        changeButton.setVisibility(changeButtonVisibility);
     }
 
     private Task getTask() {

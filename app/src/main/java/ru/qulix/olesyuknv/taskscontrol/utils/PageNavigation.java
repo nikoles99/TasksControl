@@ -1,14 +1,13 @@
 package ru.qulix.olesyuknv.taskscontrol.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.activities.MainActivity;
 
 /**
  * Постраничная навигация
@@ -20,13 +19,11 @@ public class PageNavigation extends LinearLayout {
     /**
      * количество записей на одной странице
      */
-    private static final int INCREMENT = 10;
+    private static final int INCREMENT = 9;
 
     private ImageView nextPage;
 
     private ImageView previousPage;
-
-    private MainActivity activity;
 
     /**
      * позиция первого элемента списка
@@ -37,12 +34,13 @@ public class PageNavigation extends LinearLayout {
      * позиция последнего элемента списка
      */
     private int finishPosition = INCREMENT;
+    private boolean existData = true;
+    private PageNavigationListener listener;
 
     public PageNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
-        ((Activity) getContext()).getLayoutInflater().inflate(R.layout.page_navigation, this, true);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.page_navigation, this, true);
         setUpViews();
-        this.activity = (MainActivity) context;
     }
 
     private void setUpViews() {
@@ -59,8 +57,13 @@ public class PageNavigation extends LinearLayout {
             @Override
             public void onClick(View view) {
                 previousPage.setVisibility(View.VISIBLE);
+
+                if (!existData) {
+                    setExistData(true);
+                    return;
+                }
                 nextPage();
-                activity.loadDataFromServer();
+                listener.sendMessage();
             }
         });
     }
@@ -71,10 +74,11 @@ public class PageNavigation extends LinearLayout {
             public void onClick(View view) {
                 nextPage.setVisibility(View.VISIBLE);
                 previousPage();
-                activity.loadDataFromServer();
+                listener.sendMessage();
 
-                if (isDataExist()) {
+                if (startPosition <= 0) {
                     previousPage.setVisibility(View.INVISIBLE);
+                    setExistData(true);
                 }
             }
         });
@@ -90,8 +94,11 @@ public class PageNavigation extends LinearLayout {
         finishPosition -= INCREMENT;
     }
 
-    private boolean isDataExist() {
-        return startPosition <= 0;
+    public void setExistData(boolean exist) {
+        if(!exist){
+            nextPage.setVisibility(INVISIBLE);
+        }
+        this.existData = exist;
     }
 
     public int getFinishPosition() {
@@ -102,9 +109,14 @@ public class PageNavigation extends LinearLayout {
         return startPosition;
     }
 
-    public ImageView getNextPage() {
-        return nextPage;
+    /**
+     * Слушатель, отправляющий уведомления
+     */
+    public interface PageNavigationListener {
+        void sendMessage();
     }
 
-
+    public void setListener(PageNavigationListener listener) {
+        this.listener = listener;
+    }
 }

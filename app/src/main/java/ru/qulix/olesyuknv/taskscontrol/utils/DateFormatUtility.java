@@ -12,24 +12,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author QULIX-OLESYUKNV
  */
 public class DateFormatUtility {
-    /**
-     * Маска ввода
-     */
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
-    public static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     /**
      * Преобразование Строки в Дату
      */
     public static Date format(String date) {
         try {
-            LOCK.writeLock().lock();
-            return DATE_FORMAT.parse(date);
+            return getSimpleDateFormat().parse(date);
         } catch (ParseException e) {
             throw new IllegalArgumentException(String.format("Invalid date format %s expected 'dd.MM.yyyy'", date), e);
-        }
-        finally {
-            LOCK.writeLock().unlock();
         }
     }
 
@@ -37,12 +28,13 @@ public class DateFormatUtility {
      * Преобразование Даты в Строку
      */
     public static String format(Date date) {
-        try {
-            LOCK.writeLock().lock();
-            return DATE_FORMAT.format(date);
-        } finally {
-            LOCK.writeLock().unlock();
-        }
+        return getSimpleDateFormat().format(date);
+    }
 
+    /**
+     * @return маску ввода
+     */
+    private static SimpleDateFormat getSimpleDateFormat() {
+        return new SimpleDateFormat("dd.MM.yyyy");
     }
 }

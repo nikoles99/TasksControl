@@ -49,6 +49,13 @@ public class MainActivity extends Activity {
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
         loadDataFromServer();
+
+        pageNavigation.setListener(new PageNavigation.PageNavigationListener() {
+            @Override
+            public void sendMessage() {
+                loadDataFromServer();
+            }
+        });
     }
 
     private void listViewOnItemClick(ListView listView) {
@@ -98,5 +105,7 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

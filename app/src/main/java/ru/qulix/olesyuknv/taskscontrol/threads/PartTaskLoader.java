@@ -46,8 +46,8 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
 
-        if (tasks.isEmpty()) {
-            pageNavigation.getNextPage().setVisibility(View.INVISIBLE);
+        if (tasks.size() < Math.abs(pageNavigation.getFinishPosition() - pageNavigation.getStartPosition())) {
+            pageNavigation.setExistData(false);
         }
         progressBar.setVisibility(View.GONE);
         taskAdapter.updateTasksList(tasks);
