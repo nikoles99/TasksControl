@@ -39,7 +39,8 @@ public class PageNavigation extends LinearLayout {
 
     public PageNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
-        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.page_navigation, this, true);
+        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.page_navigation, this, true);
         setUpViews();
     }
 
@@ -95,7 +96,8 @@ public class PageNavigation extends LinearLayout {
     }
 
     public void setExistData(boolean exist) {
-        if(!exist){
+
+        if (!exist) {
             nextPage.setVisibility(INVISIBLE);
         }
         this.existData = exist;

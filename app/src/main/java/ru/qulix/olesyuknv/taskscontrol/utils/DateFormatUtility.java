@@ -1,10 +1,8 @@
 package ru.qulix.olesyuknv.taskscontrol.utils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Конвертирование даты по маске "dd.MM.yyyy"
