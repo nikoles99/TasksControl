@@ -3,27 +3,23 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.example.models.Task;
+
+import ru.qulix.olesyuknv.taskscontrol.R;
+import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
+import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 import android.app.Activity;
-
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.AdapterView;
-
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
-import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
-import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
-import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
 
 /**
  * Главная форма приложения.
@@ -105,7 +101,5 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
 }

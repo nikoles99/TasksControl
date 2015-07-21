@@ -1,8 +1,8 @@
-package ru.qulix.olesyuknv.taskscontrol.server;
+package com.example.server;
 
 import java.util.List;
 
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
+import com.example.models.Task;
 
 /**
  * Сервер позволяющий хранить, добавлять, удалять и изменять задачи.

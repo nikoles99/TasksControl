@@ -1,10 +1,10 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
+import com.example.server.TaskServer;
+import com.example.models.Task;
+
 import android.app.Activity;
 import android.os.AsyncTask;
-
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
-import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
 /**
  * Поток удаления задачи

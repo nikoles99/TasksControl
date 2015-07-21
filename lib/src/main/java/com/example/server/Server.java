@@ -1,4 +1,4 @@
-package ru.qulix.olesyuknv.taskscontrol.server;
+package com.example.server;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,35 +8,26 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import android.util.Log;
+import com.example.models.StatusTask;
+import com.example.models.Task;
+import com.example.utils.DateFormatUtility;
 
-import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
-import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
-
-/**
- * РњРЅРёРјС‹Р№ СЃРµСЂРІРµСЂ.
- *
- * @author QULIX-OLESYUKNV
- */
-public class StubServer implements TaskServer {
-
+public class Server implements TaskServer {
     private static final long SERVER_DELAY_MS = 1000;
-    private static final String LOG_TAG = StubServer.class.getName();
-
+    private static final String LOG_TAG = Server.class.getName();
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
-     * РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РґР°С‡Рё РЅР° СЃРµСЂРІРµСЂРµ
+     * Идентификатор задачи на сервере
      */
     private int idTask = 0;
 
     /**
-     * РҐСЂР°РЅРµРЅРёРµ РІСЃРµС… Р·Р°РґР°С‡ РЅР° СЃРµСЂРІРµСЂРµ
+     * Хранение всех задач на сервере
      */
     private Set<Task> tasksSet = new HashSet<Task>();
 
-    public StubServer() {
+    public Server() {
         initialData();
     }
 
@@ -49,7 +40,7 @@ public class StubServer implements TaskServer {
             TimeUnit.MILLISECONDS.sleep(SERVER_DELAY_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            Log.e(LOG_TAG, e.getMessage(), e);
+            //   Log.e(LOG_TAG, e.getMessage(), e);
         }
     }
 

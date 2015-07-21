@@ -1,4 +1,4 @@
-package ru.qulix.olesyuknv.taskscontrol.models;
+package com.example.models;
 
 /**
  * Статусы задач.

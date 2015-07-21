@@ -1,9 +1,10 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import android.app.Application;
+import com.example.server.TaskServer;
 
-import ru.qulix.olesyuknv.taskscontrol.server.StubServer;
-import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
+import com.example.server.StubServer;
+
+import android.app.Application;
 
 /**
  * Получение сервера.
@@ -13,9 +14,13 @@ import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 public class TasksControlApplication extends Application {
 
     private TaskServer server = new StubServer();
-
-    public TaskServer getServer() {
+ /*   public TaskServer getServer() {
         return server;
+    }*/
+
+    private TaskServer httpRequests = new HTTPRequests();
+    public TaskServer getServer() {
+        return httpRequests;
     }
 
 

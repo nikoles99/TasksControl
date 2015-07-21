@@ -1,4 +1,4 @@
-package ru.qulix.olesyuknv.taskscontrol.models;
+package com.example.models;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -46,6 +46,10 @@ public class Task implements Serializable {
         this.finishDate = finishDate;
         this.status = status;
         this.startDate = startDate;
+    }
+
+    public Task() {
+
     }
 
     public void setName(String name) {

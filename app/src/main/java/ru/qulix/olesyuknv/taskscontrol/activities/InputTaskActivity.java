@@ -3,15 +3,23 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.example.models.StatusTask;
+import com.example.models.Task;
+import com.example.server.TaskServer;
+
+import ru.qulix.olesyuknv.taskscontrol.R;
+import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
+import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import android.view.View;
-
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,17 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
-import ru.qulix.olesyuknv.taskscontrol.models.StatusTask;
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
-import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
-import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
-
 
 /**
  * Форма создания и изменения задачи.
@@ -83,7 +80,7 @@ public class InputTaskActivity extends Activity {
     }
 
     private void formInitialization() {
-
+        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
         if (task != null) {
             String name = task.getName();
             String time = String.valueOf(task.getWorkTime());
@@ -93,6 +90,7 @@ public class InputTaskActivity extends Activity {
             setButtonsVisibility(View.VISIBLE, View.INVISIBLE, View.VISIBLE);
             fillingFormFields(name, time, beginDate, endDate);
         } else {
+            task = new Task();
             setButtonsVisibility(View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
             fillingFormFields("", "", "", "");
         }

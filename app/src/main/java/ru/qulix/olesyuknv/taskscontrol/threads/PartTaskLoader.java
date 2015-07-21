@@ -2,15 +2,15 @@ package ru.qulix.olesyuknv.taskscontrol.threads;
 
 import java.util.List;
 
-import android.os.AsyncTask;
+import com.example.server.TaskServer;
+import com.example.models.Task;
 
+import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
+
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
-import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
-import ru.qulix.olesyuknv.taskscontrol.models.Task;
-import ru.qulix.olesyuknv.taskscontrol.server.TaskServer;
 
 /**
  * Поток загрузки задач
