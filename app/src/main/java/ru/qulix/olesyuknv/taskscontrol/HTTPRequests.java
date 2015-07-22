@@ -1,20 +1,15 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import com.example.models.Task;
-import com.example.server.TaskServer;
-import com.example.utils.JsonFormatUtility;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -23,10 +18,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.models.Task;
+import com.example.server.TaskServer;
+import com.example.utils.JsonFormatUtility;
+
 import android.util.Log;
 
 /**
- * ����������, ���������� ������� �� ������
+ * Контроллер, посылающий запросы на сервер;
  *
  * @author QULIX-OLESYUKNV
  */
@@ -38,10 +37,8 @@ public class HTTPRequests implements TaskServer {
     private static final String ADD = HTTPRequests.class + ".ADD";
 
     private void request(String param, Task task) {
-
-
         try {
-            URL url = new URL("http://192.168.8.10:8080/hello");
+            URL url = new URL("http://192.168.9.117:8080/server/hello");
             URLConnection connection = url.openConnection();
             connection.setDoOutput(true);
             OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
@@ -49,30 +46,34 @@ public class HTTPRequests implements TaskServer {
             Log.d("inputString", JsonFormatUtility.format(new Task()).toString());
             out.close();
         } catch (Exception e) {
-        //    Log.d("Exception", e.toString());
+            //    Log.d("Exception", e.toString());
+            System.out.print(e.toString());
         }
 
     }
 
-    private void request(String param) {
-        JSONObject json = null;
-        String str = "";
+    private List<Task>  request(String param, int start, int finish) {
         HttpResponse response;
         HttpClient myClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.9.117:8080/hello");
-
+        HttpPost httpPost = new HttpPost("http://192.168.9.117:8080/server/hello");
         try {
             response = myClient.execute(httpPost);
-            str = EntityUtils.toString(response.getEntity(), "UTF-8");
+            String str = EntityUtils.toString(response.getEntity(), "UTF-8");
             JSONArray jArray = new JSONArray(str);
-            json = jArray.getJSONObject(0);
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
+            Set<Task> taskSet = new HashSet<Task>();
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject json = jArray.getJSONObject(i);
+                Task task = JsonFormatUtility.format(json);
+                taskSet.add(task);
+            }
+            return new ArrayList<Task>(taskSet);
         } catch (IOException e) {
-        //    e.printStackTrace();
-        } catch (JSONException e) {
-         //   e.printStackTrace();
+            System.out.print(e.toString());
         }
+        catch (JSONException e) {
+            System.out.print(e.toString());
+        }
+        return new ArrayList<Task>();
     }
 
     @Override
@@ -81,9 +82,8 @@ public class HTTPRequests implements TaskServer {
     }
 
     @Override
-    public List<Task> load(int i, int i1) {
-        request(LOAD);
-        return null;
+    public List<Task> load(int start, int finish) {
+        return request(LOAD, start, finish);
     }
 
     @Override
@@ -96,30 +96,4 @@ public class HTTPRequests implements TaskServer {
         request(REMOVE, task);
     }
 
-    private static String convertStreamToString(InputStream is) {
-        /*
-         * To convert the InputStream to String we use the BufferedReader.readLine()
-         * method. We iterate until the BufferedReader return null which means
-         * there's no more data to read. Each line will appended to a StringBuilder
-         * and returned as String.
-         */
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-          //  e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-              //  e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
 }

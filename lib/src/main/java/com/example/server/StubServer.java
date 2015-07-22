@@ -31,10 +31,14 @@ public class StubServer implements TaskServer {
      */
     private int idTask = 0;
 
+    public static Set<Task> getTasksSet() {
+        return tasksSet;
+    }
+
     /**
      * Хранение всех задач на сервере
      */
-    private Set<Task> tasksSet = new HashSet<Task>();
+    private static Set<Task> tasksSet = new HashSet<Task>();
 
     public StubServer() {
         initialData();

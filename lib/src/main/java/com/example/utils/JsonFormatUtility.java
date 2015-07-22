@@ -1,7 +1,11 @@
 package com.example.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.example.models.StatusTask;
 import com.example.models.Task;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,13 +14,13 @@ import org.json.JSONObject;
  *
  * @author QULIX-OLESYUKNV
  */
-public class JsonFormatUtility {
-    private static final String ID = JsonFormatUtility.class + ".ID";
-    private static final String NAME = JsonFormatUtility.class + ".NAME";
-    private static final String WORK_TIME = JsonFormatUtility.class + ".WORK_TIME";
-    private static final String START_DATE = JsonFormatUtility.class + ".START_DATE";
-    private static final String FINISH_DATE = JsonFormatUtility.class + ".FINISH_DATE";
-    private static final String STATUS = JsonFormatUtility.class + ".STATUS";
+public  class JsonFormatUtility {
+    public static final String ID = JsonFormatUtility.class + ".ID";
+    public static final String NAME = JsonFormatUtility.class + ".NAME";
+    public static final String WORK_TIME = JsonFormatUtility.class + ".WORK_TIME";
+    public static final String START_DATE = JsonFormatUtility.class + ".START_DATE";
+    public static final String FINISH_DATE = JsonFormatUtility.class + ".FINISH_DATE";
+    public static final String STATUS = JsonFormatUtility.class + ".STATUS";
 
     public static JSONObject format(Task task) {
         JSONObject jsonObject = new JSONObject();
@@ -33,7 +37,7 @@ public class JsonFormatUtility {
         return jsonObject;
     }
 
-    public static String format(JSONObject jsonObject) {
+    public static Task format(JSONObject jsonObject) {
         try {
             String id = jsonObject.getString(ID);
             String name = jsonObject.getString(NAME);
@@ -41,13 +45,34 @@ public class JsonFormatUtility {
             String startDate = jsonObject.getString(START_DATE);
             String finishDate = jsonObject.getString(FINISH_DATE);
             String status = jsonObject.getString(STATUS);
-            return (new Task(name, Integer.parseInt(workTime), DateFormatUtility.format(startDate),
-                    DateFormatUtility.format(finishDate), StatusTask.valueOf(status))).toString();
+            Task task = new Task(name, Integer.parseInt(workTime), DateFormatUtility.format(startDate),
+                    DateFormatUtility.format(finishDate), StatusTask.valueOf(status));
+            task.setId(Integer.valueOf(id));
+            return (task);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
 
+    }
+
+    public static JSONArray format(Set<Task> tasksSet) {
+        JSONArray jsonArray = new JSONArray();
+        for(Task index: tasksSet){
+            format(index);
+            jsonArray.put(format(index));
+        }
+
+       /* for (Task index : tasksSet) {
+
+        }*/
+        return jsonArray;
+
+    }
+
+    public static Set<Task> format(JSONArray jArray) {
+        Set<Task> tasksSet = new HashSet<Task>();
+        return  tasksSet;
     }
 }
 
