@@ -14,7 +14,7 @@ import org.json.JSONObject;
  *
  * @author QULIX-OLESYUKNV
  */
-public  class JsonFormatUtility {
+public class JsonFormatUtility {
     public static final String ID = JsonFormatUtility.class + ".ID";
     public static final String NAME = JsonFormatUtility.class + ".NAME";
     public static final String WORK_TIME = JsonFormatUtility.class + ".WORK_TIME";
@@ -22,6 +22,13 @@ public  class JsonFormatUtility {
     public static final String FINISH_DATE = JsonFormatUtility.class + ".FINISH_DATE";
     public static final String STATUS = JsonFormatUtility.class + ".STATUS";
 
+    /*      "class JsonFormatUtility.ID"
+            "class JsonFormatUtility.NAME"
+            "class JsonFormatUtility.WORK_TIME"
+            "class JsonFormatUtility.START_DATE"
+            "class JsonFormatUtility.FINISH_DATE"
+            "class JsonFormatUtility.STATUS"
+*/
     public static JSONObject format(Task task) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -58,21 +65,17 @@ public  class JsonFormatUtility {
 
     public static JSONArray format(Set<Task> tasksSet) {
         JSONArray jsonArray = new JSONArray();
-        for(Task index: tasksSet){
+        for (Task index : tasksSet) {
             format(index);
             jsonArray.put(format(index));
         }
-
-       /* for (Task index : tasksSet) {
-
-        }*/
         return jsonArray;
 
     }
 
     public static Set<Task> format(JSONArray jArray) {
         Set<Task> tasksSet = new HashSet<Task>();
-        return  tasksSet;
+        return tasksSet;
     }
 }
 
