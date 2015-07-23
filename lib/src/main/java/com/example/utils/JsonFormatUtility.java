@@ -22,18 +22,18 @@ public class JsonFormatUtility {
     public static final String STATUS = JsonFormatUtility.class + ".STATUS";
 
     public static JSONObject format(Task task) {
-        JSONObject jsonObject = new JSONObject();
         try {
+            JSONObject jsonObject = new JSONObject();
             jsonObject.put(ID, String.valueOf(task.getId()));
             jsonObject.put(NAME, task.getName());
             jsonObject.put(WORK_TIME, String.valueOf(task.getWorkTime()));
             jsonObject.put(START_DATE, DateFormatUtility.format(task.getStartDate()));
             jsonObject.put(FINISH_DATE, DateFormatUtility.format(task.getFinishDate()));
             jsonObject.put(STATUS, task.getStatus());
+            return jsonObject;
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(String.format("Invalid Task format %s", task), e);
         }
-        return jsonObject;
     }
 
     public static Task format(JSONObject jsonObject) {
@@ -49,9 +49,8 @@ public class JsonFormatUtility {
             task.setId(Integer.valueOf(id));
             return (task);
         } catch (JSONException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(String.format("Invalid JSONObject format %s", jsonObject), e);
         }
-        return null;
     }
 
     public static JSONArray format(List<Task> tasksSet) {

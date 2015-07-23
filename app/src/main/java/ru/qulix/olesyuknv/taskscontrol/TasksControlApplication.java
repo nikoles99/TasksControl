@@ -11,11 +11,10 @@ import android.app.Application;
  */
 public class TasksControlApplication extends Application {
 
-    private TaskServer server = new HTTPRequests(); //new StubServer();
+    private TaskServer server = new HTTPRequests();  // or StubServer
 
     public TaskServer getServer() {
         return server;
     }
-
 
 }

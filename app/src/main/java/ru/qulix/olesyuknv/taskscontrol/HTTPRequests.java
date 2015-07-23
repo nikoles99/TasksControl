@@ -2,9 +2,9 @@ package ru.qulix.olesyuknv.taskscontrol;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -24,6 +24,7 @@ import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
 
 
+
 /**
  * Контроллер, посылающий запросы на сервер;
  *
@@ -31,78 +32,76 @@ import com.example.utils.JsonFormatUtility;
  */
 public class HTTPRequests implements TaskServer {
 
-    private void request(String param, Task task) {
-        HttpResponse response;
-        HttpClient myClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(Constants.URL);
+    private static final String URL = "http://192.168.9.117:8080/server/Servlet";
 
-        try {
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair(Constants.JSON, JsonFormatUtility.format(task)
-                    .toString()));
-            nameValuePairs.add(new BasicNameValuePair(Constants.ACTION, param));
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            response = myClient.execute(httpPost);
-
-            String str = EntityUtils.toString(response.getEntity(), "UTF-8");
-            str.toString();
-
-        } catch (IOException e) {
-            System.out.print(e.toString());
-        }
-
+    private List<NameValuePair> setRequestParams(String param, Task task) {
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair(Constants.JSON, JsonFormatUtility.format(task).toString()));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACTION, param));
+        return nameValuePairs;
     }
 
-    private List<Task> request(String param, int start, int finish) {
-        HttpResponse response;
-        HttpClient myClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(Constants.URL);
+    private List<NameValuePair> setRequestParams(String param, int start, int finish) {
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair(Constants.START_POSITION, String.valueOf(start)));
+        nameValuePairs.add(new BasicNameValuePair(Constants.FINISH_POSITION, String.valueOf(finish)));
+        nameValuePairs.add(new BasicNameValuePair(Constants.ACTION, param));
+        return nameValuePairs;
+    }
+
+    private String doRequest(List<NameValuePair> nameValuePairs) {
         try {
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair(Constants.START_POSITION,
-                    String.valueOf(start)));
-            nameValuePairs.add(new BasicNameValuePair(Constants.FINISH_POSITION,
-                    String.valueOf(finish)));
-            nameValuePairs.add(new BasicNameValuePair(Constants.ACTION, param));
+            HttpResponse response;
+            HttpClient myClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(URL);
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             response = myClient.execute(httpPost);
             String str = EntityUtils.toString(response.getEntity(), "UTF-8");
+            return str;
+        } catch (IOException e) {
+            Thread.currentThread().interrupt();
+            Logger.getLogger(HTTPRequests.class.getName()).log(Level.ALL, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    private List<Task> getListTasks(String str) {
+        try {
             JSONArray jArray = new JSONArray(str);
-            Set<Task> taskSet = new HashSet<Task>();
+            ArrayList<Task> tasks = new ArrayList<Task>();
+
             for (int i = 0; i < jArray.length(); i++) {
                 JSONObject json = jArray.getJSONObject(i);
                 Task task = JsonFormatUtility.format(json);
-                taskSet.add(task);
+                tasks.add(task);
             }
-            return new ArrayList<Task>(taskSet);
+            return tasks;
+
+        } catch (JSONException e) {
+            throw new IllegalArgumentException(String.format("Invalid String format %s", str), e);
         }
-        catch (IOException e) {
-            System.out.print(e.toString());
-        }
-        catch (JSONException e) {
-            System.out.print(e.toString());
-        }
-        return new ArrayList<Task>();
     }
+
 
     @Override
     public void update(Task task) {
-        request(Constants.UPDATE, task);
+        doRequest(setRequestParams(Constants.UPDATE, task));
     }
 
     @Override
     public List<Task> load(int start, int finish) {
-        return request(Constants.LOAD, start, finish);
+        String result = doRequest(setRequestParams(Constants.LOAD, start, finish));
+        return getListTasks(result);
     }
 
     @Override
     public void add(Task task) {
-        request(Constants.ADD, task);
+        doRequest(setRequestParams(Constants.ADD, task));
     }
 
     @Override
     public void remove(Task task) {
-        request(Constants.REMOVE, task);
+        doRequest(setRequestParams(Constants.REMOVE, task));
     }
 
 }

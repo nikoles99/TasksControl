@@ -49,11 +49,7 @@ public class Task implements Serializable {
     }
 
     public Task() {
-        this.name = "saadasd";
-        this.workTime = 1;
-        this.finishDate = new Date();
-        this.status = StatusTask.COMPLETED;
-        this.startDate = new Date();
+
     }
 
     public void setName(String name) {
