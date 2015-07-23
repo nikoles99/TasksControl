@@ -1,7 +1,6 @@
 package com.example.utils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.example.models.StatusTask;
 import com.example.models.Task;
@@ -10,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Конвертирование Task в Json и наоборот
+ * РљРѕРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёРµ Task РІ Json, Json РІ Task, List<Task> РІ JsonArray
  *
  * @author QULIX-OLESYUKNV
  */
@@ -22,19 +21,12 @@ public class JsonFormatUtility {
     public static final String FINISH_DATE = JsonFormatUtility.class + ".FINISH_DATE";
     public static final String STATUS = JsonFormatUtility.class + ".STATUS";
 
-    /*      "class JsonFormatUtility.ID"
-            "class JsonFormatUtility.NAME"
-            "class JsonFormatUtility.WORK_TIME"
-            "class JsonFormatUtility.START_DATE"
-            "class JsonFormatUtility.FINISH_DATE"
-            "class JsonFormatUtility.STATUS"
-*/
     public static JSONObject format(Task task) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(ID, task.getId());
+            jsonObject.put(ID, String.valueOf(task.getId()));
             jsonObject.put(NAME, task.getName());
-            jsonObject.put(WORK_TIME, task.getWorkTime());
+            jsonObject.put(WORK_TIME, String.valueOf(task.getWorkTime()));
             jsonObject.put(START_DATE, DateFormatUtility.format(task.getStartDate()));
             jsonObject.put(FINISH_DATE, DateFormatUtility.format(task.getFinishDate()));
             jsonObject.put(STATUS, task.getStatus());
@@ -60,10 +52,9 @@ public class JsonFormatUtility {
             e.printStackTrace();
         }
         return null;
-
     }
 
-    public static JSONArray format(Set<Task> tasksSet) {
+    public static JSONArray format(List<Task> tasksSet) {
         JSONArray jsonArray = new JSONArray();
         for (Task index : tasksSet) {
             format(index);
@@ -71,11 +62,6 @@ public class JsonFormatUtility {
         }
         return jsonArray;
 
-    }
-
-    public static Set<Task> format(JSONArray jArray) {
-        Set<Task> tasksSet = new HashSet<Task>();
-        return tasksSet;
     }
 }
 

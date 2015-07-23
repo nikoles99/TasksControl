@@ -1,7 +1,5 @@
 package com.example.server;
 
-//import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.example.models.StatusTask;
 import com.example.models.Task;
@@ -22,7 +22,6 @@ import com.example.utils.DateFormatUtility;
 public class StubServer implements TaskServer {
 
     private static final long SERVER_DELAY_MS = 1000;
-    private static final String LOG_TAG = StubServer.class.getName();
 
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -31,16 +30,14 @@ public class StubServer implements TaskServer {
      */
     private int idTask = 0;
 
-    public static Set<Task> getTasksSet() {
-        return tasksSet;
-    }
-
     /**
      * Хранение всех задач на сервере
      */
-    private static Set<Task> tasksSet = new HashSet<Task>();
+    private Set<Task> tasksSet = new HashSet<Task>();
 
-
+    public StubServer() {
+        initialData();
+    }
 
     private void generateTaskId(Task task) {
         task.setId(++idTask);
@@ -51,7 +48,7 @@ public class StubServer implements TaskServer {
             TimeUnit.MILLISECONDS.sleep(SERVER_DELAY_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-         //   Log.e(LOG_TAG, e.getMessage(), e);
+            Logger.getLogger(StubServer.class.getName()).log(Level.ALL, e.getMessage(), e);
         }
     }
 
@@ -107,7 +104,7 @@ public class StubServer implements TaskServer {
         }
     }
 
-   /* private void initialData() {
+    private void initialData() {
         tasksSet.add(createTask("name1", 1, "10.02.2011", "10.02.2015", StatusTask.COMPLETED));
         tasksSet.add(createTask("name2", 2, "1.08.2014", "10.02.2015", StatusTask.IN_PROCESS));
         tasksSet.add(createTask("name3", 3, "18.01.2010", "10.02.2015", StatusTask.NOT_STARTED));
@@ -132,7 +129,7 @@ public class StubServer implements TaskServer {
         tasksSet.add(createTask("task22", 4, "20.12.2009", "10.02.2015", StatusTask.NOT_STARTED));
         tasksSet.add(createTask("task23", 4, "20.12.2009", "10.02.2015", StatusTask.COMPLETED));
         tasksSet.add(createTask("task24", 4, "20.12.2009", "10.02.2015", StatusTask.IN_PROCESS));
-    }*/
+    }
 
     private Task createTask(String name, int workTime, String start, String finish, StatusTask statusTask) {
         Date startDate = getDate(start);

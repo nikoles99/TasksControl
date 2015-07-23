@@ -15,9 +15,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
-
 /**
  * Адаптер заполения ListView
  *
