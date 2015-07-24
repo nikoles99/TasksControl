@@ -2,11 +2,13 @@ package com.example.utils;
 
 import java.util.List;
 
-import com.example.models.StatusTask;
-import com.example.models.Task;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.models.StatusTask;
+import com.example.models.Task;
+
 
 /**
  * Конвертирование Task в Json, Json в Task, List<Task> в JsonArray

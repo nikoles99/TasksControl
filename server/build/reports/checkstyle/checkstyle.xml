@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.7">
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\Servlet.java">
+</file>
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\commands\AddTaskCommand.java">
+</file>
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\commands\Command.java">
+</file>
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\commands\LoadTasksCommand.java">
+</file>
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\commands\RemoveTaskCommand.java">
+</file>
+<file name="D:\AndroidProjects\TasksControl\server\src\main\java\com\example\OlesyukNV\myapplication\backend\commands\UpdateTaskCommand.java">
+</file>
+</checkstyle>

@@ -1,10 +1,11 @@
 package com.example.OlesyukNV.myapplication.backend.commands;
 
-import com.example.server.TaskServer;
 import org.json.JSONArray;
 
+import com.example.server.TaskServer;
+
 /**
- * Команда, удаления задачи с сервера
+ * РљРѕРјР°РЅРґР°, СѓРґР°Р»РµРЅРёСЏ Р·Р°РґР°С‡Рё СЃ СЃРµСЂРІРµСЂР°
  *
  * @author QULIX-OLESYUKNV
  */

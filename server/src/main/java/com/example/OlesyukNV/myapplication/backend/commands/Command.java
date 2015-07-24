@@ -3,22 +3,21 @@ package com.example.OlesyukNV.myapplication.backend.commands;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.example.models.Task;
-import com.example.server.TaskServer;
-import com.example.utils.JsonFormatUtility;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.models.Task;
+import com.example.server.TaskServer;
+import com.example.utils.JsonFormatUtility;
+
 /**
- *
- *
  * @author QULIX-OLESYUKNV
  */
-abstract public class Command {
+public abstract class Command {
     protected TaskServer taskServer;
 
-    abstract public JSONArray execute(String json, String start, String finish);
+    public abstract JSONArray execute(String json, String start, String finish);
 
     public Command(TaskServer taskServer) {
         this.taskServer = taskServer;

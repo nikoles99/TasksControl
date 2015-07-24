@@ -2,13 +2,15 @@ package com.example.OlesyukNV.myapplication.backend.commands;
 
 import java.util.List;
 
+import org.json.JSONArray;
+
 import com.example.models.Task;
 import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
-import org.json.JSONArray;
+
 
 /**
- * Команда, загрузки задач с сервера
+ * РљРѕРјР°РЅРґР°, Р·Р°РіСЂСѓР·РєРё Р·Р°РґР°С‡ СЃ СЃРµСЂРІРµСЂР°
  *
  * @author QULIX-OLESYUKNV
  */

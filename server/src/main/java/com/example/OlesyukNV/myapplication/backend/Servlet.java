@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+
 import com.example.Constants;
 import com.example.OlesyukNV.myapplication.backend.commands.AddTaskCommand;
 import com.example.OlesyukNV.myapplication.backend.commands.Command;
@@ -17,7 +19,6 @@ import com.example.OlesyukNV.myapplication.backend.commands.LoadTasksCommand;
 import com.example.OlesyukNV.myapplication.backend.commands.RemoveTaskCommand;
 import com.example.OlesyukNV.myapplication.backend.commands.UpdateTaskCommand;
 import com.example.server.StubServer;
-import org.json.JSONArray;
 
 /**
  * Servlet, обрабатывающий POST запросы.
@@ -26,11 +27,11 @@ import org.json.JSONArray;
  */
 public class Servlet extends HttpServlet {
 
-    private static final StubServer stubServer = new StubServer();
+    private static StubServer stubServer = new StubServer();
 
     private static final String SERVLET_MESSAGE = "Servlet is working";
 
-    private final Map<String, Command> SERVLET_COMMAND = new HashMap<String, Command>() {
+    private static final Map<String, Command> SERVLET_COMMAND = new HashMap<String, Command>() {
         {
             put(Constants.ADD, new AddTaskCommand(stubServer));
             put(Constants.REMOVE, new RemoveTaskCommand(stubServer));
@@ -40,8 +41,7 @@ public class Servlet extends HttpServlet {
     };
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.getWriter().print(SERVLET_MESSAGE);
     }
 

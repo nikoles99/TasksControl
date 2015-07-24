@@ -1,10 +1,12 @@
 package com.example.OlesyukNV.myapplication.backend.commands;
 
-import com.example.server.StubServer;
 import org.json.JSONArray;
 
+import com.example.server.StubServer;
+
+
 /**
- * Команда, добавления задачи на сервер
+ * РљРѕРјР°РЅРґР°, РґРѕР±Р°РІР»РµРЅРёСЏ Р·Р°РґР°С‡Рё РЅР° СЃРµСЂРІРµСЂ
  *
  * @author QULIX-OLESYUKNV
  */
