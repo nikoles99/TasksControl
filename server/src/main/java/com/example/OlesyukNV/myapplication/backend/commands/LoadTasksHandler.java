@@ -12,12 +12,12 @@ import com.example.utils.JsonFormatUtility;
 /**
  * Команда, загрузки задач с сервера
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class LoadTasksCommand extends Command {
+public class LoadTasksHandler extends Handler {
 
 
-    public LoadTasksCommand(TaskServer taskServer) {
+    public LoadTasksHandler(TaskServer taskServer) {
         super(taskServer);
     }
 

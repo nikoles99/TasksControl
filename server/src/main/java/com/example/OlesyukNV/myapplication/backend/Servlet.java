@@ -13,30 +13,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 
 import com.example.Constants;
-import com.example.OlesyukNV.myapplication.backend.commands.AddTaskCommand;
-import com.example.OlesyukNV.myapplication.backend.commands.Command;
-import com.example.OlesyukNV.myapplication.backend.commands.LoadTasksCommand;
-import com.example.OlesyukNV.myapplication.backend.commands.RemoveTaskCommand;
-import com.example.OlesyukNV.myapplication.backend.commands.UpdateTaskCommand;
+import com.example.OlesyukNV.myapplication.backend.commands.AddTaskHandler;
+import com.example.OlesyukNV.myapplication.backend.commands.Handler;
+import com.example.OlesyukNV.myapplication.backend.commands.LoadTasksHandler;
+import com.example.OlesyukNV.myapplication.backend.commands.RemoveTaskHandler;
+import com.example.OlesyukNV.myapplication.backend.commands.UpdateTaskHandler;
 import com.example.server.StubServer;
 
 /**
  * Servlet, обрабатывающий POST запросы.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class Servlet extends HttpServlet {
 
     private static StubServer stubServer = new StubServer();
 
-    private static final String SERVLET_MESSAGE = "Servlet is working";
+    private static final String SERVLET_MESSAGE = "Servlet is working хорошо";
 
-    private static final Map<String, Command> SERVLET_COMMAND = new HashMap<String, Command>() {
+    private static final Map<String, Handler> SERVLET_COMMAND = new HashMap<String, Handler>() {
         {
-            put(Constants.ADD, new AddTaskCommand(stubServer));
-            put(Constants.REMOVE, new RemoveTaskCommand(stubServer));
-            put(Constants.UPDATE, new UpdateTaskCommand(stubServer));
-            put(Constants.LOAD, new LoadTasksCommand(stubServer));
+            put(Constants.ADD, new AddTaskHandler(stubServer));
+            put(Constants.REMOVE, new RemoveTaskHandler(stubServer));
+            put(Constants.UPDATE, new UpdateTaskHandler(stubServer));
+            put(Constants.LOAD, new LoadTasksHandler(stubServer));
         }
     };
 

@@ -7,7 +7,7 @@ import com.example.models.Task;
 /**
  * Сервер позволяющий хранить, добавлять, удалять и изменять задачи.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public interface TaskServer {
 

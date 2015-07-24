@@ -17,7 +17,7 @@ import com.example.utils.DateFormatUtility;
 /**
  * Мнимый сервер.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class StubServer implements TaskServer {
 

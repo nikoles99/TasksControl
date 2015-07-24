@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 /**
  * Поток обновления задачи
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class UpdateTaskLoader extends AsyncTask<Task, Void, Void> {
     private TaskServer server;

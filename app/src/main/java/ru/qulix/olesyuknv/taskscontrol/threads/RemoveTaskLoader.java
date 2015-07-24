@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 /**
  * Поток удаления задачи
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class RemoveTaskLoader extends AsyncTask<Task, Void, Void> {
     private TaskServer server;

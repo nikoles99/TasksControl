@@ -31,11 +31,11 @@ import android.widget.Toast;
 /**
  * Форма создания и изменения задачи.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class InputTaskActivity extends Activity {
+public class TaskActivity extends Activity {
 
-    public static final String TASK_POSITION = InputTaskActivity.class + ".TASK_POSITION";
+    public static final String TASK_POSITION = TaskActivity.class + ".TASK_POSITION";
     public static final int REQUEST_CODE = 1;
 
     private EditText nameTask;
@@ -135,7 +135,7 @@ public class InputTaskActivity extends Activity {
         changeButtonListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                execute(new UpdateTaskLoader(getServer(), InputTaskActivity.this));
+                execute(new UpdateTaskLoader(getServer(), TaskActivity.this));
             }
         });
     }
@@ -144,7 +144,7 @@ public class InputTaskActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(new AddTaskLoader(getServer(), InputTaskActivity.this));
+                execute(new AddTaskLoader(getServer(), TaskActivity.this));
             }
         });
     }
@@ -153,7 +153,7 @@ public class InputTaskActivity extends Activity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(new RemoveTaskLoader(getServer(), InputTaskActivity.this));
+                execute(new RemoveTaskLoader(getServer(), TaskActivity.this));
             }
         });
     }
@@ -165,7 +165,7 @@ public class InputTaskActivity extends Activity {
             setResult(RESULT_OK, getIntent());
             return;
         }
-        Toast.makeText(InputTaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
     }
 
     private void setDateButtonListener(final Button date) {
@@ -176,7 +176,7 @@ public class InputTaskActivity extends Activity {
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(InputTaskActivity.this, setDatePickerListener(date, calendar), year, month, day).show();
+                new DatePickerDialog(TaskActivity.this, setDatePickerListener(date, calendar), year, month, day).show();
             }
         });
     }

@@ -7,11 +7,11 @@ import com.example.server.TaskServer;
 /**
  * Команда, удаления задачи с сервера
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class RemoveTaskCommand extends Command {
+public class RemoveTaskHandler extends Handler {
 
-    public RemoveTaskCommand(TaskServer taskServer) {
+    public RemoveTaskHandler(TaskServer taskServer) {
         super(taskServer);
     }
 

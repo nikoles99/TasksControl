@@ -10,7 +10,7 @@ import ru.qulix.olesyuknv.taskscontrol.R;
 /**
  * SplashScreen приложения.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class SplashScreenActivity extends Activity {
 

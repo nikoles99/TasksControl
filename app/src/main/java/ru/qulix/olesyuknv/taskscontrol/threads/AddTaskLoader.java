@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 /**
  * Поток добавления задачи
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class AddTaskLoader extends AsyncTask<Task, Void, Void> {
     private TaskServer server;

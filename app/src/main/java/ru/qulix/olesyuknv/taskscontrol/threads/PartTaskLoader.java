@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
  * Поток загрузки задач
  * *
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     private TaskServer server;

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Описание Задачи
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class Task implements Serializable {
 

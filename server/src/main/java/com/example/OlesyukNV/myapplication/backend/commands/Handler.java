@@ -12,14 +12,14 @@ import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
 
 /**
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public abstract class Command {
+public abstract class Handler {
     protected TaskServer taskServer;
 
     public abstract JSONArray execute(String json, String start, String finish);
 
-    public Command(TaskServer taskServer) {
+    public Handler(TaskServer taskServer) {
         this.taskServer = taskServer;
     }
 
@@ -29,7 +29,7 @@ public abstract class Command {
             return JsonFormatUtility.format(json);
         } catch (JSONException ex) {
             Thread.currentThread().interrupt();
-            Logger.getLogger(Command.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }

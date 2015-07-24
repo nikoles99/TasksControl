@@ -3,7 +3,7 @@ package com.example.models;
 /**
  * Статусы задач.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public enum StatusTask {
 

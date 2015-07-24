@@ -3,13 +3,6 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.example.models.Task;
-
-import ru.qulix.olesyuknv.taskscontrol.R;
-import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
-import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,13 +12,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import com.example.models.Task;
+import ru.qulix.olesyuknv.taskscontrol.R;
+import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
+import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
 
 /**
  * Главная форма приложения.
  * Просмотр списка задач и их изменение.
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class MainActivity extends Activity {
 
@@ -45,7 +44,6 @@ public class MainActivity extends Activity {
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
         loadDataFromServer();
-
         pageNavigation.setListener(new PageNavigation.PageNavigationListener() {
             @Override
             public void sendMessage() {
@@ -58,9 +56,9 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                intent.putExtra(InputTaskActivity.TASK_POSITION, (Serializable) taskAdapter.getItem(position));
-                startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
+                Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                intent.putExtra(TaskActivity.TASK_POSITION, (Serializable) taskAdapter.getItem(position));
+                startActivityForResult(intent, TaskActivity.REQUEST_CODE);
             }
         });
     }
@@ -70,7 +68,7 @@ public class MainActivity extends Activity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case InputTaskActivity.REQUEST_CODE:
+                case TaskActivity.REQUEST_CODE:
                     loadDataFromServer();
                     break;
             }
@@ -92,8 +90,8 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_button:
-                Intent intent = new Intent(MainActivity.this, InputTaskActivity.class);
-                startActivityForResult(intent, InputTaskActivity.REQUEST_CODE);
+                Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                startActivityForResult(intent, TaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
                 loadDataFromServer();

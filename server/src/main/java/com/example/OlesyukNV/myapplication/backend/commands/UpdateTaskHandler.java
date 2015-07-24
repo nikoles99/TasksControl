@@ -8,11 +8,11 @@ import com.example.server.TaskServer;
 /**
  * Команда, обновления задачи на сервере
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class UpdateTaskCommand extends Command {
+public class UpdateTaskHandler extends Handler {
 
-    public UpdateTaskCommand(TaskServer taskServer) {
+    public UpdateTaskHandler(TaskServer taskServer) {
         super(taskServer);
     }
 

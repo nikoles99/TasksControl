@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 14
+    compileSdkVersion 15
     buildToolsVersion "19.1.0"
 
     defaultConfig {
@@ -28,7 +28,6 @@ dependencies {
     compile project(':common')
 }
 
-apply plugin: 'checkstyle'
 check.dependsOn 'checkstyle'
 
 task checkstyle(type: Checkstyle) {

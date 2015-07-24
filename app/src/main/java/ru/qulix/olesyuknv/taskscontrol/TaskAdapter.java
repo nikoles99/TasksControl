@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Адаптер заполения ListView
+ * Отображение Task
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class TaskAdapter extends BaseAdapter {
 

@@ -8,11 +8,11 @@ import com.example.server.StubServer;
 /**
  * Команда, добавления задачи на сервер
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class AddTaskCommand extends Command {
+public class AddTaskHandler extends Handler {
 
-    public AddTaskCommand(StubServer servlet) {
+    public AddTaskHandler(StubServer servlet) {
         super(servlet);
     }
 

@@ -11,6 +11,17 @@ dependencies {
 
 
 
+check.dependsOn 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    configFile new File(rootProject.projectDir, 'checkstyle.xml')
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
 
 
 

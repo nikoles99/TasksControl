@@ -28,9 +28,9 @@ import com.example.utils.JsonFormatUtility;
 /**
  * Контроллер, посылающий запросы на сервер;
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
-public class HTTPRequests implements TaskServer {
+public class HttpTaskServer implements TaskServer {
 
     private static final String URL = "http://192.168.9.117:8080/server/Servlet";
 
@@ -60,7 +60,7 @@ public class HTTPRequests implements TaskServer {
             return str;
         } catch (IOException e) {
             Thread.currentThread().interrupt();
-            Logger.getLogger(HTTPRequests.class.getName()).log(Level.ALL, e.getMessage(), e);
+            Logger.getLogger(HttpTaskServer.class.getName()).log(Level.ALL, e.getMessage(), e);
         }
         return null;
     }

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Конвертирование даты по маске "dd.MM.yyyy"
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class DateFormatUtility {
 

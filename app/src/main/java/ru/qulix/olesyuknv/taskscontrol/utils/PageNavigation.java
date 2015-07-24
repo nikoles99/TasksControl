@@ -12,7 +12,7 @@ import ru.qulix.olesyuknv.taskscontrol.R;
 /**
  * Постраничная навигация
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class PageNavigation extends LinearLayout {
 
