@@ -3,6 +3,8 @@
 /local.properties
 .DS_Store
 /build
+/common/build
+/server/build
 /app/build
 *.iml
 /captures
