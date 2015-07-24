@@ -1,1 +1,1 @@
-include ':app', ':server', ':lib', ':java-json'
+include ':app', ':server', ':common'
