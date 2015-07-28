@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+import com.example.server.TaskServer;
 import com.example.Constants;
 import com.example.OlesyukNV.myapplication.backend.commands.AddTaskHandler;
 import com.example.OlesyukNV.myapplication.backend.commands.Handler;
@@ -27,33 +28,23 @@ import com.example.server.StubServer;
  */
 public class Servlet extends HttpServlet {
 
-    private static StubServer stubServer = new StubServer();
-
-    private static final String SERVLET_MESSAGE = "Servlet is working хорошо";
+    private TaskServer taskServer = new StubServer();
 
     private static final Map<String, Handler> SERVLET_COMMAND = new HashMap<String, Handler>() {
         {
-            put(Constants.ADD, new AddTaskHandler(stubServer));
-            put(Constants.REMOVE, new RemoveTaskHandler(stubServer));
-            put(Constants.UPDATE, new UpdateTaskHandler(stubServer));
-            put(Constants.LOAD, new LoadTasksHandler(stubServer));
+            put(Constants.ADD, new AddTaskHandler());
+            put(Constants.REMOVE, new RemoveTaskHandler());
+            put(Constants.UPDATE, new UpdateTaskHandler());
+            put(Constants.LOAD, new LoadTasksHandler());
         }
     };
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().print(SERVLET_MESSAGE);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("Cp1251");
         String action = request.getParameter(Constants.ACTION);
-        String jsonString = request.getParameter(Constants.JSON);
-        String startPosition = request.getParameter(Constants.START_POSITION);
-        String finishPosition = request.getParameter(Constants.FINISH_POSITION);
-
-        JSONArray jsonArray = SERVLET_COMMAND.get(action).execute(jsonString, startPosition, finishPosition);
+        JSONArray jsonArray = SERVLET_COMMAND.get(action).execute(request, taskServer);
+        response.setCharacterEncoding("Cp1251");
         PrintWriter out = response.getWriter();
         out.print(jsonArray);
         out.flush();

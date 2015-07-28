@@ -1,106 +1,42 @@
 package ru.qulix.olesyuknv.taskscontrol.utils;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import ru.qulix.olesyuknv.taskscontrol.R;
-
 /**
  * Постраничная навигация
  *
  * @author Q-OLN
  */
-public class PageNavigation extends LinearLayout {
-
-    /**
-     * количество записей на одной странице
-     */
-    private static final int INCREMENT = 9;
-
-    private ImageView nextPage;
-
-    private ImageView previousPage;
+public class PageNavigation {
 
     /**
      * позиция первого элемента списка
      */
-    private int startPosition = 0;
+    private static int startPosition;
 
     /**
      * позиция последнего элемента списка
      */
-    private int finishPosition = INCREMENT;
-    private boolean existData = true;
-    private PageNavigationListener listener;
+    private static int finishPosition;
 
-    public PageNavigation(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(R.layout.page_navigation, this, true);
-        setUpViews();
+    /**
+     * количество записей на одной странице
+     */
+    private static int pageSize;
+
+
+    public static void setPageSize(int size) {
+        pageSize = size;
+        startPosition = 0;
+        finishPosition = pageSize;
     }
 
-    private void setUpViews() {
-        nextPage = (ImageView) findViewById(R.id.nextPage);
-        setNextPageButtonListener(nextPage);
-
-        previousPage = (ImageView) findViewById(R.id.previousPage);
-        setPreviousPageButtonListener(previousPage);
+    public void nextPage() {
+        startPosition += pageSize;
+        finishPosition += pageSize;
     }
 
-
-    private void setNextPageButtonListener(final ImageView nextPage) {
-        nextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                previousPage.setVisibility(View.VISIBLE);
-
-                if (!existData) {
-                    setExistData(true);
-                    return;
-                }
-                nextPage();
-                listener.sendMessage();
-            }
-        });
-    }
-
-    private void setPreviousPageButtonListener(final ImageView previousPage) {
-        previousPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nextPage.setVisibility(View.VISIBLE);
-                previousPage();
-                listener.sendMessage();
-
-                if (startPosition <= 0) {
-                    previousPage.setVisibility(View.INVISIBLE);
-                    setExistData(true);
-                }
-            }
-        });
-    }
-
-    private void nextPage() {
-        startPosition += INCREMENT;
-        finishPosition += INCREMENT;
-    }
-
-    private void previousPage() {
-        startPosition -= INCREMENT;
-        finishPosition -= INCREMENT;
-    }
-
-    public void setExistData(boolean exist) {
-
-        if (!exist) {
-            nextPage.setVisibility(INVISIBLE);
-        }
-        this.existData = exist;
+    public void previousPage() {
+        startPosition -= pageSize;
+        finishPosition -= pageSize;
     }
 
     public int getFinishPosition() {
@@ -111,14 +47,4 @@ public class PageNavigation extends LinearLayout {
         return startPosition;
     }
 
-    /**
-     * Слушатель, отправляющий уведомления
-     */
-    public interface PageNavigationListener {
-        void sendMessage();
-    }
-
-    public void setListener(PageNavigationListener listener) {
-        this.listener = listener;
-    }
 }

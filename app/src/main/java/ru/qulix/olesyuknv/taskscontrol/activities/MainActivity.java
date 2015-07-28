@@ -3,22 +3,27 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import com.example.models.Task;
+
+import ru.qulix.olesyuknv.taskscontrol.HttpTaskServer;
+import ru.qulix.olesyuknv.taskscontrol.PageView;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
 /**
  * Главная форма приложения.
@@ -30,26 +35,40 @@ public class MainActivity extends Activity {
 
     private TaskAdapter taskAdapter;
     private ProgressBar progressBar;
-    private PageNavigation pageNavigation;
+    private PageView pageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        pageNavigation = (PageNavigation) findViewById(R.id.pageNavigation);
+        pageView = (PageView) findViewById(R.id.pageNavigation);
         ListView listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
 
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
-        loadDataFromServer();
-        pageNavigation.setListener(new PageNavigation.PageNavigationListener() {
+
+        pageView.setListener(new PageView.NavigationListener() {
             @Override
             public void sendMessage() {
                 loadDataFromServer();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setAppParams();
+        loadDataFromServer();
+    }
+
+    private void setAppParams() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PageNavigation.setPageSize(Integer.valueOf(sharedPreferences.getString("PAGE_SIZE", "9").trim()));
+        HttpTaskServer.setUrl(sharedPreferences.getString("URL", "").trim());
+        pageView.setDefaultParams();
     }
 
     private void listViewOnItemClick(ListView listView) {
@@ -77,8 +96,9 @@ public class MainActivity extends Activity {
 
     public void loadDataFromServer() {
         new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter, pageNavigation).execute();
+                taskAdapter, pageView).execute();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,6 +115,9 @@ public class MainActivity extends Activity {
                 break;
             case R.id.update_button:
                 loadDataFromServer();
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

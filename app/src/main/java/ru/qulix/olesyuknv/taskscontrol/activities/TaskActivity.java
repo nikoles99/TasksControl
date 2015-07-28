@@ -51,8 +51,14 @@ public class TaskActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_task);
+        setContentView(R.layout.activity_task);
 
+        initializationViews();
+        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
+        formInitialization(task);
+    }
+
+    private void initializationViews() {
         nameTask = (EditText) findViewById(R.id.nameTask);
         workTime = (EditText) findViewById(R.id.workHours);
 
@@ -66,59 +72,74 @@ public class TaskActivity extends Activity {
         setSpinnerAdapter(statusWork);
 
         deleteButton = (ImageView) findViewById(R.id.deleteButton);
-        setDeleteButtonListener(deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                execute(new RemoveTaskLoader(getServer(), TaskActivity.this));
+            }
+        });
 
         saveButton = (ImageView) findViewById(R.id.addTaskButton);
-        setSaveButtonListener(saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                execute(new AddTaskLoader(getServer(), TaskActivity.this));
+            }
+        });
 
         changeButton = (ImageView) findViewById(R.id.changeTaskButton);
-        setChangeButtonListener(changeButton);
-
-        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
-
-        formInitialization();
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                execute(new UpdateTaskLoader(getServer(), TaskActivity.this));
+            }
+        });
     }
 
-    private void formInitialization() {
-        task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
+    private void formInitialization(Task task) {
+        boolean isAddingForm;
         if (task != null) {
-            String name = task.getName();
-            String time = String.valueOf(task.getWorkTime());
-            String beginDate = DateFormatUtility.format(task.getStartDate());
-            String endDate = DateFormatUtility.format(task.getFinishDate());
-
-            setButtonsVisibility(View.VISIBLE, View.INVISIBLE, View.VISIBLE);
-            fillingFormFields(name, time, beginDate, endDate);
+            setTask(task);
+            isAddingForm = true;
         } else {
-            task = new Task();
-            setButtonsVisibility(View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
-            fillingFormFields("", "", "", "");
+            this.task = new Task();
+            isAddingForm = false;
         }
+        setButtonsVisibility(isAddingForm);
     }
 
-    private void fillingFormFields(String name, String time, String beginDate, String endDate) {
-        nameTask.setText(name);
-        workTime.setText(time);
-        startDate.setText(beginDate);
-        finishDate.setText(endDate);
-    }
-
-    private void setButtonsVisibility(int deleteButtonVisibility, int saveButtonVisibility, int changeButtonVisibility) {
-        deleteButton.setVisibility(deleteButtonVisibility);
-        saveButton.setVisibility(saveButtonVisibility);
-        changeButton.setVisibility(changeButtonVisibility);
+    private void setTask(Task task) {
+        nameTask.setText(task.getName());
+        workTime.setText(String.valueOf(this.task.getWorkTime()));
+        startDate.setText(DateFormatUtility.format(this.task.getStartDate()));
+        finishDate.setText(DateFormatUtility.format(this.task.getFinishDate()));
     }
 
     private Task getTask() {
-        task.setName(nameTask.getText().toString());
-        task.setWorkTime(Integer.parseInt(workTime.getText().toString()));
-        task.setStartDate(DateFormatUtility.format(startDate.getText().toString()));
-        task.setFinishDate(DateFormatUtility.format(finishDate.getText().toString()));
-        task.setStatus((StatusTask) statusWork.getSelectedItem());
-        return task;
+        if (isCorrectInput()) {
+            task.setName(nameTask.getText().toString());
+            task.setWorkTime(Integer.parseInt(workTime.getText().toString()));
+            task.setStartDate(DateFormatUtility.format(startDate.getText().toString()));
+            task.setFinishDate(DateFormatUtility.format(finishDate.getText().toString()));
+            task.setStatus((StatusTask) statusWork.getSelectedItem());
+            return task;
+        }
+        return null;
     }
 
-    private boolean isFieldsEmpty() {
+    private void setButtonsVisibility(boolean isAddingForm) {
+        if (isAddingForm) {
+            deleteButton.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.INVISIBLE);
+            changeButton.setVisibility(View.VISIBLE);
+        } else {
+            deleteButton.setVisibility(View.INVISIBLE);
+            saveButton.setVisibility(View.VISIBLE);
+            changeButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private boolean isCorrectInput() {
         return !(TextUtils.isEmpty(workTime.getText()) ||
                 TextUtils.isEmpty(nameTask.getText()) ||
                 TextUtils.isEmpty(startDate.getText()) ||
@@ -131,41 +152,16 @@ public class TaskActivity extends Activity {
         return ((TasksControlApplication) getApplicationContext()).getServer();
     }
 
-    private void setChangeButtonListener(ImageView changeButtonListener) {
-        changeButtonListener.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                execute(new UpdateTaskLoader(getServer(), TaskActivity.this));
-            }
-        });
-    }
-
-    private void setSaveButtonListener(ImageView saveButton) {
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                execute(new AddTaskLoader(getServer(), TaskActivity.this));
-            }
-        });
-    }
-
-    private void setDeleteButtonListener(ImageView deleteButton) {
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                execute(new RemoveTaskLoader(getServer(), TaskActivity.this));
-            }
-        });
-    }
-
     private void execute(AsyncTask<Task, Void, Void> thread) {
-        if (isFieldsEmpty()) {
-            Task task = getTask();
+        Task task = getTask();
+
+        if (task != null) {
             thread.execute(task);
             setResult(RESULT_OK, getIntent());
-            return;
         }
-        Toast.makeText(TaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+        else {
+            Toast.makeText(TaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setDateButtonListener(final Button date) {

@@ -1,6 +1,9 @@
 package com.example.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,15 +16,39 @@ import com.example.models.Task;
 /**
  * Конвертирование Task в Json, Json в Task, List<Task> в JsonArray
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class JsonFormatUtility {
-    public static final String ID = JsonFormatUtility.class + ".ID";
-    public static final String NAME = JsonFormatUtility.class + ".NAME";
-    public static final String WORK_TIME = JsonFormatUtility.class + ".WORK_TIME";
-    public static final String START_DATE = JsonFormatUtility.class + ".START_DATE";
-    public static final String FINISH_DATE = JsonFormatUtility.class + ".FINISH_DATE";
-    public static final String STATUS = JsonFormatUtility.class + ".STATUS";
+
+    /**
+     * Парараметр JSON обьекта, для хранения идентификатора задачи
+     */
+    private static final String ID = "ID";
+
+    /**
+     * Парараметр JSON обьекта, для хранения наименования задачи
+     */
+    private static final String NAME = "NAME";
+
+    /**
+     * Парараметр JSON обьекта, для хранения времени на выполнения задачи
+     */
+    private static final String WORK_TIME = "WORK_TIME";
+
+    /**
+     * Парараметр JSON обьекта, для хранения начальной даты выполнения задачи
+     */
+    private static final String START_DATE = "START_DATE";
+
+    /**
+     * Парараметр JSON обьекта, для хранения конечной даты выполнения задачи
+     */
+    private static final String FINISH_DATE = "FINISH_DATE";
+
+    /**
+     * Парараметр JSON обьекта, для хранения статуса задачи
+     */
+    private static final String STATUS = "STATUS";
 
     public static JSONObject format(Task task) {
         try {
@@ -63,6 +90,29 @@ public class JsonFormatUtility {
         }
         return jsonArray;
 
+    }
+
+    public static List<Task> getListTasks(String str) throws JSONException {
+        JSONArray jArray = new JSONArray(str);
+        ArrayList<Task> tasks = new ArrayList<Task>();
+
+        for (int i = 0; i < jArray.length(); i++) {
+            JSONObject json = jArray.getJSONObject(i);
+            Task task = JsonFormatUtility.format(json);
+            tasks.add(task);
+        }
+        return tasks;
+    }
+
+    public static Task format(String jsonString) {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            return JsonFormatUtility.format(json);
+        } catch (JSONException ex) {
+            Thread.currentThread().interrupt();
+            Logger.getLogger(JsonFormatUtility.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
     }
 }
 

@@ -105,7 +105,7 @@ public class StubServer implements TaskServer {
     }
 
     private void initialData() {
-        tasksSet.add(createTask("name1", 1, "10.02.2011", "10.02.2015", StatusTask.COMPLETED));
+        tasksSet.add(createTask("никита", 1, "10.02.2011", "10.02.2015", StatusTask.COMPLETED));
         tasksSet.add(createTask("name2", 2, "1.08.2014", "10.02.2015", StatusTask.IN_PROCESS));
         tasksSet.add(createTask("name3", 3, "18.01.2010", "10.02.2015", StatusTask.NOT_STARTED));
         tasksSet.add(createTask("name4", 4, "20.12.2009", "10.02.2015", StatusTask.POSTPONED));

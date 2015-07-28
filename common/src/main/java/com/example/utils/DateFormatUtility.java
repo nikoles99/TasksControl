@@ -7,9 +7,11 @@ import java.util.Date;
 /**
  * Конвертирование даты по маске "dd.MM.yyyy"
  *
- * @author QULIX-OLESYUKNV
+ * @author Q-OLN
  */
 public class DateFormatUtility {
+
+    private static final String MASK = "dd.MM.yyyy";
 
     /**
      * Преобразование Строки в Дату
@@ -18,7 +20,7 @@ public class DateFormatUtility {
         try {
             return getSimpleDateFormat().parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException(String.format("Invalid date format %s expected 'dd.MM.yyyy'", date), e);
+            throw new IllegalArgumentException(String.format("Invalid date format %s expected '" + MASK + "'", date), e);
         }
     }
 
@@ -33,6 +35,6 @@ public class DateFormatUtility {
      * @return маску ввода
      */
     private static SimpleDateFormat getSimpleDateFormat() {
-        return new SimpleDateFormat("dd.MM.yyyy");
+        return new SimpleDateFormat(MASK);
     }
 }

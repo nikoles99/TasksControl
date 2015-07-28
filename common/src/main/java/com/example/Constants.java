@@ -6,15 +6,44 @@ package com.example;
  * @author Q-OLN
  */
 public class Constants {
-    public static final String JSON = "JSON";
+
+    /**
+     * Парметр HTTP запроса - задача, передаваемая на сервер
+     */
+    public static final String ENTITY = "JSON";
+
+    /**
+     * Парметр HTTP запроса -  выбора действия на сервере
+     */
     public static final String ACTION = "ACTION";
 
+    /**
+     * Парметр HTTP запроса -  обновление задачи
+     */
     public static final String UPDATE = ".UPDATE";
+
+    /**
+     * Парметр HTTP запроса -  удаление задачи
+     */
     public static final String REMOVE = "REMOVE";
+
+    /**
+     * Парметр HTTP запроса - загрузка задач
+     */
     public static final String LOAD = "LOAD";
+
+    /**
+     * Парметр HTTP запроса - добавление задачи
+     */
     public static final String ADD = "ADD";
 
+    /**
+     *  Начальная позиция загрузки задач с сервера
+     */
     public static final String START_POSITION = "START_POSITION";
-    public static final String FINISH_POSITION = "FINISH_POSITION";
 
+    /**
+     * Конечная позиция загрузки задач с сервера
+     */
+    public static final String FINISH_POSITION = "FINISH_POSITION";
 }
