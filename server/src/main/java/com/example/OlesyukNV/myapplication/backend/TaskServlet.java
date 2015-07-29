@@ -1,7 +1,6 @@
 package com.example.OlesyukNV.myapplication.backend;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,14 +35,13 @@ public class TaskServlet extends HttpServlet {
             put(Constants.LOAD, new LoadTasksHandler());
         }
     };
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(Constants.ACTION);
         String tasks = SERVLET_COMMAND.get(action).execute(request, taskServer);
-        PrintWriter out = response.getWriter();
-        out.print(tasks);
-        out.flush();
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(tasks.getBytes());
     }
 }
 

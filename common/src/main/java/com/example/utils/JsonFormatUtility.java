@@ -95,8 +95,7 @@ public class JsonFormatUtility {
             ArrayList<Task> tasks = new ArrayList<Task>();
 
             for (int i = 0; i < jArray.length(); i++) {
-                JSONObject json = null;
-                json = jArray.getJSONObject(i);
+                JSONObject json  = jArray.getJSONObject(i);
                 Task task = JsonFormatUtility.format(json);
                 tasks.add(task);
             }

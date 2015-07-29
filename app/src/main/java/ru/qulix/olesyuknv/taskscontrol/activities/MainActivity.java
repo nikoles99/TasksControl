@@ -43,7 +43,6 @@ public class MainActivity extends Activity {
         pageView = (PageView) findViewById(R.id.pageNavigation);
         ListView listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
-
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
 
