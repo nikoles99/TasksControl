@@ -10,7 +10,7 @@ import android.app.Application;
  */
 public class TasksControlApplication extends Application {
 
-    private TaskServer server = new HttpTaskServer();  // or StubServer
+    private TaskServer server = new HttpTaskServer(TasksControlApplication.this);  // or StubServer
 
     public TaskServer getServer() {
         return server;

@@ -5,46 +5,16 @@ package ru.qulix.olesyuknv.taskscontrol.utils;
  *
  * @author Q-OLN
  */
-public class PageNavigation {
+public interface PageNavigation {
 
     /**
-     * позиция первого элемента списка
+     * переход на следующую страницу
      */
-    private static int startPosition;
+    void nextPage();
 
     /**
-     * позиция последнего элемента списка
+     * переход на предыдущую страницу
      */
-    private static int finishPosition;
-
-    /**
-     * количество записей на одной странице
-     */
-    private static int pageSize;
-
-
-    public static void setPageSize(int size) {
-        pageSize = size;
-        startPosition = 0;
-        finishPosition = pageSize;
-    }
-
-    public void nextPage() {
-        startPosition += pageSize;
-        finishPosition += pageSize;
-    }
-
-    public void previousPage() {
-        startPosition -= pageSize;
-        finishPosition -= pageSize;
-    }
-
-    public int getFinishPosition() {
-        return finishPosition;
-    }
-
-    public int getStartPosition() {
-        return startPosition;
-    }
+    void previousPage();
 
 }

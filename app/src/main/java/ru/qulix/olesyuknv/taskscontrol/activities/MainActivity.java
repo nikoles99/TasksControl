@@ -5,13 +5,11 @@ import java.util.ArrayList;
 
 import com.example.models.Task;
 
-import ru.qulix.olesyuknv.taskscontrol.HttpTaskServer;
 import ru.qulix.olesyuknv.taskscontrol.PageView;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -66,8 +64,7 @@ public class MainActivity extends Activity {
 
     private void setAppParams() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PageNavigation.setPageSize(Integer.valueOf(sharedPreferences.getString("PAGE_SIZE", "9").trim()));
-        HttpTaskServer.setUrl(sharedPreferences.getString("URL", "").trim());
+        pageView.setPageSize(Integer.valueOf(sharedPreferences.getString("PAGE_SIZE", "9").trim()));
         pageView.setDefaultParams();
     }
 

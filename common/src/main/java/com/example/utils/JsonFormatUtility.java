@@ -2,8 +2,6 @@ package com.example.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,7 +9,6 @@ import org.json.JSONObject;
 
 import com.example.models.StatusTask;
 import com.example.models.Task;
-
 
 /**
  * Конвертирование Task в Json, Json в Task, List<Task> в JsonArray
@@ -92,27 +89,30 @@ public class JsonFormatUtility {
 
     }
 
-    public static List<Task> getListTasks(String str) throws JSONException {
-        JSONArray jArray = new JSONArray(str);
-        ArrayList<Task> tasks = new ArrayList<Task>();
+    public static List<Task> getListTasks(String str) {
+        try {
+            JSONArray jArray = new JSONArray(str);
+            ArrayList<Task> tasks = new ArrayList<Task>();
 
-        for (int i = 0; i < jArray.length(); i++) {
-            JSONObject json = jArray.getJSONObject(i);
-            Task task = JsonFormatUtility.format(json);
-            tasks.add(task);
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject json = null;
+                json = jArray.getJSONObject(i);
+                Task task = JsonFormatUtility.format(json);
+                tasks.add(task);
+            }
+            return tasks;
+        } catch (JSONException e) {
+            throw new IllegalArgumentException(String.format("Invalid String format %s", str), e);
         }
-        return tasks;
     }
 
     public static Task format(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);
             return JsonFormatUtility.format(json);
-        } catch (JSONException ex) {
-            Thread.currentThread().interrupt();
-            Logger.getLogger(JsonFormatUtility.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (JSONException e) {
+            throw new IllegalArgumentException(String.format("Invalid String format %s", jsonString), e);
         }
-        return null;
     }
 }
 

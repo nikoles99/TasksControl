@@ -6,13 +6,13 @@ import java.util.Date;
 import com.example.models.StatusTask;
 import com.example.models.Task;
 import com.example.server.TaskServer;
+import com.example.utils.DateFormatUtility;
 
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.utils.DateFormatUtility;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -97,18 +97,16 @@ public class TaskActivity extends Activity {
     }
 
     private void formInitialization(Task task) {
-        boolean isAddingForm;
-        if (task != null) {
+        if (isTaskExist(task)) {
             setTask(task);
-            isAddingForm = true;
         } else {
             this.task = new Task();
-            isAddingForm = false;
         }
-        setButtonsVisibility(isAddingForm);
+        setButtonsVisibility(task);
     }
 
     private void setTask(Task task) {
+        this.task = task;
         nameTask.setText(task.getName());
         workTime.setText(String.valueOf(this.task.getWorkTime()));
         startDate.setText(DateFormatUtility.format(this.task.getStartDate()));
@@ -127,16 +125,14 @@ public class TaskActivity extends Activity {
         return null;
     }
 
-    private void setButtonsVisibility(boolean isAddingForm) {
-        if (isAddingForm) {
-            deleteButton.setVisibility(View.VISIBLE);
-            saveButton.setVisibility(View.INVISIBLE);
-            changeButton.setVisibility(View.VISIBLE);
-        } else {
-            deleteButton.setVisibility(View.INVISIBLE);
-            saveButton.setVisibility(View.VISIBLE);
-            changeButton.setVisibility(View.INVISIBLE);
-        }
+    private void setButtonsVisibility(Task task) {
+        deleteButton.setVisibility(isTaskExist(task) ? View.VISIBLE : View.INVISIBLE);
+        saveButton.setVisibility((isTaskExist(task)) ? View.INVISIBLE : View.VISIBLE);
+        changeButton.setVisibility((isTaskExist(task)) ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private boolean isTaskExist(Task task) {
+        return task != null;
     }
 
     private boolean isCorrectInput() {
@@ -155,11 +151,10 @@ public class TaskActivity extends Activity {
     private void execute(AsyncTask<Task, Void, Void> thread) {
         Task task = getTask();
 
-        if (task != null) {
+        if (isTaskExist(task)) {
             thread.execute(task);
             setResult(RESULT_OK, getIntent());
-        }
-        else {
+        } else {
             Toast.makeText(TaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
         }
     }

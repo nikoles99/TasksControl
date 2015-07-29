@@ -1,9 +1,5 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.example.models.Task;
 import com.example.server.TaskServer;
 
@@ -27,11 +23,7 @@ public class AddTaskLoader extends AsyncTask<Task, Void, Void> {
     @Override
     protected Void doInBackground(Task... tasks) {
         for (Task task : tasks) {
-            try {
-                server.add(task);
-            } catch (IOException e) {
-                Logger.getLogger(AddTaskLoader.class.getName()).log(Level.ALL, e.getMessage(), e);
-            }
+            server.add(task);
         }
         return null;
     }

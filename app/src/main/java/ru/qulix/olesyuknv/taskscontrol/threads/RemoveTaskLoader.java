@@ -1,11 +1,7 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.example.server.TaskServer;
 import com.example.models.Task;
+import com.example.server.TaskServer;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -27,11 +23,7 @@ public class RemoveTaskLoader extends AsyncTask<Task, Void, Void> {
     @Override
     protected Void doInBackground(Task... tasks) {
         for (Task task : tasks) {
-            try {
-                server.remove(task);
-            } catch (IOException e) {
-                Logger.getLogger(RemoveTaskLoader.class.getName()).log(Level.ALL, e.getMessage(), e);
-            }
+            server.remove(task);
         }
         return null;
     }

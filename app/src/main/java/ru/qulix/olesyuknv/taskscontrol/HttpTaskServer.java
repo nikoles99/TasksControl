@@ -4,21 +4,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import com.example.Constants;
 import com.example.models.Task;
 import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Контроллер, посылающий запросы на сервер;
@@ -27,9 +34,20 @@ import com.example.utils.JsonFormatUtility;
  */
 public class HttpTaskServer implements TaskServer {
 
-    private static String url;
+    private static final int TIMEOUT_MS = 5 * 1000;
 
-    private HttpClient httpClient = new DefaultHttpClient();
+    public static final String LOG_TAG = HttpTaskServer.class.getName();
+
+    private Context context;
+
+    private HttpClient httpClient;
+
+    public HttpTaskServer(Context context) {
+        this.context = context;
+        HttpParams httpParameters = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_MS);
+        httpClient = new DefaultHttpClient(httpParameters);
+    }
 
     private List<NameValuePair> setRequestParams(String param, Task task) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -47,36 +65,60 @@ public class HttpTaskServer implements TaskServer {
     }
 
     private String doRequest(List<NameValuePair> nameValuePairs) throws IOException {
-        HttpPost httpPost = new HttpPost(url);
+        HttpPost httpPost = new HttpPost(getUrl(context));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
-        String result = EntityUtils.toString(response.getEntity(), "UTF-8");
-        return result;
+
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+            return result;
+        } else {
+            Log.e(LOG_TAG, "Error connection with server");
+            return null;
+        }
     }
 
-    public static void setUrl(String url) {
-        HttpTaskServer.url = url;
+
+    public String getUrl(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString("URL", "http://192.168.9.117:8080/server/Servlet").trim();
     }
 
     @Override
-    public void update(Task task) throws IOException {
-        doRequest(setRequestParams(Constants.UPDATE, task));
+    public void update(Task task) {
+        try {
+            doRequest(setRequestParams(Constants.UPDATE, task));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
     }
 
     @Override
-    public List<Task> load(int start, int finish) throws IOException, JSONException {
-        String result = doRequest(setRequestParams(Constants.LOAD, start, finish));
+    public List<Task> load(int start, int finish) {
+        String result = null;
+        try {
+            result = doRequest(setRequestParams(Constants.LOAD, start, finish));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
         return JsonFormatUtility.getListTasks(result);
     }
 
     @Override
-    public void add(Task task) throws IOException {
-        doRequest(setRequestParams(Constants.ADD, task));
+    public void add(Task task) {
+        try {
+            doRequest(setRequestParams(Constants.ADD, task));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
     }
 
     @Override
-    public void remove(Task task) throws IOException {
-        doRequest(setRequestParams(Constants.REMOVE, task));
+    public void remove(Task task) {
+        try {
+            doRequest(setRequestParams(Constants.REMOVE, task));
+        } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
     }
-
 }

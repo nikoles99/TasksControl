@@ -9,10 +9,9 @@ import android.widget.LinearLayout;
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
 /**
- *
  * @author Q-OLN
  */
-public class PageView extends LinearLayout {
+public class PageView extends LinearLayout implements PageNavigation {
 
     private ImageView nextPage;
 
@@ -22,11 +21,23 @@ public class PageView extends LinearLayout {
 
     private NavigationListener listener;
 
-    private PageNavigation pageNavigation;
+    /**
+     * позиция первого элемента списка
+     */
+    private int startPosition;
+
+    /**
+     * позиция последнего элемента списка
+     */
+    private int finishPosition;
+
+    /**
+     * количество записей на одной странице
+     */
+    private int pageSize;
 
     public PageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        pageNavigation = new PageNavigation();
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.page_navigation, this, true);
         setUpViews();
@@ -57,21 +68,20 @@ public class PageView extends LinearLayout {
             setExistData(true);
             return;
         }
-        pageNavigation.nextPage();
+        nextPage();
         listener.sendMessage();
     }
 
     private void previousPageOnClick() {
         nextPage.setVisibility(View.VISIBLE);
-        pageNavigation.previousPage();
+        previousPage();
         listener.sendMessage();
 
-        if (pageNavigation.getStartPosition() <= 0) {
+        if (getStartPosition() <= 0) {
             previousPage.setVisibility(View.INVISIBLE);
             setExistData(true);
         }
     }
-
 
     public void setExistData(boolean exist) {
 
@@ -81,14 +91,36 @@ public class PageView extends LinearLayout {
         this.existData = exist;
     }
 
-    public PageNavigation getPageNavigation() {
-        return pageNavigation;
-    }
-
     public void setDefaultParams() {
         setExistData(true);
         nextPage.setVisibility(VISIBLE);
         previousPage.setVisibility(INVISIBLE);
+        startPosition = 0;
+        finishPosition = pageSize;
+    }
+
+    public void setPageSize(int size) {
+        pageSize = size;
+    }
+
+    @Override
+    public void nextPage() {
+        startPosition += pageSize;
+        finishPosition += pageSize;
+    }
+
+    @Override
+    public void previousPage() {
+        startPosition -= pageSize;
+        finishPosition -= pageSize;
+    }
+
+    public int getFinishPosition() {
+        return finishPosition;
+    }
+
+    public int getStartPosition() {
+        return startPosition;
     }
 
     /**
@@ -102,3 +134,5 @@ public class PageView extends LinearLayout {
         this.listener = listener;
     }
 }
+
+

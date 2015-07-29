@@ -55,57 +55,46 @@ public class StubServer implements TaskServer {
     @Override
     public List<Task> load(int start, int finish) {
         imitationServerWork();
-        try {
-            lock.readLock().lock();
-            if (start < 0 || start > tasksSet.size()) {
-                return new ArrayList<Task>();
-            }
-            List<Task> list = new ArrayList<Task>(tasksSet);
-            return list.subList(start, Math.min(finish, list.size()));
-        } finally {
-            lock.readLock().unlock();
+
+        if (start < 0 || start > tasksSet.size()) {
+            return new ArrayList<Task>();
         }
+        List<Task> list = new ArrayList<Task>(tasksSet);
+        return list.subList(start, Math.min(finish, list.size()));
+
     }
 
     @Override
     public void add(Task task) {
         imitationServerWork();
-        try {
-            lock.writeLock().lock();
-            generateTaskId(task);
-            tasksSet.add(task);
-        } finally {
-            lock.writeLock().unlock();
-        }
+
+        lock.writeLock().lock();
+        generateTaskId(task);
+        tasksSet.add(task);
+
     }
 
     @Override
     public void update(Task task) {
         imitationServerWork();
-        try {
-            lock.writeLock().lock();
 
-            if (tasksSet.remove(task)) {
-                tasksSet.add(task);
-            }
-        } finally {
-            lock.writeLock().unlock();
+        if (tasksSet.remove(task)) {
+            tasksSet.add(task);
         }
+
     }
 
     @Override
     public void remove(Task task) {
         imitationServerWork();
-        try {
-            lock.writeLock().lock();
-            tasksSet.remove(task);
-        } finally {
-            lock.writeLock().unlock();
-        }
+
+        lock.writeLock().lock();
+        tasksSet.remove(task);
+
     }
 
     private void initialData() {
-        tasksSet.add(createTask("никита", 1, "10.02.2011", "10.02.2015", StatusTask.COMPLETED));
+        tasksSet.add(createTask("Русский", 1, "10.02.2011", "10.02.2015", StatusTask.COMPLETED));
         tasksSet.add(createTask("name2", 2, "1.08.2014", "10.02.2015", StatusTask.IN_PROCESS));
         tasksSet.add(createTask("name3", 3, "18.01.2010", "10.02.2015", StatusTask.NOT_STARTED));
         tasksSet.add(createTask("name4", 4, "20.12.2009", "10.02.2015", StatusTask.POSTPONED));

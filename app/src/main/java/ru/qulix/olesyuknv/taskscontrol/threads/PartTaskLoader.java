@@ -1,12 +1,7 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.json.JSONException;
 
 import com.example.models.Task;
 import com.example.server.TaskServer;
@@ -46,37 +41,25 @@ public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
     @Override
     protected List<Task> doInBackground(Void... voids) {
         try {
-            return server.load(pageView.getPageNavigation().getStartPosition(),
-                    pageView.getPageNavigation().getFinishPosition());
-        } catch (JSONException e) {
-            Logger.getLogger(PartTaskLoader.class.getName()).log(Level.ALL, e.getMessage(), e);
+            return server.load(pageView.getStartPosition(), pageView.getFinishPosition());
+        } catch (RuntimeException e) {
+            return new ArrayList<Task>();
         }
-        catch (IOException e) {
-            Logger.getLogger(PartTaskLoader.class.getName()).log(Level.ALL, e.getMessage(), e);
-            publishProgress();
-        }
-        return new ArrayList<Task>();
     }
 
     @Override
     protected void onPostExecute(List<Task> tasks) {
         super.onPostExecute(tasks);
 
-        if (tasks.size() < Math.abs(pageView.getPageNavigation().getFinishPosition() -
-                pageView.getPageNavigation().getStartPosition())) {
-            pageView.setExistData(false);
-        }
         if (tasks.isEmpty()) {
             Toast.makeText(pageView.getContext().getApplicationContext(), "Данных нет", Toast.LENGTH_SHORT).show();
+        }
+        if (tasks.size() < Math.abs(pageView.getFinishPosition() - pageView.getStartPosition())) {
+            pageView.setExistData(false);
         }
 
         progressBar.setVisibility(View.GONE);
         taskAdapter.updateTasksList(tasks);
     }
 
-    @Override
-    protected void onProgressUpdate(Void... voids) {
-        super.onProgressUpdate();
-        Toast.makeText(pageView.getContext().getApplicationContext(), "Ошибка соеденения с сервером", Toast.LENGTH_SHORT).show();
-    }
 }
