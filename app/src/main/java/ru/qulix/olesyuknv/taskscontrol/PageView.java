@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
 /**
@@ -69,13 +71,13 @@ public class PageView extends LinearLayout implements PageNavigation {
             return;
         }
         nextPage();
-        listener.sendMessage();
+        listener.onPage();
     }
 
     private void previousPageOnClick() {
         nextPage.setVisibility(View.VISIBLE);
         previousPage();
-        listener.sendMessage();
+        listener.onPage();
 
         if (getStartPosition() <= 0) {
             previousPage.setVisibility(View.INVISIBLE);
@@ -91,16 +93,14 @@ public class PageView extends LinearLayout implements PageNavigation {
         this.existData = exist;
     }
 
-    public void setDefaultParams() {
+    @Override
+    public void setPageSize(int size) {
+        pageSize = size;
         setExistData(true);
         nextPage.setVisibility(VISIBLE);
         previousPage.setVisibility(INVISIBLE);
         startPosition = 0;
         finishPosition = pageSize;
-    }
-
-    public void setPageSize(int size) {
-        pageSize = size;
     }
 
     @Override
@@ -115,20 +115,16 @@ public class PageView extends LinearLayout implements PageNavigation {
         finishPosition -= pageSize;
     }
 
+    @Override
     public int getFinishPosition() {
         return finishPosition;
     }
 
+    @Override
     public int getStartPosition() {
         return startPosition;
     }
 
-    /**
-     * Слушатель, отправляющий уведомления
-     */
-    public interface NavigationListener {
-        void sendMessage();
-    }
 
     public void setListener(NavigationListener listener) {
         this.listener = listener;

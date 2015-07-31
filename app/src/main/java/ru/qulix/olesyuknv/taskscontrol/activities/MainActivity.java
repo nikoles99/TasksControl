@@ -2,18 +2,22 @@ package ru.qulix.olesyuknv.taskscontrol.activities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.example.exceptions.HttpConnectionException;
 import com.example.models.Task;
+import com.example.server.TaskServer;
 
 import ru.qulix.olesyuknv.taskscontrol.PageView;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
-import ru.qulix.olesyuknv.taskscontrol.threads.PartTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -22,6 +26,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 /**
  * Главная форма приложения.
@@ -46,9 +51,9 @@ public class MainActivity extends Activity {
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
 
-        pageView.setListener(new PageView.NavigationListener() {
+        pageView.setListener(new NavigationListener() {
             @Override
-            public void sendMessage() {
+            public void onPage() {
                 loadDataFromServer();
             }
         });
@@ -64,7 +69,6 @@ public class MainActivity extends Activity {
     private void setAppParams() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         pageView.setPageSize(Integer.valueOf(sharedPreferences.getString("PAGE_SIZE", "9").trim()));
-        pageView.setDefaultParams();
     }
 
     private void listViewOnItemClick(ListView listView) {
@@ -91,8 +95,7 @@ public class MainActivity extends Activity {
     }
 
     public void loadDataFromServer() {
-        new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer()), progressBar,
-                taskAdapter, pageView).execute();
+        new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer())).execute();
     }
 
 
@@ -107,6 +110,7 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.add_button:
                 Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                intent.putExtra(TaskActivity.TASK_POSITION, new Task());
                 startActivityForResult(intent, TaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
@@ -119,4 +123,56 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Поток загрузки задач
+     *
+     * @author Q-OLN
+     */
+    public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
+        private TaskServer server;
+        private int startPosition;
+        private int finishPosition;
+
+        public PartTaskLoader(TaskServer server) {
+            this.server = server;
+            startPosition = pageView.getStartPosition();
+            finishPosition = pageView.getFinishPosition();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Task> doInBackground(Void... voids) {
+            try {
+                return server.load(startPosition, finishPosition);
+            } catch (HttpConnectionException e) {
+                return new ArrayList<Task>();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Task> tasks) {
+            super.onPostExecute(tasks);
+
+            if (!tasks.isEmpty()) {
+                updateTaskAdapter(tasks);
+            } else {
+                Toast.makeText(pageView.getContext().getApplicationContext(), "Данных нет", Toast.LENGTH_SHORT).show();
+            }
+            progressBar.setVisibility(View.GONE);
+
+        }
+
+        private void updateTaskAdapter(List<Task> tasks) {
+            if (tasks.size() < Math.abs(finishPosition - startPosition)) {
+                pageView.setExistData(false);
+            }
+            taskAdapter.updateTasksList(tasks);
+        }
+
+    }
 }

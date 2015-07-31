@@ -11,12 +11,12 @@ import com.example.utils.DateFormatUtility;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.threads.Loader;
 import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -97,10 +97,8 @@ public class TaskActivity extends Activity {
     }
 
     private void formInitialization(Task task) {
-        if (isTaskExist(task)) {
+        if (!isTaskEmpty(task)) {
             setTask(task);
-        } else {
-            this.task = new Task();
         }
         setButtonsVisibility(task);
     }
@@ -126,13 +124,13 @@ public class TaskActivity extends Activity {
     }
 
     private void setButtonsVisibility(Task task) {
-        deleteButton.setVisibility(isTaskExist(task) ? View.VISIBLE : View.INVISIBLE);
-        saveButton.setVisibility((isTaskExist(task)) ? View.INVISIBLE : View.VISIBLE);
-        changeButton.setVisibility((isTaskExist(task)) ? View.VISIBLE : View.INVISIBLE);
+        deleteButton.setVisibility(!isTaskEmpty(task) ? View.VISIBLE : View.INVISIBLE);
+        saveButton.setVisibility((!isTaskEmpty(task)) ? View.INVISIBLE : View.VISIBLE);
+        changeButton.setVisibility((!isTaskEmpty(task)) ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private boolean isTaskExist(Task task) {
-        return task != null;
+    private boolean isTaskEmpty(Task task) {
+        return task.equals(new Task());
     }
 
     private boolean isCorrectInput() {
@@ -148,10 +146,10 @@ public class TaskActivity extends Activity {
         return ((TasksControlApplication) getApplicationContext()).getServer();
     }
 
-    private void execute(AsyncTask<Task, Void, Void> thread) {
+    private void execute(Loader thread) {
         Task task = getTask();
 
-        if (isTaskExist(task)) {
+        if (task != null) {
             thread.execute(task);
             setResult(RESULT_OK, getIntent());
         } else {

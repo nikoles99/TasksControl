@@ -3,20 +3,21 @@ package com.example.OlesyukNV.myapplication.backend.commands;
 import javax.servlet.http.HttpServletRequest;
 
 import com.example.Constants;
+import com.example.exceptions.HttpConnectionException;
 import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
 
 /**
- * Команда, удаления задачи с сервера
+ * Команда, обновления задачи на сервере
  *
  * @author Q-OLN
  */
-public class RemoveTaskHandler extends Handler {
+public class UpdateTaskExecutor implements Executor {
 
     @Override
-    public String execute(HttpServletRequest request, TaskServer taskServer) {
+    public String execute(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
         String jsonString = request.getParameter(Constants.ENTITY);
-        taskServer.remove(JsonFormatUtility.format(jsonString));
+        taskServer.update(JsonFormatUtility.format(jsonString));
         return null;
     }
 }

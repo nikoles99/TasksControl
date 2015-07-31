@@ -17,4 +17,22 @@ public interface PageNavigation {
      */
     void previousPage();
 
+    /**
+     * установка размера страницы
+     * @param size
+     */
+    void setPageSize(int size);
+
+    /**
+     * Получение начальной позиции страницы
+     * @return
+     */
+    int getStartPosition();
+
+    /**
+     * Получение конечной позиции страницы
+     * @return
+     */
+    int getFinishPosition();
+
 }

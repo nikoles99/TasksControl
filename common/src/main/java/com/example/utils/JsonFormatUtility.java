@@ -47,6 +47,9 @@ public class JsonFormatUtility {
      */
     private static final String STATUS = "STATUS";
 
+    /**
+     * Преобразование Task в Json
+     */
     public static JSONObject format(Task task) {
         try {
             JSONObject jsonObject = new JSONObject();
@@ -62,6 +65,9 @@ public class JsonFormatUtility {
         }
     }
 
+    /**
+     * Преобразование Json в Task
+     */
     public static Task format(JSONObject jsonObject) {
         try {
             String id = jsonObject.getString(ID);
@@ -79,9 +85,12 @@ public class JsonFormatUtility {
         }
     }
 
-    public static JSONArray format(List<Task> tasksSet) {
+    /**
+     * Преобразование List<Task> в массив Json
+     */
+    public static JSONArray format(List<Task> taskList) {
         JSONArray jsonArray = new JSONArray();
-        for (Task index : tasksSet) {
+        for (Task index : taskList) {
             format(index);
             jsonArray.put(format(index));
         }
@@ -89,22 +98,28 @@ public class JsonFormatUtility {
 
     }
 
-    public static List<Task> getListTasks(String str) {
+    /**
+     * Преобразование String в List<Task>
+     */
+    public static List<Task> getListTasks(String jsonString) {
         try {
-            JSONArray jArray = new JSONArray(str);
+            JSONArray jsonArray = new JSONArray(jsonString);
             ArrayList<Task> tasks = new ArrayList<Task>();
 
-            for (int i = 0; i < jArray.length(); i++) {
-                JSONObject json  = jArray.getJSONObject(i);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json  = jsonArray.getJSONObject(i);
                 Task task = JsonFormatUtility.format(json);
                 tasks.add(task);
             }
             return tasks;
         } catch (JSONException e) {
-            throw new IllegalArgumentException(String.format("Invalid String format %s", str), e);
+            throw new IllegalArgumentException(String.format("Invalid String format %s", jsonString), e);
         }
     }
 
+    /**
+     * Преобразование String в Task
+     */
     public static Task format(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);

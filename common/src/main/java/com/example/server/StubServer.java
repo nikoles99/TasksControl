@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.example.models.StatusTask;
 import com.example.models.Task;
@@ -48,7 +46,6 @@ public class StubServer implements TaskServer {
             TimeUnit.MILLISECONDS.sleep(SERVER_DELAY_MS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            Logger.getLogger(StubServer.class.getName()).log(Level.ALL, e.getMessage(), e);
         }
     }
 
@@ -67,8 +64,6 @@ public class StubServer implements TaskServer {
     @Override
     public void add(Task task) {
         imitationServerWork();
-
-        lock.writeLock().lock();
         generateTaskId(task);
         tasksSet.add(task);
 
@@ -87,10 +82,7 @@ public class StubServer implements TaskServer {
     @Override
     public void remove(Task task) {
         imitationServerWork();
-
-        lock.writeLock().lock();
         tasksSet.remove(task);
-
     }
 
     private void initialData() {

@@ -18,6 +18,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import com.example.Constants;
+import com.example.exceptions.HttpConnectionException;
 import com.example.models.Task;
 import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
@@ -27,12 +28,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import ru.qulix.olesyuknv.taskscontrol.utils.Url;
+
 /**
  * Контроллер, посылающий запросы на сервер;
  *
  * @author Q-OLN
  */
-public class HttpTaskServer implements TaskServer {
+public class HttpTaskServer implements TaskServer, Url {
 
     private static final int TIMEOUT_MS = 5 * 1000;
 
@@ -78,47 +81,51 @@ public class HttpTaskServer implements TaskServer {
         }
     }
 
-
+    @Override
     public String getUrl(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString("URL", "http://192.168.9.117:8080/server/Servlet").trim();
     }
 
     @Override
-    public void update(Task task) {
+    public void update(Task task) throws HttpConnectionException {
         try {
             doRequest(setRequestParams(Constants.UPDATE, task));
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
+            throw new HttpConnectionException(e);
         }
     }
 
     @Override
-    public List<Task> load(int start, int finish) {
+    public List<Task> load(int start, int finish) throws HttpConnectionException {
         String result = null;
         try {
             result = doRequest(setRequestParams(Constants.LOAD, start, finish));
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
+            throw new HttpConnectionException(e);
         }
         return JsonFormatUtility.getListTasks(result);
     }
 
     @Override
-    public void add(Task task) {
+    public void add(Task task) throws HttpConnectionException {
         try {
             doRequest(setRequestParams(Constants.ADD, task));
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
+            throw new HttpConnectionException(e);
         }
     }
 
     @Override
-    public void remove(Task task) {
+    public void remove(Task task) throws HttpConnectionException {
         try {
             doRequest(setRequestParams(Constants.REMOVE, task));
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
+            throw new HttpConnectionException(e);
         }
     }
 }
