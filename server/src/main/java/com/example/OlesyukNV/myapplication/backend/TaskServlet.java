@@ -11,11 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.example.Constants;
 import com.example.OlesyukNV.myapplication.backend.commands.AddTaskExecutor;
-import com.example.OlesyukNV.myapplication.backend.commands.Executor;
+import com.example.OlesyukNV.myapplication.backend.commands.TaskExecutor;
 import com.example.OlesyukNV.myapplication.backend.commands.LoadTasksExecutor;
 import com.example.OlesyukNV.myapplication.backend.commands.RemoveTaskExecutor;
 import com.example.OlesyukNV.myapplication.backend.commands.UpdateTaskExecutor;
-import com.example.exceptions.HttpConnectionException;
 import com.example.server.StubServer;
 import com.example.server.TaskServer;
 
@@ -28,7 +27,7 @@ public class TaskServlet extends HttpServlet {
 
     private TaskServer taskServer = new StubServer();
 
-    private static final Map<String, Executor> SERVLET_COMMAND = new HashMap<String, Executor>() {
+    private static final Map<String, TaskExecutor> SERVLET_COMMAND = new HashMap<String, TaskExecutor>() {
         {
             put(Constants.ADD, new AddTaskExecutor());
             put(Constants.REMOVE, new RemoveTaskExecutor());
@@ -41,11 +40,7 @@ public class TaskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(Constants.ACTION);
         String tasks = null;
-        try {
-            tasks = SERVLET_COMMAND.get(action).execute(request, taskServer);
-        } catch (HttpConnectionException e) {
-            throw new RuntimeException("Error with server connection");
-        }
+        tasks = SERVLET_COMMAND.get(action).execute(request, taskServer);
         response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(tasks.getBytes());
     }

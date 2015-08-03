@@ -11,16 +11,19 @@ import android.app.Activity;
  *
  * @author Q-OLN
  */
-public class AddTaskLoader extends Loader {
+public class AddTaskLoader extends TaskLoader {
+
+    private  TaskServer server;
 
     public AddTaskLoader(TaskServer server, Activity inputTaskActivity) {
+        super(inputTaskActivity);
         this.server = server;
-        this.inputTaskActivity = inputTaskActivity;
     }
 
 
     @Override
-    public void getAction(Task task) throws HttpConnectionException {
+    public Object getAction(Task task) throws HttpConnectionException {
         server.add(task);
+        return true;
     }
 }

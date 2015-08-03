@@ -12,10 +12,14 @@ import com.example.utils.JsonFormatUtility;
  *
  * @author Q-OLN
  */
-public class RemoveTaskExecutor implements Executor {
+public class RemoveTaskExecutor extends TaskExecutor {
+
+    public String execute(HttpServletRequest request, TaskServer taskServer)  {
+        return super.execute(request, taskServer);
+    }
 
     @Override
-    public String execute(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
+    protected String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
         String jsonString = request.getParameter(Constants.ENTITY);
         taskServer.remove(JsonFormatUtility.format(jsonString));
         return null;

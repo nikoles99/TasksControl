@@ -12,12 +12,17 @@ import com.example.utils.JsonFormatUtility;
  *
  * @author Q-OLN
  */
-public class UpdateTaskExecutor implements Executor {
+public class UpdateTaskExecutor extends TaskExecutor {
+
+    public String execute(HttpServletRequest request, TaskServer taskServer)  {
+        return super.execute(request, taskServer);
+    }
 
     @Override
-    public String execute(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
+    protected String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
         String jsonString = request.getParameter(Constants.ENTITY);
         taskServer.update(JsonFormatUtility.format(jsonString));
         return null;
     }
+
 }

@@ -11,15 +11,17 @@ import android.app.Activity;
  *
  * @author Q-OLN
  */
-public class RemoveTaskLoader extends Loader {
+public class RemoveTaskLoader extends TaskLoader {
+    private  TaskServer server;
 
     public RemoveTaskLoader(TaskServer server, Activity inputTaskActivity) {
-        super.server = server;
-        super.inputTaskActivity = inputTaskActivity;
+        super(inputTaskActivity);
+        this.server = server;
     }
 
     @Override
-    public void getAction(Task task) throws HttpConnectionException {
+    public Object getAction(Task task) throws HttpConnectionException {
         server.remove(task);
+        return true;
     }
 }

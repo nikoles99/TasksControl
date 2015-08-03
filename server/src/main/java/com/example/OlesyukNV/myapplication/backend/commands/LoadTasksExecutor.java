@@ -16,13 +16,18 @@ import com.example.utils.JsonFormatUtility;
  *
  * @author Q-OLN
  */
-public class LoadTasksExecutor implements Executor {
+public class LoadTasksExecutor extends TaskExecutor {
+
+    public String execute(HttpServletRequest request, TaskServer taskServer)  {
+        return super.execute(request, taskServer);
+    }
 
     @Override
-    public String execute(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
+    protected String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
         String startPosition = request.getParameter(Constants.START_POSITION);
         String finishPosition = request.getParameter(Constants.FINISH_POSITION);
         List<Task> tasks = taskServer.load(Integer.valueOf(startPosition), Integer.valueOf(finishPosition));
         return JsonFormatUtility.format(tasks).toString();
     }
+
 }

@@ -24,28 +24,26 @@ import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
-import ru.qulix.olesyuknv.taskscontrol.utils.Url;
+import ru.qulix.olesyuknv.taskscontrol.utils.UrlSetting;
 
 /**
  * Контроллер, посылающий запросы на сервер;
  *
  * @author Q-OLN
  */
-public class HttpTaskServer implements TaskServer, Url {
+public class HttpTaskServer implements TaskServer {
+
+    private UrlSetting listener;
 
     private static final int TIMEOUT_MS = 5 * 1000;
-
-    public static final String LOG_TAG = HttpTaskServer.class.getName();
 
     private Context context;
 
     private HttpClient httpClient;
 
-    public HttpTaskServer(Context context) {
+    public HttpTaskServer(Context context, UrlSetting listener) {
+        this.listener = listener;
         this.context = context;
         HttpParams httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_MS);
@@ -67,8 +65,8 @@ public class HttpTaskServer implements TaskServer, Url {
         return nameValuePairs;
     }
 
-    private String doRequest(List<NameValuePair> nameValuePairs) throws IOException {
-        HttpPost httpPost = new HttpPost(getUrl(context));
+    private String doRequest(List<NameValuePair> nameValuePairs) throws IOException, HttpConnectionException {
+        HttpPost httpPost = new HttpPost(listener.getUrl(context));
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
 
@@ -76,15 +74,8 @@ public class HttpTaskServer implements TaskServer, Url {
             String result = EntityUtils.toString(response.getEntity(), "UTF-8");
             return result;
         } else {
-            Log.e(LOG_TAG, "Error connection with server");
-            return null;
+            throw new HttpConnectionException();
         }
-    }
-
-    @Override
-    public String getUrl(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString("URL", "http://192.168.9.117:8080/server/Servlet").trim();
     }
 
     @Override
@@ -92,7 +83,6 @@ public class HttpTaskServer implements TaskServer, Url {
         try {
             doRequest(setRequestParams(Constants.UPDATE, task));
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             throw new HttpConnectionException(e);
         }
     }
@@ -103,7 +93,6 @@ public class HttpTaskServer implements TaskServer, Url {
         try {
             result = doRequest(setRequestParams(Constants.LOAD, start, finish));
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             throw new HttpConnectionException(e);
         }
         return JsonFormatUtility.getListTasks(result);
@@ -114,7 +103,6 @@ public class HttpTaskServer implements TaskServer, Url {
         try {
             doRequest(setRequestParams(Constants.ADD, task));
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             throw new HttpConnectionException(e);
         }
     }
@@ -124,7 +112,6 @@ public class HttpTaskServer implements TaskServer, Url {
         try {
             doRequest(setRequestParams(Constants.REMOVE, task));
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             throw new HttpConnectionException(e);
         }
     }

@@ -10,12 +10,25 @@ import com.example.server.TaskServer;
  *
  * @author Q-OLN
  */
-public interface Executor {
+public abstract class TaskExecutor {
+    private TaskServer taskServer;
+
     /**
      * Выполнить действие
-     * @param request парамерты запроса
+     *
+     * @param request    парамерты запроса
      * @param taskServer сервер для выбора действий(загручить задачи, обновить задачу, добавить задачу, удалить задачу )
      * @return строку, хранящую результат действий сервера
      */
-    String execute(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException;
+    public String execute(HttpServletRequest request, TaskServer taskServer) {
+
+        try {
+            return getAction(request, taskServer);
+        } catch (HttpConnectionException e) {
+            throw new RuntimeException("Error with server connection");
+        }
+    }
+
+    protected abstract String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException;
+
 }

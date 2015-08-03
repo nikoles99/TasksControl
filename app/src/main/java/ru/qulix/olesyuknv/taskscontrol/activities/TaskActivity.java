@@ -11,7 +11,7 @@ import com.example.utils.DateFormatUtility;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
 import ru.qulix.olesyuknv.taskscontrol.threads.AddTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.threads.Loader;
+import ru.qulix.olesyuknv.taskscontrol.threads.TaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.threads.RemoveTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.threads.UpdateTaskLoader;
 
@@ -146,7 +146,7 @@ public class TaskActivity extends Activity {
         return ((TasksControlApplication) getApplicationContext()).getServer();
     }
 
-    private void execute(Loader thread) {
+    private void execute(TaskLoader thread) {
         Task task = getTask();
 
         if (task != null) {

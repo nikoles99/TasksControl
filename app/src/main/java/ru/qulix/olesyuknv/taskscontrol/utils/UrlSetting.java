@@ -7,7 +7,7 @@ import android.content.Context;
  *
  * @author Q-ONL
  */
-public interface Url {
+public interface UrlSetting {
 
     /**
      * получение URL

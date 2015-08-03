@@ -5,7 +5,7 @@
         android:summary="URL Address"
         android:defaultValue="http://192.168.9.117:8080/server/Servlet"
         android:title="URL"/>
-    <RingtonePreference
+    <EditTextPreference
         android:key="PAGE_SIZE"
         android:summary="Count Tasks on Screen"
         android:inputType="number"

@@ -12,12 +12,12 @@ import ru.qulix.olesyuknv.taskscontrol.PageView;
 import ru.qulix.olesyuknv.taskscontrol.R;
 import ru.qulix.olesyuknv.taskscontrol.TaskAdapter;
 import ru.qulix.olesyuknv.taskscontrol.TasksControlApplication;
+import ru.qulix.olesyuknv.taskscontrol.threads.TaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
     }
 
     public void loadDataFromServer() {
-        new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer())).execute();
+        new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer())).execute(new Task());
     }
 
 
@@ -128,12 +128,13 @@ public class MainActivity extends Activity {
      *
      * @author Q-OLN
      */
-    public class PartTaskLoader extends AsyncTask<Void, Void, List<Task>> {
+    public class PartTaskLoader extends TaskLoader {
         private TaskServer server;
         private int startPosition;
         private int finishPosition;
 
         public PartTaskLoader(TaskServer server) {
+            super();
             this.server = server;
             startPosition = pageView.getStartPosition();
             finishPosition = pageView.getFinishPosition();
@@ -146,25 +147,18 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected List<Task> doInBackground(Void... voids) {
-            try {
-                return server.load(startPosition, finishPosition);
-            } catch (HttpConnectionException e) {
-                return new ArrayList<Task>();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Task> tasks) {
-            super.onPostExecute(tasks);
-
-            if (!tasks.isEmpty()) {
-                updateTaskAdapter(tasks);
+        protected void onPostExecute(Object tasks) {
+            if (!((List<Task>)tasks).isEmpty()) {
+                updateTaskAdapter((List<Task>)tasks);
             } else {
                 Toast.makeText(pageView.getContext().getApplicationContext(), "Данных нет", Toast.LENGTH_SHORT).show();
             }
             progressBar.setVisibility(View.GONE);
+        }
 
+        @Override
+        public List<Task> getAction(Task task) throws HttpConnectionException {
+            return server.load(startPosition, finishPosition);
         }
 
         private void updateTaskAdapter(List<Task> tasks) {

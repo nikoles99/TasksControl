@@ -11,15 +11,18 @@ import android.app.Activity;
  *
  * @author Q-OLN
  */
-public class UpdateTaskLoader extends Loader {
+public class UpdateTaskLoader extends TaskLoader {
+
+    private  TaskServer server;
 
     public UpdateTaskLoader(TaskServer server, Activity inputTaskActivity) {
-        super.server = server;
-        super.inputTaskActivity = inputTaskActivity;
+        super(inputTaskActivity);
+        this.server = server;
     }
 
     @Override
-    public void getAction(Task task) throws HttpConnectionException {
+    public Object getAction(Task task) throws HttpConnectionException {
         server.update(task);
+        return true;
     }
 }
