@@ -39,8 +39,7 @@ public class TaskServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(Constants.ACTION);
-        String tasks = null;
-        tasks = SERVLET_COMMAND.get(action).execute(request, taskServer);
+        String tasks = SERVLET_COMMAND.get(action).execute(request, taskServer);
         response.setCharacterEncoding("UTF-8");
         response.getOutputStream().write(tasks.getBytes());
     }

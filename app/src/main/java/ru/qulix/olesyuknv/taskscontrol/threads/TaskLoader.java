@@ -1,5 +1,7 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
+import java.util.ArrayList;
+
 import com.example.exceptions.HttpConnectionException;
 import com.example.models.Task;
 
@@ -9,13 +11,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Поток
+ * Поток работы с задачами
  *
  * @author Q-OLN
  */
 public abstract class TaskLoader extends AsyncTask<Task, Void, Object> {
 
     private static final String LOG_TAG = TaskLoader.class.getName();
+    private HttpConnectionException httpConnectionException;
     private Activity inputTaskActivity;
 
     public TaskLoader(Activity inputTaskActivity) {
@@ -37,17 +40,17 @@ public abstract class TaskLoader extends AsyncTask<Task, Void, Object> {
                 return getAction(task);
             } catch (HttpConnectionException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
-                return false;
+                httpConnectionException = e;
             }
         }
-        return true;
+        return new ArrayList<Task>();
     }
 
     @Override
     protected void onPostExecute(Object successConnection) {
         super.onPostExecute(successConnection);
 
-        if ((Boolean) successConnection == true) {
+        if (httpConnectionException == null) {
             inputTaskActivity.finish();
         } else {
             Toast.makeText(inputTaskActivity.getApplication(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
