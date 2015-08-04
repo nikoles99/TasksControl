@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.example.models.StatusTask;
 import com.example.models.Task;
@@ -19,9 +18,10 @@ import com.example.utils.DateFormatUtility;
  */
 public class StubServer implements TaskServer {
 
+    /**
+     * Время имитации работы сервера
+     */
     private static final long SERVER_DELAY_MS = 1000;
-
-    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
      * Идентификатор задачи на сервере
@@ -66,7 +66,6 @@ public class StubServer implements TaskServer {
         imitationServerWork();
         generateTaskId(task);
         tasksSet.add(task);
-
     }
 
     @Override

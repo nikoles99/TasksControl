@@ -34,7 +34,7 @@ public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
     protected List<T> doInBackground(T... tasks) {
         for (T task : tasks) {
             try {
-                return getAction(task);
+                return processing(task);
             } catch (HttpConnectionException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 httpConnectionException = e;
@@ -54,9 +54,22 @@ public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
         }
     }
 
-    public abstract List<T> getAction(T task) throws HttpConnectionException;
+    /**
+     * Обработка задачи
+     * @param task задача, для обработки
+     * @return список обработанных задач
+     * @throws HttpConnectionException
+     */
+    public abstract List<T> processing(T task) throws HttpConnectionException;
 
+    /**
+     * Действие, выполняемое до запуска потока
+     */
     public abstract void preExecute();
 
+    /**
+     * Действие, выполняемое после запуска потока
+     * @param tasks список задач
+     */
     public abstract void postExecute(List<T> tasks);
 }

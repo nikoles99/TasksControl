@@ -25,7 +25,7 @@ public class UpdateTaskLoader extends TaskLoader {
     }
 
     @Override
-    public List getAction(Object task) throws HttpConnectionException {
+    public List processing(Object task) throws HttpConnectionException {
         server.update((Task)task);
         return null;
     }

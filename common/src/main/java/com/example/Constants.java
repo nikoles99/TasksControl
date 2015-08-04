@@ -38,12 +38,12 @@ public class Constants {
     public static final String ADD = "ADD";
 
     /**
-     *  Начальная позиция загрузки задач с сервера
+     *  Начальная позиция загрузки задач
      */
     public static final String START_POSITION = "START_POSITION";
 
     /**
-     * Конечная позиция загрузки задач с сервера
+     * Конечная позиция загрузки задач
      */
     public static final String FINISH_POSITION = "FINISH_POSITION";
 }

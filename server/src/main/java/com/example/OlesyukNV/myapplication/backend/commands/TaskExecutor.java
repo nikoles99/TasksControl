@@ -19,7 +19,6 @@ public abstract class TaskExecutor {
      * @return строку, хранящую результат действий сервера
      */
     public String execute(HttpServletRequest request, TaskServer taskServer) {
-
         try {
             return getAction(request, taskServer);
         } catch (HttpConnectionException e) {

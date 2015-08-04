@@ -10,7 +10,7 @@ public interface UrlSetting {
     /**
      * получение URL
      *
-     * @return
+     * @return адрес сетевого ресурса
      */
     String getUrl();
 }

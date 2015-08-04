@@ -6,5 +6,9 @@ package ru.qulix.olesyuknv.taskscontrol.utils;
  * @author Q-OLN
  */
 public interface NavigationListener {
+
+    /**
+     * отправка уведомления
+     */
     void onPage();
 }

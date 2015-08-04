@@ -11,6 +11,8 @@ import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
 
 /**
+ * View "Постраничная навигация"
+ *
  * @author Q-OLN
  */
 public class PageView extends LinearLayout implements PageNavigation {
@@ -19,6 +21,9 @@ public class PageView extends LinearLayout implements PageNavigation {
 
     private ImageView previousPage;
 
+    /**
+     * Флаг о наличии загружаемых данных
+     */
     private boolean existData = true;
 
     private NavigationListener listener;

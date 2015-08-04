@@ -27,6 +27,9 @@ public class TaskServlet extends HttpServlet {
 
     private TaskServer taskServer = new StubServer();
 
+    /**
+     * Действия, выполняемые на сервере
+     */
     private static final Map<String, TaskExecutor> SERVLET_COMMAND = new HashMap<String, TaskExecutor>() {
         {
             put(Constants.ADD, new AddTaskExecutor());

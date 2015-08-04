@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
 
 
         @Override
-        public List<Task> getAction(Object task) throws HttpConnectionException {
+        public List<Task> processing(Object task) throws HttpConnectionException {
             return server.load(startPosition, finishPosition);
         }
 
