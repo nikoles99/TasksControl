@@ -1,9 +1,8 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.example.exceptions.HttpConnectionException;
-import com.example.models.Task;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -15,7 +14,7 @@ import android.widget.Toast;
  *
  * @author Q-OLN
  */
-public abstract class TaskLoader extends AsyncTask<Task, Void, Object> {
+public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
 
     private static final String LOG_TAG = TaskLoader.class.getName();
     private HttpConnectionException httpConnectionException;
@@ -25,17 +24,15 @@ public abstract class TaskLoader extends AsyncTask<Task, Void, Object> {
         this.inputTaskActivity = inputTaskActivity;
     }
 
-    public TaskLoader() {
-    }
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        preExecute();
     }
 
     @Override
-    protected Object doInBackground(Task... tasks) {
-        for (Task task : tasks) {
+    protected List<T> doInBackground(T... tasks) {
+        for (T task : tasks) {
             try {
                 return getAction(task);
             } catch (HttpConnectionException e) {
@@ -43,20 +40,23 @@ public abstract class TaskLoader extends AsyncTask<Task, Void, Object> {
                 httpConnectionException = e;
             }
         }
-        return new ArrayList<Task>();
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Object successConnection) {
+    protected void onPostExecute(List<T> successConnection) {
         super.onPostExecute(successConnection);
 
         if (httpConnectionException == null) {
-            inputTaskActivity.finish();
+            postExecute(successConnection);
         } else {
             Toast.makeText(inputTaskActivity.getApplication(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public abstract Object getAction(Task task) throws HttpConnectionException;
+    public abstract List<T> getAction(T task) throws HttpConnectionException;
 
+    public abstract void preExecute();
+
+    public abstract void postExecute(List<T> tasks);
 }

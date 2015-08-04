@@ -11,8 +11,6 @@ import com.example.server.TaskServer;
  * @author Q-OLN
  */
 public abstract class TaskExecutor {
-    private TaskServer taskServer;
-
     /**
      * Выполнить действие
      *
@@ -25,7 +23,7 @@ public abstract class TaskExecutor {
         try {
             return getAction(request, taskServer);
         } catch (HttpConnectionException e) {
-            throw new RuntimeException("Error with server connection");
+            throw new IllegalStateException("Error with server connection");
         }
     }
 

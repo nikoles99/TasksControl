@@ -1,7 +1,5 @@
 package ru.qulix.olesyuknv.taskscontrol.utils;
 
-import android.content.Context;
-
 /**
  * Адрес сетевого ресурса
  *
@@ -12,8 +10,7 @@ public interface UrlSetting {
     /**
      * получение URL
      *
-     * @param context
      * @return
      */
-    String getUrl(Context context);
+    String getUrl();
 }

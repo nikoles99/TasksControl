@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 /**
  * Главная форма приложения.
@@ -134,30 +133,26 @@ public class MainActivity extends Activity {
         private int finishPosition;
 
         public PartTaskLoader(TaskServer server) {
-            super();
+            super(MainActivity.this);
             this.server = server;
             startPosition = pageView.getStartPosition();
             finishPosition = pageView.getFinishPosition();
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        public void preExecute() {
             progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected void onPostExecute(Object tasks) {
-            if (!((List<Task>)tasks).isEmpty()) {
-                updateTaskAdapter((List<Task>)tasks);
-            } else {
-                Toast.makeText(pageView.getContext().getApplicationContext(), "Данных нет", Toast.LENGTH_SHORT).show();
-            }
+        public void postExecute(List tasks) {
+            updateTaskAdapter(tasks);
             progressBar.setVisibility(View.GONE);
         }
 
+
         @Override
-        public List<Task> getAction(Task task) throws HttpConnectionException {
+        public List<Task> getAction(Object task) throws HttpConnectionException {
             return server.load(startPosition, finishPosition);
         }
 

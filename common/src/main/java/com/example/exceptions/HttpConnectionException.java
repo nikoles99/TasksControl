@@ -10,6 +10,7 @@ public class HttpConnectionException extends Exception {
         super(cause);
     }
 
-    public HttpConnectionException() {
+    public HttpConnectionException(String message) {
+        super(message);
     }
 }

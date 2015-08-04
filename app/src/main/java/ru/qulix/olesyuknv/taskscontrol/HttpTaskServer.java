@@ -23,8 +23,6 @@ import com.example.models.Task;
 import com.example.server.TaskServer;
 import com.example.utils.JsonFormatUtility;
 
-import android.content.Context;
-
 import ru.qulix.olesyuknv.taskscontrol.utils.UrlSetting;
 
 /**
@@ -34,17 +32,16 @@ import ru.qulix.olesyuknv.taskscontrol.utils.UrlSetting;
  */
 public class HttpTaskServer implements TaskServer {
 
-    private UrlSetting listener;
+    private static final String LOG_TAG = HttpTaskServer.class.getName();
+
+    private UrlSetting urlSetting;
 
     private static final int TIMEOUT_MS = 5 * 1000;
 
-    private Context context;
-
     private HttpClient httpClient;
 
-    public HttpTaskServer(Context context, UrlSetting listener) {
-        this.listener = listener;
-        this.context = context;
+    public HttpTaskServer(UrlSetting urlSetting) {
+        this.urlSetting = urlSetting;
         HttpParams httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, TIMEOUT_MS);
         httpClient = new DefaultHttpClient(httpParameters);
@@ -66,15 +63,17 @@ public class HttpTaskServer implements TaskServer {
     }
 
     private String doRequest(List<NameValuePair> nameValuePairs) throws IOException, HttpConnectionException {
-        HttpPost httpPost = new HttpPost(listener.getUrl(context));
+        HttpPost httpPost = new HttpPost(urlSetting.getUrl());
         httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
         HttpResponse response = httpClient.execute(httpPost);
+        int httpStatus = response.getStatusLine().getStatusCode();
 
-        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        if (httpStatus == HttpStatus.SC_OK) {
             String result = EntityUtils.toString(response.getEntity(), "UTF-8");
             return result;
         } else {
-            throw new HttpConnectionException();
+            throw new HttpConnectionException(String.format(LOG_TAG + ": Http status unsuccessful %d expected '" +
+                    HttpStatus.SC_OK + "'", httpStatus));
         }
     }
 
