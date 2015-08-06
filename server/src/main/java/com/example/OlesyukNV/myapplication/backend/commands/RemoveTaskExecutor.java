@@ -1,5 +1,6 @@
 package com.example.OlesyukNV.myapplication.backend.commands;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.example.Constants;
@@ -15,12 +16,12 @@ import com.example.utils.JsonFormatUtility;
 public class RemoveTaskExecutor extends TaskExecutor {
 
     @Override
-    public String execute(HttpServletRequest request, TaskServer taskServer)  {
+    public String execute(HttpServletRequest request, TaskServer taskServer) throws ServletException {
         return super.execute(request, taskServer);
     }
 
     @Override
-    protected String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
+    protected String processing(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException {
         String jsonString = request.getParameter(Constants.ENTITY);
         taskServer.remove(JsonFormatUtility.format(jsonString));
         return null;

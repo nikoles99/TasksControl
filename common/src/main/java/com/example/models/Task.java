@@ -49,7 +49,8 @@ public class Task implements Serializable {
     }
 
     public Task() {
-
+        this.startDate = new Date();
+        this.finishDate = new Date();
     }
 
     public void setName(String name) {
@@ -118,5 +119,9 @@ public class Task implements Serializable {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public boolean isEmpty() {
+        return !(name == null);
     }
 }

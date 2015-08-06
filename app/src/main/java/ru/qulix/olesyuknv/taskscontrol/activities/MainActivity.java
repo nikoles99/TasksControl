@@ -43,26 +43,21 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         pageView = (PageView) findViewById(R.id.pageNavigation);
         ListView listView = (ListView) findViewById(R.id.listView);
         listViewOnItemClick(listView);
         taskAdapter = new TaskAdapter(this, new ArrayList<Task>());
         listView.setAdapter(taskAdapter);
-
+        setAppParams();
+        loadDataFromServer();
         pageView.setListener(new NavigationListener() {
             @Override
             public void onPage() {
                 loadDataFromServer();
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setAppParams();
-        loadDataFromServer();
     }
 
     private void setAppParams() {
@@ -87,13 +82,14 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case TaskActivity.REQUEST_CODE:
+                    setAppParams();
                     loadDataFromServer();
                     break;
             }
         }
     }
 
-    public void loadDataFromServer() {
+    private void loadDataFromServer() {
         new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer())).execute(new Task());
     }
 
@@ -109,14 +105,13 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.add_button:
                 Intent intent = new Intent(MainActivity.this, TaskActivity.class);
-                intent.putExtra(TaskActivity.TASK_POSITION, new Task());
                 startActivityForResult(intent, TaskActivity.REQUEST_CODE);
                 break;
             case R.id.update_button:
                 loadDataFromServer();
                 break;
             case R.id.action_settings:
-                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, SettingActivity.class), TaskActivity.REQUEST_CODE);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -127,7 +122,7 @@ public class MainActivity extends Activity {
      *
      * @author Q-OLN
      */
-    public class PartTaskLoader extends TaskLoader {
+    private class PartTaskLoader extends TaskLoader<Task, List<Task>> {
         private TaskServer server;
         private int startPosition;
         private int finishPosition;
@@ -140,21 +135,21 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void preExecute() {
+        protected List<Task> processing(Task task) throws HttpConnectionException {
+            return server.load(startPosition, finishPosition);
+        }
+
+        @Override
+        protected void preExecute() {
             progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        public void postExecute(List tasks) {
+        protected void postExecuteSuccess(List<Task> tasks) {
             updateTaskAdapter(tasks);
             progressBar.setVisibility(View.GONE);
         }
 
-
-        @Override
-        public List<Task> processing(Object task) throws HttpConnectionException {
-            return server.load(startPosition, finishPosition);
-        }
 
         private void updateTaskAdapter(List<Task> tasks) {
             if (tasks.size() < Math.abs(finishPosition - startPosition)) {

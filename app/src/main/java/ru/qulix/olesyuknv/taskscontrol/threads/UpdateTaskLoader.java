@@ -1,7 +1,5 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
 
-import java.util.List;
-
 import com.example.exceptions.HttpConnectionException;
 import com.example.models.Task;
 import com.example.server.TaskServer;
@@ -13,32 +11,18 @@ import android.app.Activity;
  *
  * @author Q-OLN
  */
-public class UpdateTaskLoader extends TaskLoader {
+public class UpdateTaskLoader extends TaskLoader<Task, Void> {
 
     private  TaskServer server;
-    private  Activity inputTaskActivity;
 
     public UpdateTaskLoader(TaskServer server, Activity inputTaskActivity) {
         super(inputTaskActivity);
         this.server = server;
-        this.inputTaskActivity = inputTaskActivity;
     }
 
     @Override
-    public List processing(Object task) throws HttpConnectionException {
-        server.update((Task)task);
+    protected Void processing(Task task) throws HttpConnectionException {
+        server.update(task);
         return null;
     }
-
-    @Override
-    public void preExecute() {
-
-    }
-
-    @Override
-    public void postExecute(List tasks) {
-        inputTaskActivity.finish();
-    }
-
-
 }

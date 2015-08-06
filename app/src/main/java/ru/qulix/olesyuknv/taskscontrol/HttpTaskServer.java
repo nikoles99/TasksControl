@@ -26,17 +26,15 @@ import com.example.utils.JsonFormatUtility;
 import ru.qulix.olesyuknv.taskscontrol.utils.UrlSetting;
 
 /**
- * Контроллер, посылающий запросы на сервер;
+ * Сервер, посылающий http запросы;
  *
  * @author Q-OLN
  */
 public class HttpTaskServer implements TaskServer {
 
-    private static final String LOG_TAG = HttpTaskServer.class.getName();
+    private static final int TIMEOUT_MS = 5 * 1000;
 
     private UrlSetting urlSetting;
-
-    private static final int TIMEOUT_MS = 5 * 1000;
 
     private HttpClient httpClient;
 
@@ -72,7 +70,7 @@ public class HttpTaskServer implements TaskServer {
             String result = EntityUtils.toString(response.getEntity(), "UTF-8");
             return result;
         } else {
-            throw new HttpConnectionException(String.format(LOG_TAG + ": Http status unsuccessful %d expected '" +
+            throw new HttpConnectionException(String.format("Http status unsuccessful %d expected '" +
                     HttpStatus.SC_OK + "'", httpStatus));
         }
     }

@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 /**
  * Форма создания и изменения задачи.
  *
@@ -37,28 +38,29 @@ public class TaskActivity extends Activity {
 
     public static final String TASK_POSITION = TaskActivity.class + ".TASK_POSITION";
     public static final int REQUEST_CODE = 1;
-
     private EditText nameTask;
     private EditText workTime;
     private Button startDate;
     private Button finishDate;
     private Spinner statusWork;
-    private ImageView deleteButton;
-    private ImageView saveButton;
-    private ImageView changeButton;
     private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task);
-
-        initializationViews();
         task = (Task) getIntent().getSerializableExtra(TASK_POSITION);
-        formInitialization(task);
+        boolean addMode = task == null;
+
+        if (addMode) {
+            task = new Task();
+        }
+        createView(addMode);
+        setTask(task);
     }
 
-    private void initializationViews() {
+    private void createView(final boolean addMode) {
+        setContentView(R.layout.activity_task);
+
         nameTask = (EditText) findViewById(R.id.nameTask);
         workTime = (EditText) findViewById(R.id.workHours);
 
@@ -71,7 +73,8 @@ public class TaskActivity extends Activity {
         statusWork = (Spinner) findViewById(R.id.status);
         setSpinnerAdapter(statusWork);
 
-        deleteButton = (ImageView) findViewById(R.id.deleteButton);
+        ImageView deleteButton = (ImageView) findViewById(R.id.deleteButton);
+        deleteButton.setVisibility((!addMode) ? View.VISIBLE : View.INVISIBLE);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,67 +82,55 @@ public class TaskActivity extends Activity {
             }
         });
 
-        saveButton = (ImageView) findViewById(R.id.addTaskButton);
+        ImageView saveButton = (ImageView) findViewById(R.id.addTaskButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execute(new AddTaskLoader(getServer(), TaskActivity.this));
+                if (addMode) {
+                    execute(new AddTaskLoader(getServer(), TaskActivity.this));
+                } else {
+                    execute(new UpdateTaskLoader(getServer(), TaskActivity.this));
+                }
             }
         });
-
-        changeButton = (ImageView) findViewById(R.id.changeTaskButton);
-        changeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                execute(new UpdateTaskLoader(getServer(), TaskActivity.this));
-            }
-        });
-    }
-
-    private void formInitialization(Task task) {
-        if (!isTaskEmpty(task)) {
-            setTask(task);
-        }
-        setButtonsVisibility(task);
     }
 
     private void setTask(Task task) {
         this.task = task;
         nameTask.setText(task.getName());
-        workTime.setText(String.valueOf(this.task.getWorkTime()));
-        startDate.setText(DateFormatUtility.format(this.task.getStartDate()));
-        finishDate.setText(DateFormatUtility.format(this.task.getFinishDate()));
+        workTime.setText(String.valueOf(task.getWorkTime()));
+        startDate.setText(DateFormatUtility.format(task.getStartDate()));
+        finishDate.setText(DateFormatUtility.format(task.getFinishDate()));
     }
 
     private Task getTask() {
-        if (isCorrectInput()) {
+        if (validate()) {
             task.setName(nameTask.getText().toString());
             task.setWorkTime(Integer.parseInt(workTime.getText().toString()));
             task.setStartDate(DateFormatUtility.format(startDate.getText().toString()));
             task.setFinishDate(DateFormatUtility.format(finishDate.getText().toString()));
             task.setStatus((StatusTask) statusWork.getSelectedItem());
             return task;
+        } else {
+            return new Task();
         }
-        return null;
     }
 
-    private void setButtonsVisibility(Task task) {
-        deleteButton.setVisibility(!isTaskEmpty(task) ? View.VISIBLE : View.INVISIBLE);
-        saveButton.setVisibility((!isTaskEmpty(task)) ? View.INVISIBLE : View.VISIBLE);
-        changeButton.setVisibility((!isTaskEmpty(task)) ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    private boolean isTaskEmpty(Task task) {
-        return task.equals(new Task());
-    }
-
-    private boolean isCorrectInput() {
-        return !(TextUtils.isEmpty(workTime.getText()) ||
-                TextUtils.isEmpty(nameTask.getText()) ||
-                TextUtils.isEmpty(startDate.getText()) ||
-                TextUtils.isEmpty(finishDate.getText()) ||
-                DateFormatUtility.format(startDate.getText().toString()).
-                        after(DateFormatUtility.format(finishDate.getText().toString())));
+    private boolean validate() {
+        if (TextUtils.isEmpty(workTime.getText()) || !workTime.getText().toString().matches("^-?\\d+$")) {
+            workTime.setError("Некоректное время");
+            return false;
+        }
+        if (TextUtils.isEmpty(nameTask.getText())) {
+            nameTask.setError("Некоректное имя");
+            return false;
+        }
+        if (DateFormatUtility.format(startDate.getText().toString()).
+                after(DateFormatUtility.format(finishDate.getText().toString()))) {
+            startDate.setError("Не коректро введена начальная дата");
+            return false;
+        }
+        return true;
     }
 
     private TaskServer getServer() {
@@ -149,11 +140,11 @@ public class TaskActivity extends Activity {
     private void execute(TaskLoader thread) {
         Task task = getTask();
 
-        if (task != null) {
+        if (task.isEmpty()) {
             thread.execute(task);
             setResult(RESULT_OK, getIntent());
         } else {
-            Toast.makeText(TaskActivity.this, "You must input correct all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Введите данные корректно", Toast.LENGTH_SHORT).show();
         }
     }
 

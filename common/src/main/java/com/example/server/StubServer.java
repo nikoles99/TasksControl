@@ -75,7 +75,6 @@ public class StubServer implements TaskServer {
         if (tasksSet.remove(task)) {
             tasksSet.add(task);
         }
-
     }
 
     @Override

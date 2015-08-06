@@ -1,5 +1,6 @@
 package com.example.OlesyukNV.myapplication.backend.commands;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.example.exceptions.HttpConnectionException;
@@ -17,15 +18,24 @@ public abstract class TaskExecutor {
      * @param request    парамерты запроса
      * @param taskServer сервер для выбора действий(загручить задачи, обновить задачу, добавить задачу, удалить задачу )
      * @return строку, хранящую результат действий сервера
+     * @throws ServletException
      */
-    public String execute(HttpServletRequest request, TaskServer taskServer) {
+    public String execute(HttpServletRequest request, TaskServer taskServer) throws ServletException {
         try {
-            return getAction(request, taskServer);
+            return processing(request, taskServer);
         } catch (HttpConnectionException e) {
-            throw new IllegalStateException("Error with server connection");
+            throw new ServletException("Error with server connection", e);
         }
     }
 
-    protected abstract String getAction(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException;
+    /**
+     * Обработать действие
+     *
+     * @param request    получение параметов запроса
+     * @param taskServer сервер для выбора действий(загручить задачи, обновить задачу, добавить задачу, удалить задачу )
+     * @return строку, хранящую результат действий сервера
+     * @throws HttpConnectionException
+     */
+    protected abstract String processing(HttpServletRequest request, TaskServer taskServer) throws HttpConnectionException;
 
 }

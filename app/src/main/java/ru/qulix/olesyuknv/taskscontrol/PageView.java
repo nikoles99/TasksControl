@@ -15,7 +15,7 @@ import ru.qulix.olesyuknv.taskscontrol.utils.PageNavigation;
  *
  * @author Q-OLN
  */
-public class PageView extends LinearLayout implements PageNavigation {
+public class PageView extends LinearLayout {
 
     private ImageView nextPage;
 
@@ -28,23 +28,11 @@ public class PageView extends LinearLayout implements PageNavigation {
 
     private NavigationListener listener;
 
-    /**
-     * позиция первого элемента списка
-     */
-    private int startPosition;
-
-    /**
-     * позиция последнего элемента списка
-     */
-    private int finishPosition;
-
-    /**
-     * количество записей на одной странице
-     */
-    private int pageSize;
+    private PageNavigation pageNavigation;
 
     public PageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        pageNavigation = new PageNavigation();
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.page_navigation, this, true);
         setUpViews();
@@ -75,61 +63,43 @@ public class PageView extends LinearLayout implements PageNavigation {
             setExistData(true);
             return;
         }
-        nextPage();
+        pageNavigation.nextPage();
         listener.onPage();
     }
 
     private void previousPageOnClick() {
         nextPage.setVisibility(View.VISIBLE);
-        previousPage();
+        pageNavigation.previousPage();
         listener.onPage();
 
-        if (getStartPosition() <= 0) {
+        if (pageNavigation.getStartPosition() <= 0) {
             previousPage.setVisibility(View.INVISIBLE);
             setExistData(true);
         }
     }
 
     public void setExistData(boolean exist) {
-
         if (!exist) {
             nextPage.setVisibility(INVISIBLE);
         }
         this.existData = exist;
     }
 
-    @Override
     public void setPageSize(int size) {
-        pageSize = size;
+        pageNavigation.setPageSize(size);
         setExistData(true);
-        nextPage.setVisibility(VISIBLE);
         previousPage.setVisibility(INVISIBLE);
-        startPosition = 0;
-        finishPosition = pageSize;
+        nextPage.setVisibility(VISIBLE);
     }
 
-    @Override
-    public void nextPage() {
-        startPosition += pageSize;
-        finishPosition += pageSize;
+
+    public int  getStartPosition() {
+        return pageNavigation.getStartPosition();
     }
 
-    @Override
-    public void previousPage() {
-        startPosition -= pageSize;
-        finishPosition -= pageSize;
+    public int  getFinishPosition() {
+        return pageNavigation.getFinishPosition();
     }
-
-    @Override
-    public int getFinishPosition() {
-        return finishPosition;
-    }
-
-    @Override
-    public int getStartPosition() {
-        return startPosition;
-    }
-
 
     public void setListener(NavigationListener listener) {
         this.listener = listener;

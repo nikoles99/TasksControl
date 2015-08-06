@@ -90,9 +90,9 @@ public class JsonFormatUtility {
      */
     public static JSONArray format(List<Task> taskList) {
         JSONArray jsonArray = new JSONArray();
-        for (Task index : taskList) {
-            format(index);
-            jsonArray.put(format(index));
+        for (Task task : taskList) {
+            format(task);
+            jsonArray.put(format(task));
         }
         return jsonArray;
 

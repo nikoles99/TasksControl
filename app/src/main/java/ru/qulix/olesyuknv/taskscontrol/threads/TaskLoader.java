@@ -1,7 +1,4 @@
 package ru.qulix.olesyuknv.taskscontrol.threads;
-
-import java.util.List;
-
 import com.example.exceptions.HttpConnectionException;
 
 import android.app.Activity;
@@ -14,7 +11,7 @@ import android.widget.Toast;
  *
  * @author Q-OLN
  */
-public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
+public abstract class TaskLoader<T, L> extends AsyncTask<T, Void, L> {
 
     private static final String LOG_TAG = TaskLoader.class.getName();
     private HttpConnectionException httpConnectionException;
@@ -31,7 +28,7 @@ public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
     }
 
     @Override
-    protected List<T> doInBackground(T... tasks) {
+    protected L doInBackground(T... tasks) {
         for (T task : tasks) {
             try {
                 return processing(task);
@@ -44,32 +41,42 @@ public abstract class TaskLoader<T> extends AsyncTask<T, Void, List<T>> {
     }
 
     @Override
-    protected void onPostExecute(List<T> successConnection) {
-        super.onPostExecute(successConnection);
+    protected void onPostExecute(L listTasks) {
+        super.onPostExecute(listTasks);
 
         if (httpConnectionException == null) {
-            postExecute(successConnection);
+            postExecuteSuccess(listTasks);
         } else {
-            Toast.makeText(inputTaskActivity.getApplication(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+            postExecuteFailed(httpConnectionException);
         }
+    }
+
+    private void postExecuteFailed(HttpConnectionException httpConnectionException) {
+        Toast.makeText(inputTaskActivity.getApplication(), "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Обработка задачи
+     *
      * @param task задача, для обработки
-     * @return список обработанных задач
+     * @return обработанные задачи
      * @throws HttpConnectionException
      */
-    public abstract List<T> processing(T task) throws HttpConnectionException;
+    protected abstract L processing(T task) throws HttpConnectionException;
 
     /**
      * Действие, выполняемое до запуска потока
      */
-    public abstract void preExecute();
+    protected void preExecute() {
+
+    };
 
     /**
      * Действие, выполняемое после запуска потока
-     * @param tasks список задач
+     *
+     * @param tasks
      */
-    public abstract void postExecute(List<T> tasks);
+    protected void postExecuteSuccess(L tasks) {
+        inputTaskActivity.finish();
+    }
 }
