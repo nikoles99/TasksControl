@@ -121,7 +121,10 @@ public class Task implements Serializable {
         return id;
     }
 
+    /**
+     * Проверка задачи на пустоту полей
+     */
     public boolean isEmpty() {
-        return !(name == null);
+        return name == null;
     }
 }
