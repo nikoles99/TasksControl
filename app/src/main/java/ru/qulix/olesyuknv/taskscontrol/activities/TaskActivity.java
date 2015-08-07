@@ -34,7 +34,7 @@ import android.widget.Toast;
  *
  * @author Q-OLN
  */
-public class TaskActivity extends Activity {
+public class TaskActivity extends Activity  {
 
     public static final String TASK_POSITION = TaskActivity.class + ".TASK_POSITION";
     public static final int REQUEST_CODE = 1;
@@ -113,6 +113,7 @@ public class TaskActivity extends Activity {
             return task;
         } else {
             return new Task();
+
         }
     }
 

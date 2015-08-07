@@ -29,6 +29,9 @@ public class TasksControlApplication extends Application {
         });
     }
 
+    /**
+     * Получение сервера, посылающего http запросы
+     */
     public TaskServer getServer() {
         return server;
     }

@@ -78,21 +78,22 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case TaskActivity.REQUEST_CODE:
-                    setAppParams();
+        switch (requestCode) {
+            case TaskActivity.REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
                     loadDataFromServer();
-                    break;
-            }
+                }
+                break;
+            case SettingActivity.REQUEST_CODE:
+                setAppParams();
+                loadDataFromServer();
+                break;
         }
     }
 
     private void loadDataFromServer() {
         new PartTaskLoader((((TasksControlApplication) getApplicationContext()).getServer())).execute(new Task());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,7 +112,7 @@ public class MainActivity extends Activity {
                 loadDataFromServer();
                 break;
             case R.id.action_settings:
-                startActivityForResult(new Intent(MainActivity.this, SettingActivity.class), TaskActivity.REQUEST_CODE);
+                startActivityForResult(new Intent(MainActivity.this, SettingActivity.class), SettingActivity.REQUEST_CODE);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -149,7 +150,6 @@ public class MainActivity extends Activity {
             updateTaskAdapter(tasks);
             progressBar.setVisibility(View.GONE);
         }
-
 
         private void updateTaskAdapter(List<Task> tasks) {
             if (tasks.size() < Math.abs(finishPosition - startPosition)) {

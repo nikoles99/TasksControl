@@ -28,8 +28,8 @@ public abstract class TaskLoader<T, L> extends AsyncTask<T, Void, L> {
     }
 
     @Override
-    protected L doInBackground(T... tasks) {
-        for (T task : tasks) {
+    protected L doInBackground(T... params) {
+        for (T task : params) {
             try {
                 return processing(task);
             } catch (HttpConnectionException e) {

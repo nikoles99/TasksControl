@@ -78,6 +78,10 @@ public class PageView extends LinearLayout {
         }
     }
 
+    /**
+     * Установка флага наличия данных
+     * @param exist
+     */
     public void setExistData(boolean exist) {
         if (!exist) {
             nextPage.setVisibility(INVISIBLE);
@@ -85,6 +89,10 @@ public class PageView extends LinearLayout {
         this.existData = exist;
     }
 
+    /**
+     * Установка размера станицы со стартовыми настройками
+     * @param size
+     */
     public void setPageSize(int size) {
         pageNavigation.setPageSize(size);
         setExistData(true);
@@ -92,15 +100,26 @@ public class PageView extends LinearLayout {
         nextPage.setVisibility(VISIBLE);
     }
 
-
+    /**
+     * Получение начальной позиции страницы
+     * @return начальную позицию
+     */
     public int  getStartPosition() {
         return pageNavigation.getStartPosition();
     }
 
+    /**
+     * Получение конечной позиции страницы
+     * @return конечную позицию
+     */
     public int  getFinishPosition() {
         return pageNavigation.getFinishPosition();
     }
 
+    /**
+     *  Установка слушателя, отправляющего уведомления
+     * @param listener
+     */
     public void setListener(NavigationListener listener) {
         this.listener = listener;
     }

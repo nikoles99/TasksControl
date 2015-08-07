@@ -11,10 +11,11 @@ import ru.qulix.olesyuknv.taskscontrol.R;
  */
 public class SettingActivity extends PreferenceActivity {
 
+    public static final int REQUEST_CODE = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
-        setResult(RESULT_OK, getIntent());
     }
 }
