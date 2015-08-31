@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme.Holo">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="TextViewStyle">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textSize">@dimen/activity_horizontal_margin</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        textAppearance
+    </style>
+    <style name="EditTextStyle">
+        <item name="android:ems">10</item>
+        <item name="android:maxLength">35</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textSize">@dimen/activity_horizontal_margin</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        textAppearance
+    </style>
+</resources>
