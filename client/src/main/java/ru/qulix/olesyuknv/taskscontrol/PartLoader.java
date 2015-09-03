@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import ru.qulix.olesyuknv.taskscontrol.adapters.TasksControlAdapter;
 
 /**
  * Поток почастичной загрузки

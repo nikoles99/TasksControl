@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.Constants;
-import com.example.TaskException;
 import com.example.models.Employee;
 import com.example.models.Project;
 import com.example.models.StatusTask;
@@ -15,12 +14,9 @@ import com.example.models.Task;
 import com.example.server.TaskServer;
 import com.example.utils.DateFormatUtility;
 
-import ru.qulix.olesyuknv.taskscontrol.adapters.EmployeeAdapter;
-import ru.qulix.olesyuknv.taskscontrol.adapters.ProjectAdapter;
-import ru.qulix.olesyuknv.taskscontrol.adapters.TasksControlAdapter;
-import ru.qulix.olesyuknv.taskscontrol.comands.AddTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.RemoveTaskLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.UpdateTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.task.AddTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.task.RemoveTaskLoader;
+import ru.qulix.olesyuknv.taskscontrol.task.UpdateTaskLoader;
 import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
@@ -63,7 +59,7 @@ public class TaskActivity extends Activity {
     /**
      * Идентификатор TaskActivity
      */
-    public static final int REQUEST_CODE = 1;
+    public static final int REQUEST_CODE = 2;
 
     private static final int PAGE_SIZE = 1;
 
@@ -82,6 +78,9 @@ public class TaskActivity extends Activity {
     private Spinner employeesSpinner;
 
     private Button addTaskInProject;
+
+    private ImageView saveButton;
+
     private PageView pageView;
 
     private Task task;
@@ -92,7 +91,6 @@ public class TaskActivity extends Activity {
     private TasksControlAdapter<Employee> employeesSpinnerAdapter;
 
     private TasksControlAdapter<Project> projectAdapter;
-
 
     /**
      * Все сотрудники
@@ -155,7 +153,7 @@ public class TaskActivity extends Activity {
             }
         });
 
-        ImageView saveButton = (ImageView) findViewById(R.id.addTaskButton);
+        saveButton = (ImageView) findViewById(R.id.addTaskButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,24 +176,14 @@ public class TaskActivity extends Activity {
         startDate.setText(DateFormatUtility.format(task.getStartDate()));
         finishDate.setText(DateFormatUtility.format(task.getFinishDate()));
         loadProjects();
-        new EmployeeLoader().execute();
+        loadEmployees();
     }
 
-    private void loadProjects() {
-        if (projectActivityMode) {
-            List<Project> projects = new ArrayList<Project>();
-            projects.add(project);
-            projectAdapter = new ProjectAdapter(TaskActivity.this, projects);
-            projectsSpinner.setAdapter(projectAdapter);
-        } else {
-            new ProjectsLoader().execute();
-        }
-    }
-
-    private Task getTask() throws TaskException {
+    private Task getTask() throws TaskControlException {
         validate();
         task.setName(nameTask.getText().toString());
-        task.setProjectId(((Project) projectAdapter.getItem(projectsSpinner.getSelectedItemPosition())).getId());
+        Project project = ((Project) projectAdapter.getItem(projectsSpinner.getSelectedItemPosition()));
+        task.setProjectId(project.getId());
         task.setWorkTime(Integer.parseInt(workTime.getText().toString()));
         task.setStartDate(DateFormatUtility.format(startDate.getText().toString()));
         task.setFinishDate(DateFormatUtility.format(finishDate.getText().toString()));
@@ -203,20 +191,35 @@ public class TaskActivity extends Activity {
         return task;
     }
 
-    private void validate() throws TaskException {
+    private void loadEmployees() {
+        new EmployeeLoader().execute();
+    }
+
+    private void loadProjects() {
+        if (projectActivityMode) {
+            List<Project> projects = new ArrayList<Project>();
+            projects.add(project);
+            setProjectAdapter(projects);
+        } else {
+            new ProjectsLoader().execute();
+        }
+    }
+
+    private void validate() throws TaskControlException {
         if (TextUtils.isEmpty(workTime.getText()) || !workTime.getText().toString().matches("^-?\\d+$")) {
-            throw new TaskException("Некоректное время");
+            throw new TaskControlException("Некоректное время");
         }
         if (TextUtils.isEmpty(nameTask.getText())) {
-            throw new TaskException("Введите имя задачи");
+            throw new TaskControlException("Введите имя задачи");
         }
         if (DateFormatUtility.format(startDate.getText().toString()).
                 after(DateFormatUtility.format(finishDate.getText().toString()))) {
-            throw new TaskException("Начальная дата позже даты окончания");
+            throw new TaskControlException("Начальная дата позже даты окончания");
         }
-        if (projectAdapter == null){
-            throw new TaskException("Проект не выбран");
+        if (projectAdapter == null) {
+            throw new TaskControlException("Проект не выбран");
         }
+        saveButton.setEnabled(false);
     }
 
     private TaskServer getServer() {
@@ -227,7 +230,7 @@ public class TaskActivity extends Activity {
         try {
             Task task = getTask();
             thread.execute(task);
-        } catch (TaskException e) {
+        } catch (TaskControlException e) {
             showMessage(e);
         }
     }
@@ -239,12 +242,12 @@ public class TaskActivity extends Activity {
             intent.putExtra(TaskActivity.TASK, getTask());
             setResult(RESULT_OK, intent);
             finish();
-        } catch (TaskException e) {
+        } catch (TaskControlException e) {
             showMessage(e);
         }
     }
 
-    private void showMessage(TaskException e) {
+    private void showMessage(TaskControlException e) {
         Log.e(LOG_TAG, e.getMessage(), e);
         Toast.makeText(TaskActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
@@ -278,6 +281,11 @@ public class TaskActivity extends Activity {
                 android.R.layout.simple_spinner_item, StatusTask.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private void setProjectAdapter(List<Project> projectList) {
+        projectAdapter = new ProjectAdapter(TaskActivity.this, projectList);
+        projectsSpinner.setAdapter(projectAdapter);
     }
 
     private void createEmployeeListView() {
@@ -317,8 +325,8 @@ public class TaskActivity extends Activity {
         if (!employees.isEmpty()) {
             Employee employee = (Employee) employeesSpinnerAdapter.getItem(employeesSpinner.getSelectedItemPosition());
             task.addEmployee(employee);
-            addTaskInProject.setEnabled(false);
             employees.remove(employee);
+            addTaskInProject.setEnabled(false);
             updateEmployees();
         } else {
             Toast.makeText(TaskActivity.this, "Работников нет", Toast.LENGTH_SHORT).show();
@@ -349,7 +357,7 @@ public class TaskActivity extends Activity {
     }
 
     private void updateEmployees() {
-        employeesSpinner.setAdapter(employeesSpinnerAdapter);
+        employeesSpinnerAdapter.notifyDataSetChanged();
         loadTaskEmployees();
         addTaskInProject.setEnabled(true);
     }
@@ -380,7 +388,6 @@ public class TaskActivity extends Activity {
 
         @Override
         protected List<Project> processing(List<Project> projects) throws IOException {
-
             do {
                 projects = getServer().loadProjects(startPosition, startPosition + INCREMENT);
                 allProjects.addAll(projects);
@@ -392,8 +399,7 @@ public class TaskActivity extends Activity {
 
         @Override
         protected void postExecuteSuccess(List<Project> projectList) {
-            projectAdapter = new ProjectAdapter(TaskActivity.this, projectList);
-            projectsSpinner.setAdapter(projectAdapter);
+            setProjectAdapter(projectList);
         }
     }
 
@@ -416,7 +422,6 @@ public class TaskActivity extends Activity {
 
         @Override
         protected List<Employee> processing(List<Employee> employees) throws IOException {
-
             do {
                 employees = getServer().loadEmployees(startPosition, startPosition + INCREMENT);
                 allEmployees.addAll(employees);

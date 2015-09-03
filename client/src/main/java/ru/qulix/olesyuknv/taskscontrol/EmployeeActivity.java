@@ -1,8 +1,11 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import com.example.EmployeeException;
 import com.example.models.Employee;
 import com.example.server.TaskServer;
+
+import ru.qulix.olesyuknv.taskscontrol.employee.AddEmployeeLoader;
+import ru.qulix.olesyuknv.taskscontrol.employee.RemoveEmployeeLoader;
+import ru.qulix.olesyuknv.taskscontrol.employee.UpdateEmployeeLoader;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,10 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import ru.qulix.olesyuknv.taskscontrol.comands.AddEmployeeLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.RemoveEmployeeLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.UpdateEmployeeLoader;
 
 /**
  * Форма создания и изменения сотрудника
@@ -43,6 +42,8 @@ public class EmployeeActivity extends Activity {
     private EditText name;
     private EditText middleName;
     private EditText post;
+
+    private ImageView addEmployeeButton;
 
     private Employee employee;
 
@@ -80,13 +81,12 @@ public class EmployeeActivity extends Activity {
             }
         });
 
-        final ImageView addEmployeeButton = (ImageView) findViewById(R.id.addEmployeeButton);
+        addEmployeeButton = (ImageView) findViewById(R.id.addEmployeeButton);
         addEmployeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 execute(addMode ? new AddEmployeeLoader(getServer(), EmployeeActivity.this) : new UpdateEmployeeLoader(getServer(),
                         EmployeeActivity.this));
-                addEmployeeButton.setEnabled(false);
             }
         });
     }
@@ -100,7 +100,7 @@ public class EmployeeActivity extends Activity {
         post.setText(employee.getPost());
     }
 
-    private Employee getEmployee() throws EmployeeException {
+    private Employee getEmployee() throws TaskControlException {
         validate();
         employee.setSurname(surname.getText().toString());
         employee.setName(name.getText().toString());
@@ -109,19 +109,20 @@ public class EmployeeActivity extends Activity {
         return employee;
     }
 
-    private void validate() throws EmployeeException {
+    private void validate() throws TaskControlException {
         if (TextUtils.isEmpty(surname.getText())) {
-            throw new EmployeeException("Введите Фамилию сотрудника");
+            throw new TaskControlException("Введите Фамилию сотрудника");
         }
         if (TextUtils.isEmpty(name.getText())) {
-            throw new EmployeeException("Введите Имя сотрудника");
+            throw new TaskControlException("Введите Имя сотрудника");
         }
         if (TextUtils.isEmpty(middleName.getText())) {
-            throw new EmployeeException("Введите Отчество Сотрудника");
+            throw new TaskControlException("Введите Отчество Сотрудника");
         }
         if (TextUtils.isEmpty(post.getText())) {
-            throw new EmployeeException("Введите Должность Сотрудника");
+            throw new TaskControlException("Введите Должность Сотрудника");
         }
+        addEmployeeButton.setEnabled(false);
     }
 
     private TaskServer getServer() {
@@ -132,7 +133,7 @@ public class EmployeeActivity extends Activity {
         try {
             Employee employee = getEmployee();
             thread.execute(employee);
-        } catch (EmployeeException e) {
+        } catch (TaskControlException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             Toast.makeText(EmployeeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

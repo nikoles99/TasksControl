@@ -78,7 +78,7 @@ public class ProjectFormatUtility {
             Project project = new Project(name, subName, description);
             project.setId(Integer.valueOf(id));
             project.addTasks(TaskFormatUtility.getListTasks(listTasks));
-            return (project);
+            return project;
         } catch (JSONException e) {
             throw new IllegalArgumentException(String.format("Invalid JSONObject format %s", jsonObject), e);
         }

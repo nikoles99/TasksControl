@@ -1,6 +1,5 @@
 package com.example.utils;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class EmployeeFormatUtility {
             String post = jsonObject.getString(POST);
             Employee employee = new Employee(name, surname, middleName, post);
             employee.setId(Integer.valueOf(id));
-            return (employee);
+            return employee;
         } catch (JSONException e) {
             throw new IllegalArgumentException(String.format("Invalid JSONObject format %s", jsonObject), e);
         }

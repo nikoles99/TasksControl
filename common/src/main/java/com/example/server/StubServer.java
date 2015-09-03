@@ -118,7 +118,7 @@ public class StubServer implements TaskServer {
         imitationServerWork();
 
         if (start < 0 || start > projectsSet.size()) {
-            return new ArrayList<>();
+            return new ArrayList<Project>();
         }
         List<Project> list = new ArrayList<Project>(projectsSet);
         return list.subList(start, Math.min(finish, list.size()));
@@ -161,7 +161,7 @@ public class StubServer implements TaskServer {
         imitationServerWork();
 
         if (start < 0 || start > tasksSet.size()) {
-            return new ArrayList<>();
+            return new ArrayList<Task>();
         }
         List<Task> list = new ArrayList<Task>(tasksSet);
         return list.subList(start, Math.min(finish, list.size()));
@@ -262,14 +262,14 @@ public class StubServer implements TaskServer {
 
     private int createProject(String name, String subName, String description) {
         Project project = new Project(name, subName, description);
-        project.setId(++idProject);
+        generateId(project);
         projectsSet.add(project);
         return project.getId();
     }
 
     private Employee createEmployee(String surname, String name, String middleName, String post) {
         Employee employee = new Employee(surname, name, middleName, post);
-        employee.setId(++idEmployee);
+        generateId(employee);
         employeesSet.add(employee);
         return employee;
     }
@@ -280,7 +280,7 @@ public class StubServer implements TaskServer {
         Date finishDate = getDate(finish);
         Task task = new Task(name, workTime, startDate, finishDate, statusTask, projectId);
         task.addEmployee(employee);
-        task.setId(++idTask);
+        generateId(task);
         tasksSet.add(task);
         Project project = getProjectByID(task.getProjectId());
         if (project != null) {

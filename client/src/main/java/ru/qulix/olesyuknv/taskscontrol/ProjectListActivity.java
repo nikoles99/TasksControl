@@ -8,8 +8,6 @@ import java.util.List;
 import com.example.models.Project;
 import com.example.server.TaskServer;
 
-import ru.qulix.olesyuknv.taskscontrol.adapters.ProjectAdapter;
-import ru.qulix.olesyuknv.taskscontrol.adapters.TasksControlAdapter;
 import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
@@ -32,7 +30,7 @@ public class ProjectListActivity extends Activity {
     /**
      * Идентификатор ProjectListActivity
      */
-    private static final int REQUEST_CODE = 2;
+    private static final int REQUEST_CODE = 1;
 
     private TasksControlAdapter projectAdapter;
 
@@ -84,7 +82,7 @@ public class ProjectListActivity extends Activity {
                 }
                 break;
             case REQUEST_CODE:
-                pageView.setAppParams();
+                pageView.applyAppParams();
                 loadDataFromServer();
                 break;
         }
@@ -109,6 +107,7 @@ public class ProjectListActivity extends Activity {
                 break;
             case R.id.update_button:
                 loadDataFromServer();
+                pageView.disable();
                 break;
             case R.id.action_settings:
                 startActivityForResult(new Intent(ProjectListActivity.this, SettingActivity.class), REQUEST_CODE);

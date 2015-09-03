@@ -21,7 +21,7 @@ public class LoadProjectsExecutor extends TasksControlExecutor {
     public String execute(HttpServletRequest request, TaskServer taskServer) throws IOException {
         String startPosition = request.getParameter(Constants.START_POSITION);
         String finishPosition = request.getParameter(Constants.FINISH_POSITION);
-        List<Project> projects = taskServer.loadProjects(Integer.valueOf(startPosition), Integer.valueOf(finishPosition));
+        List<Project> projects = taskServer.loadProjects(Integer.parseInt(startPosition), Integer.parseInt(finishPosition));
         return ProjectFormatUtility.getListProjects(projects).toString();
     }
 }

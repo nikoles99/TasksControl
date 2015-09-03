@@ -23,7 +23,7 @@ public class LoadTasksExecutor extends TasksControlExecutor {
     public String execute(HttpServletRequest request, TaskServer taskServer) throws IOException {
         String startPosition = request.getParameter(Constants.START_POSITION);
         String finishPosition = request.getParameter(Constants.FINISH_POSITION);
-        List<Task> tasks = taskServer.loadTasks(Integer.valueOf(startPosition), Integer.valueOf(finishPosition));
+        List<Task> tasks = taskServer.loadTasks(Integer.parseInt(startPosition), Integer.parseInt(finishPosition));
         return TaskFormatUtility.getListTasks(tasks).toString();
     }
 }

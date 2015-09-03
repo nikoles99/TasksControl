@@ -8,8 +8,6 @@ import java.util.List;
 import com.example.models.Employee;
 import com.example.server.TaskServer;
 
-import ru.qulix.olesyuknv.taskscontrol.adapters.EmployeeAdapter;
-import ru.qulix.olesyuknv.taskscontrol.adapters.TasksControlAdapter;
 import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
@@ -84,7 +82,7 @@ public class EmployeeListActivity extends Activity {
                 }
                 break;
             case REQUEST_CODE:
-                pageView.setAppParams();
+                pageView.applyAppParams();
                 loadDataFromServer();
                 break;
         }
@@ -109,6 +107,8 @@ public class EmployeeListActivity extends Activity {
                 break;
             case R.id.update_button:
                 loadDataFromServer();
+                pageView.disable();
+                invalidateOptionsMenu();
                 break;
             case R.id.action_settings:
                 startActivityForResult(new Intent(EmployeeListActivity.this, SettingActivity.class), REQUEST_CODE);

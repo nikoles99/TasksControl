@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Constants;
-import com.example.ProjectException;
 import com.example.models.Project;
 import com.example.models.Task;
 import com.example.server.TaskServer;
 
-import ru.qulix.olesyuknv.taskscontrol.adapters.TasksControlAdapter;
-import ru.qulix.olesyuknv.taskscontrol.comands.AddProjectLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.RemoveProjectLoader;
-import ru.qulix.olesyuknv.taskscontrol.comands.UpdateProjectLoader;
-import ru.qulix.olesyuknv.taskscontrol.adapters.TaskAdapter;
+import ru.qulix.olesyuknv.taskscontrol.project.AddProjectLoader;
+import ru.qulix.olesyuknv.taskscontrol.project.RemoveProjectLoader;
+import ru.qulix.olesyuknv.taskscontrol.project.UpdateProjectLoader;
 import ru.qulix.olesyuknv.taskscontrol.utils.NavigationListener;
 
 import android.app.Activity;
@@ -51,7 +48,7 @@ public class ProjectActivity extends Activity {
     /**
      * Идентификатор ProjectActivity
      */
-    public static final int REQUEST_CODE = 1;
+    public static final int REQUEST_CODE = 2;
 
     private static final int PAGE_SIZE = 1;
 
@@ -62,6 +59,8 @@ public class ProjectActivity extends Activity {
     private EditText subName;
     private EditText name;
     private EditText description;
+
+    private ImageView addProjectButton;
 
     private TasksControlAdapter<Task> taskAdapter;
 
@@ -121,22 +120,21 @@ public class ProjectActivity extends Activity {
         subName = (EditText) findViewById(R.id.subName);
         description = (EditText) findViewById(R.id.description);
 
-        ImageView deleteEmployeeButton = (ImageView) findViewById(R.id.deleteProjectButton);
-        deleteEmployeeButton.setVisibility((!addMode) ? View.VISIBLE : View.INVISIBLE);
-        deleteEmployeeButton.setOnClickListener(new View.OnClickListener() {
+        ImageView deleteProjectButton = (ImageView) findViewById(R.id.deleteProjectButton);
+        deleteProjectButton.setVisibility((!addMode) ? View.VISIBLE : View.INVISIBLE);
+        deleteProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 execute(new RemoveProjectLoader(getServer(), ProjectActivity.this));
             }
         });
 
-        final ImageView addEmployeeButton = (ImageView) findViewById(R.id.addProjectButton);
-        addEmployeeButton.setOnClickListener(new View.OnClickListener() {
+        addProjectButton = (ImageView) findViewById(R.id.addProjectButton);
+        addProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 execute(addMode ? new AddProjectLoader(getServer(), ProjectActivity.this) : new UpdateProjectLoader(getServer(),
                         ProjectActivity.this));
-                addEmployeeButton.setEnabled(false);
             }
         });
         createTaskListView();
@@ -180,7 +178,7 @@ public class ProjectActivity extends Activity {
         try {
             intent.putExtra(TaskActivity.PROJECT, getProject());
             startActivityForResult(intent, TaskActivity.REQUEST_CODE);
-        } catch (ProjectException e) {
+        } catch (TaskControlException e) {
             showMessage(e);
         }
     }
@@ -194,7 +192,7 @@ public class ProjectActivity extends Activity {
         loadTasks();
     }
 
-    private Project getProject() throws ProjectException {
+    private Project getProject() throws TaskControlException {
         validate();
         project.setName(name.getText().toString());
         project.setSubName(subName.getText().toString());
@@ -202,16 +200,17 @@ public class ProjectActivity extends Activity {
         return project;
     }
 
-    private void validate() throws ProjectException {
+    private void validate() throws TaskControlException {
         if (TextUtils.isEmpty(name.getText())) {
-            throw new ProjectException("Введите название проекта\"");
+            throw new TaskControlException("Введите название проекта");
         }
         if (TextUtils.isEmpty(subName.getText())) {
-            throw new ProjectException("Введите сокращенное имя проекта");
+            throw new TaskControlException("Введите сокращенное имя проекта");
         }
         if (TextUtils.isEmpty(description.getText())) {
-            throw new ProjectException("Введите описание проекта");
+            throw new TaskControlException("Введите описание проекта");
         }
+        addProjectButton.setEnabled(false);
     }
 
     private TaskServer getServer() {
@@ -222,12 +221,12 @@ public class ProjectActivity extends Activity {
         try {
             Project project = getProject();
             thread.execute(project);
-        } catch (ProjectException e) {
+        } catch (TaskControlException e) {
             showMessage(e);
         }
     }
 
-    private void showMessage(ProjectException e) {
+    private void showMessage(TaskControlException e) {
         Log.e(LOG_TAG, e.getMessage(), e);
         Toast.makeText(ProjectActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }

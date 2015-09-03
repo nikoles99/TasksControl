@@ -21,7 +21,7 @@ public class LoadEmployeesExecutor extends TasksControlExecutor {
     public String execute(HttpServletRequest request, TaskServer taskServer) throws IOException {
         String startPosition = request.getParameter(Constants.START_POSITION);
         String finishPosition = request.getParameter(Constants.FINISH_POSITION);
-        List<Employee> employees = taskServer.loadEmployees(Integer.valueOf(startPosition), Integer.valueOf(finishPosition));
+        List<Employee> employees = taskServer.loadEmployees(Integer.parseInt(startPosition), Integer.parseInt(finishPosition));
         return EmployeeFormatUtility.getListEmployees(employees).toString();
     }
 }

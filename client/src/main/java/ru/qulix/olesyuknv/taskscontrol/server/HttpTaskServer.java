@@ -67,12 +67,12 @@ public class HttpTaskServer implements TaskServer {
         HttpResponse response = httpClient.execute(httpPost);
         int httpStatus = response.getStatusLine().getStatusCode();
 
-        //if (httpStatus == HttpStatus.SC_OK) {
+        if (httpStatus == HttpStatus.SC_OK) {
             return EntityUtils.toString(response.getEntity(), "UTF-8");
-        //} else {
-        //    throw new IOException(String.format("Http status unsuccessful %d expected '" +
-          //          HttpStatus.SC_OK + "'", httpStatus));
-       // }
+        } else {
+            throw new IOException(String.format("Http status unsuccessful %d expected '" +
+                    HttpStatus.SC_OK + "'", httpStatus));
+        }
     }
 
     /**

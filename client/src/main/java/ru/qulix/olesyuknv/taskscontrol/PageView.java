@@ -19,8 +19,6 @@ import android.widget.LinearLayout;
  */
 public class PageView extends LinearLayout {
 
-    private static final String PAGE_SIZE = "PAGE_SIZE";
-
     private ImageView nextPage;
 
     private ImageView previousPage;
@@ -37,7 +35,7 @@ public class PageView extends LinearLayout {
         pageNavigation = new PageNavigation();
         ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.page_navigation, this, true);
-        setAppParams();
+        applyAppParams();
         setUpViews();
         disable();
     }
@@ -129,11 +127,11 @@ public class PageView extends LinearLayout {
     }
 
     /**
-     * Установка настроек
+     * Применить настройки
      */
-    public void setAppParams() {
+    public void applyAppParams() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        setPageSize(Integer.valueOf(sharedPreferences.getString(PAGE_SIZE, "9").trim()));
+        setPageSize(Integer.valueOf(sharedPreferences.getString(context.getString(R.string.page_size), "9").trim()));
     }
 
     /**

@@ -1,6 +1,5 @@
 package ru.qulix.olesyuknv.taskscontrol;
 
-import com.example.server.StubServer;
 import com.example.server.TaskServer;
 
 import ru.qulix.olesyuknv.taskscontrol.server.HttpTaskServer;

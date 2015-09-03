@@ -61,7 +61,6 @@ public class TasksControlServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(Constants.ACTION);
         String result = SERVLET_COMMAND.get(action).execute(request, taskServer);
-        response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(result.getBytes());
+        response.getOutputStream().write(result.getBytes("UTF-8"));
     }
 }

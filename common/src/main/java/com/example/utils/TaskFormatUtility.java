@@ -100,7 +100,7 @@ public class TaskFormatUtility {
                     DateFormatUtility.format(finishDate), StatusTask.valueOf(status), Integer.parseInt(projectId));
             task.setId(Integer.valueOf(id));
             task.addEmployees(EmployeeFormatUtility.getListEmployees(listEmployee));
-            return (task);
+            return task;
         } catch (JSONException e) {
             throw new IllegalArgumentException(String.format("Invalid JSONObject format %s", jsonObject), e);
         }
